@@ -1,0 +1,9 @@
+<script src="newbot.js"></script>
+<script src="skill.js"></script>
+<script>
+    const converse = new NewBot(MainSkill)
+    converse.exec('hello', (output, next) => {
+        console.log(output)
+        next()
+    })
+</script>
