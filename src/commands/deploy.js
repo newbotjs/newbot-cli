@@ -96,7 +96,7 @@ export default async () => {
                     await bundle.write({
                         format: 'cjs',
                         dir: 'dist',
-                        file: 'dist/bot.js',
+                        file: 'dist/node/bot.js',
                         strict: false
                     })
                 }
