@@ -7,7 +7,8 @@
     "newbot": "./src/bin/index.js"
   },
   "scripts": {
-    "dev": "nodemon ./src/bin/index.js"
+    "dev": "nodemon ./src/bin/index.js",
+    "start": "newbot serve"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +38,8 @@
     "json-colorizer": "^1.1.1",
     "listr": "^0.14.2",
     "lodash": "^4.17.10",
+    "messaging-api-telegram": "^0.7.8",
+    "messaging-api-viber": "^0.7.8",
     "mocha": "^5.2.0",
     "moment": "^2.22.2",
     "ncp": "^2.0.0",
@@ -55,6 +58,7 @@
     "systemjs": "^0.21.4",
     "systemjs-builder": "^0.16.13",
     "systemjs-plugin-babel": "0.0.25",
+    "twit": "^2.2.11",
     "validator": "^10.5.0",
     "yargs": "^12.0.2"
   },

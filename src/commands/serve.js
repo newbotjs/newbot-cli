@@ -7,6 +7,7 @@ import {
     Converse
 } from 'newbot'
 
+import rp from 'request-promise'
 import chokidar from 'chokidar'
 import decache from 'decache'
 import reload from 'reload'
@@ -14,19 +15,26 @@ import Listr from 'listr'
 import moment from 'moment'
 import ngrokModule from 'ngrok'
 import execa from 'execa'
-import inquirer from 'inquirer'
+import {
+    ViberClient
+} from 'messaging-api-viber'
+import {
+    TelegramClient
+} from 'messaging-api-telegram'
+import Twit from 'twit'
 
 import botbuilderPlatform from '../server/platforms/botbuilder'
 import bottenderPlatform from '../server/platforms/bottender'
 import gactionsPlatform from '../server/platforms/gactions'
+import twitterPlatform from '../server/platforms/twitter'
 import serverApp from '../server/app';
-
 
 export default async ({
     port = 3000,
     ngrok = false
 } = {}) => {
     try {
+
 
         let config = {
             platforms: {}
@@ -84,6 +92,104 @@ export default async ({
                 console.log(ctx.url)
             }
         }, {
+            title: `Set WebHook to Twitter platform`,
+            skip() {
+                const {
+                    twitter
+                } = config.platforms
+                if (!twitter) {
+                    return 'Add "platforms.twitter" property in "newbot.config.js" file'
+                }
+                if (!twitter.accessToken) {
+                    return 'Add "platforms.twitter.accessToken" property in "newbot.config.js" file with authentification token'
+                }
+            },
+            async task(ctx) {
+                const {
+                    consumerKey,
+                    consumerSecret,
+                    accessToken,
+                    accessTokenSecret
+                } = config.platforms.twitter
+                const url = 'https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json'
+                const oauth = {
+                    consumer_key: consumerKey,
+                    consumer_secret: consumerSecret,
+                    token: accessToken,
+                    token_secret: accessTokenSecret
+                }
+                const res = await rp.get({
+                    url,
+                    oauth,
+                    json: true
+                })
+
+                const webHook = res.find(el => /emulator/.test(el.url))
+
+                if (webHook) {
+                    await rp.delete({
+                        url: `https://api.twitter.com/1.1/account_activity/all/dev/webhooks/${webHook.id}.json`,
+                        oauth
+                    })
+                }
+
+                await rp.post({
+                    url,
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    oauth,
+                    form: {
+                        url: ctx.url + '/emulator/twitter'
+                    }
+                })
+
+                await rp.post({
+                    url: 'https://api.twitter.com/1.1/account_activity/all/dev/subscriptions.json',
+                    oauth
+                })
+            }
+        }, {
+            title: `Set WebHook to Viber platform`,
+            skip() {
+                const {
+                    viber
+                } = config.platforms
+                if (!viber) {
+                    return 'Add "platforms.viber" property in "newbot.config.js" file'
+                }
+                if (!viber.accessToken) {
+                    return 'Add "platforms.viber.accessToken" property in "newbot.config.js" file with authentification token'
+                }
+            },
+            task(ctx) {
+                const {
+                    accessToken
+                } = config.platforms.viber
+                const client = ViberClient.connect(accessToken)
+                return client.setWebhook(ctx.url + '/emulator/viber')
+            }
+        }, {
+            title: `Set WebHook to Telegram platform`,
+            skip() {
+                const {
+                    telegram
+                } = config.platforms
+                if (!telegram) {
+                    return 'Add "platforms.telegram" property in "newbot.config.js" file'
+                }
+                if (!telegram.accessToken) {
+                    return 'Add "platforms.telegram.accessToken" property in "newbot.config.js" file with authentification token'
+                }
+            },
+            task(ctx) {
+                const {
+                    accessToken
+                } = config.platforms.telegram
+                const client = TelegramClient.connect(accessToken)
+                return client.setWebhook(ctx.url + '/emulator/telegram')
+            }
+        }, {
             title: 'Auto configuration Google Actions',
             skip() {
                 const {
@@ -105,16 +211,15 @@ export default async ({
                 } = config.platforms
                 const gactionsDir = `${files}/gactions`
                 const regexp = /action\.([a-zA-Z-]+)\.json/
-                
+
                 try {
                     fs.mkdirSync(gactionsDir)
-                }
-                catch (err) {
+                } catch (err) {
                     if (err.code != 'EEXIST') throw err
                 }
-                
+
                 const actionFiles = () => fs.readdirSync(gactionsDir).filter(filename => regexp.test(filename))
-                
+
                 return new Listr([{
                         title: 'Generate "action.LANG.json" files',
                         skip(ctx) {
@@ -172,8 +277,7 @@ export default async ({
                             try {
                                 fs.accessSync(`${files}/creds.data`, fs.constants.R_OK | fs.constants.W_OK)
                                 await execa.shell(shell)
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 await execa.shell(shell, {
                                     input: process.stdin
                                 }).stdout.pipe(process.stdout)
@@ -226,6 +330,10 @@ export default async ({
 
         if (config.platforms.gactions) {
             gactionsPlatform(app)
+        }
+
+        if (config.platforms.twitter) {
+            twitterPlatform(app, config)
         }
 
     } catch (err) {

@@ -1,5 +1,7 @@
 import {
-    MessengerBot
+    MessengerBot,
+    ViberBot,
+    TelegramBot
 } from 'bottender'
 import {
     registerRoutes
@@ -9,8 +11,10 @@ import Session from 'newbot-formats/session/bottender'
 export default (app, config) => {
     const handler = async context => {
         const {
-            text
+            text,
+            isText
         } = context.event
+        if (!isText) return
         const session = new Session(context)
         await global.converse.exec(text, context.session.user.id, {
             output(str, next) {
@@ -29,6 +33,18 @@ export default (app, config) => {
         registerRoutes(app, messengerBot, {
             path: '/emulator/messenger',
             verifyToken: config.platforms.messenger.verifyToken
+        })
+    }
+    if (config.platforms.viber) {
+        const viberBot = new ViberBot(config.platforms.viber).onEvent(handler)
+        registerRoutes(app, viberBot, {
+            path: '/emulator/viber'
+        })
+    }
+    if (config.platforms.telegram) {
+        const telegramBot = new TelegramBot(config.platforms.telegram).onEvent(handler)
+        registerRoutes(app, telegramBot, {
+            path: '/emulator/telegram'
         })
     }
 }

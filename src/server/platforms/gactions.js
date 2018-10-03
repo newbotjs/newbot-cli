@@ -17,9 +17,14 @@ export default (app) => {
             }
         })
     }
+
+    const handleOption = (conv, params, option) => {
+        return handle(conv, option)
+    }
     
     action.intent('actions.intent.MAIN', handle)
-    action.intent('actions.intent.TEXT', handle);
+    action.intent('actions.intent.TEXT', handle)
+    action.intent('actions.intent.OPTION', handleOption)
 
     app.post('/emulator/gactions', action)
 }
