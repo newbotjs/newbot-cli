@@ -13,6 +13,7 @@ import decache from 'decache'
 import reload from 'reload'
 import Listr from 'listr'
 import moment from 'moment'
+import Table from 'cli-table'
 import ngrokModule from 'ngrok'
 import execa from 'execa'
 import {
@@ -21,7 +22,6 @@ import {
 import {
     TelegramClient
 } from 'messaging-api-telegram'
-import Twit from 'twit'
 
 import botbuilderPlatform from '../server/platforms/botbuilder'
 import bottenderPlatform from '../server/platforms/bottender'
@@ -35,10 +35,7 @@ export default async ({
 } = {}) => {
     try {
 
-
-        let config = {
-            platforms: {}
-        }
+        let config = {}
 
         const app = express()
         const reloadServer = reload(app)
@@ -51,6 +48,8 @@ export default async ({
         } catch (err) {
             console.log(err)
         }
+
+        if (!config.platforms) config.platforms = {}
 
         var watcher = chokidar.watch(`${files}/bot/**/*`, {
             ignored: '*.spec.js',
@@ -89,7 +88,6 @@ export default async ({
             title: `Connect to Ngrok`,
             async task(ctx) {
                 ctx.url = await ngrokModule.connect(port)
-                console.log(ctx.url)
             }
         }, {
             title: `Set WebHook to Twitter platform`,
@@ -320,7 +318,43 @@ export default async ({
             }
         }
 
-        tasks.run();
+        tasks.run().then((ctx) => {
+
+            var table = new Table({
+                chars: {
+                    'top': '═',
+                    'top-mid': '╤',
+                    'top-left': '╔',
+                    'top-right': '╗',
+                    'bottom': '═',
+                    'bottom-mid': '╧',
+                    'bottom-left': '╚',
+                    'bottom-right': '╝',
+                    'left': '║',
+                    'left-mid': '╟',
+                    'mid': '─',
+                    'mid-mid': '┼',
+                    'right': '║',
+                    'right-mid': '╢',
+                    'middle': '│'
+                }
+            });
+
+            table.push(['Ngrok URL', ctx.url])
+
+            if (config.platforms.slack) {
+                table.push(['Slack WebHook URL', ctx.url + '/emulator/slack'])
+            }
+
+            if (config.platforms.messenger) {
+                table.push([
+                    'Messenger WebHook URL', ctx.url + '/emulator/messenger',
+                    'Messenger Verifiy Token', config.platforms.messenger.verifyToken
+                ])
+            }
+
+            console.log(table.toString())
+        })
 
 
         serverApp(app, files)

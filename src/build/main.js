@@ -1,6 +1,7 @@
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json'
+import { uglify } from 'rollup-plugin-uglify'
 import fs from 'fs'
 import _ from 'lodash'
 
@@ -12,9 +13,7 @@ function asset(options = {}) {
     } catch (err) {}
     const dependencies = Object.keys(dep)
         .filter(d => !/newbot/.test(d))
-    let config = {
-        default: {}
-    }
+    let config = {}
     try {
         const configFile = `${path}/newbot.config.js`
         fs.accessSync(configFile, fs.constants.R_OK | fs.constants.W_OK);
@@ -24,7 +23,7 @@ function asset(options = {}) {
     const {
         map,
         root
-    } = config.default
+    } = config
 
     const resolveOptions = {
         preferBuiltins: false
@@ -115,6 +114,10 @@ function asset(options = {}) {
             }
         ]
     }
+
+    /*if (options.type == 'browser') {
+        optionsRollup.plugins.push(uglify())
+    }*/
 
     return optionsRollup
 

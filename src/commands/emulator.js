@@ -28,7 +28,7 @@ export default ({
         if (_.isString(source)) {
             platform = source
         }
-        const session = new Session(context, platform)
+        let session = new Session(context, platform)
         await converse.exec(text, 'emulator', {
             async output(str) {
                 if (platform == 'website') {

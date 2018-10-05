@@ -4,7 +4,8 @@ import fs from 'fs'
 import execa from 'execa'
 import Listr from'listr'
 
-export default async (name) => {
+export default async ({ name }) => {
+
     const directory = process.cwd()
     const pathProject = `${directory}/${name}`
 

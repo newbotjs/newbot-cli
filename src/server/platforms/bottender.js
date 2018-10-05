@@ -1,7 +1,8 @@
 import {
     MessengerBot,
     ViberBot,
-    TelegramBot
+    TelegramBot,
+    SlackBot
 } from 'bottender'
 import {
     registerRoutes
@@ -47,4 +48,12 @@ export default (app, config) => {
             path: '/emulator/telegram'
         })
     }
+
+    if (config.platforms.slack) {
+        const slackBot = new SlackBot(config.platforms.slack).onEvent(handler)
+        registerRoutes(app, slackBot, {
+            path: '/emulator/slack'
+        })
+    }
+
 }
