@@ -4,3 +4,4 @@ node_modules
 .newbot-cloud
 tmp
 src/bin/gactions
+dist

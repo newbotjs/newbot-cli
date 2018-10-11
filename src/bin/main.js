@@ -34,8 +34,6 @@ program
     .command('build', 'build your chatbot skills', () => { }, buildCommand)
     .argv
 
-
-
 program
     .command('emulator', 'Run the console emulator', () => { }, emulatorCommand)
     .option('s', { alias: 'source', describe: 'Simulate platform [messenger, line, slack, telegram, viber]' })

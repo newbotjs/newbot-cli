@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const path = require('path')
 
 var modulesToCompile = (modules) => new RegExp(
@@ -28,4 +27,5 @@ require("babel-register")({
     ],
     cache: false
 })
-require("./main.js")
+
+require("./main")

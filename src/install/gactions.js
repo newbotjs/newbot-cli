@@ -6,7 +6,7 @@ const rp = require('request-promise')
 const rootFiles = 'https://dl.google.com/gactions/updates/bin'
 const files = {
     'win32': {
-        'amd64': rootFiles + '/windows/amd64/gactions.exe/gactions.exe'
+        'x64': rootFiles + '/windows/amd64/gactions.exe/gactions.exe'
     },
     'linux': {
         'x64': rootFiles + '/linux/amd64/gactions/gactions'
