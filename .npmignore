@@ -1,1 +1,6 @@
 sample-test
+node_modules
+.newbot-cloud-*
+.newbot-cloud
+tmp
+src/bin/gactions

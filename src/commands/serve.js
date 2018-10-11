@@ -109,7 +109,8 @@ export default async ({
                     accessToken,
                     accessTokenSecret
                 } = config.platforms.twitter
-                const url = 'https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json'
+                const apiTwitter = 'https://api.twitter.com/1.1/account_activity/all/dev'
+                const url = `${apiTwitter}/webhooks.json`
                 const oauth = {
                     consumer_key: consumerKey,
                     consumer_secret: consumerSecret,
@@ -126,7 +127,7 @@ export default async ({
 
                 if (webHook) {
                     await rp.delete({
-                        url: `https://api.twitter.com/1.1/account_activity/all/dev/webhooks/${webHook.id}.json`,
+                        url: `${apiTwitter}/webhooks/${webHook.id}.json`,
                         oauth
                     })
                 }
@@ -143,7 +144,7 @@ export default async ({
                 })
 
                 await rp.post({
-                    url: 'https://api.twitter.com/1.1/account_activity/all/dev/subscriptions.json',
+                    url: `${apiTwitter}/subscriptions.json`,
                     oauth
                 })
             }
@@ -262,6 +263,9 @@ export default async ({
                     {
                         title: 'Update Google Actions',
                         async task() {
+                            const {
+                                gactions
+                            } = config.platforms
                             let actionPackages = ''
                             actionFiles().forEach(filename => {
                                 const file = `${gactionsDir}/${filename}`
@@ -271,7 +275,7 @@ export default async ({
                                 fs.writeFileSync(file, JSON.stringify(json, null, 2), 'utf-8')
                                 actionPackages += ' --action_package ' + file
                             })
-                            const shell = `${Path.resolve(__dirname, '../bin/gactions')} update ${actionPackages} --project ${gactions.projectId}`
+                            const shell = `${gactions.binPath || Path.resolve(__dirname, '../bin/gactions')} update ${actionPackages} --project ${gactions.projectId}`
                             try {
                                 fs.accessSync(`${files}/creds.data`, fs.constants.R_OK | fs.constants.W_OK)
                                 await execa.shell(shell)
