@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import program from 'yargs'
 import updateNotifier from 'update-notifier'
 import testCommand from '../commands/test'

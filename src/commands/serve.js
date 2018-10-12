@@ -28,6 +28,7 @@ import bottenderPlatform from '../server/platforms/bottender'
 import gactionsPlatform from '../server/platforms/gactions'
 import twitterPlatform from '../server/platforms/twitter'
 import serverApp from '../server/app';
+import runSkill from '../build/run-skill'
 
 export default async ({
     port = 3000,
@@ -46,7 +47,7 @@ export default async ({
             fs.accessSync(configFile, fs.constants.R_OK | fs.constants.W_OK)
             config = require(configFile)
         } catch (err) {
-            console.log(err)
+           if (err.code != 'ENOENT') console.log(err)
         }
 
         if (!config.platforms) config.platforms = {}
@@ -311,7 +312,7 @@ export default async ({
                 do {
                     const p = `${files}/bot/main.js`
                     decache(p)
-                    skill = require(p)
+                    skill = runSkill(p)
                 } while (!skill.default)
                 global.converse = new Converse(skill.default)
                 global.converse.debug = true

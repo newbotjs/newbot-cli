@@ -3,5 +3,5 @@ node_modules
 .newbot-cloud-*
 .newbot-cloud
 tmp
-src/bin/gactions
-dist
+dist/bin/gactions
+src

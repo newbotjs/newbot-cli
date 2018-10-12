@@ -7,12 +7,14 @@ import {
     Converse
 } from 'newbot'
 import Session from 'newbot-formats/session/bottender'
+import runSkill from '../build/run-skill'
 
 export default ({
     source
 }) => {
     const files = process.cwd()
-    const skill = require(`${files}/bot/main`)
+    
+    const skill = runSkill(`${files}/bot/main`)
 
     const converse = new Converse(skill.default)
 

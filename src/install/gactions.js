@@ -16,12 +16,17 @@ const files = {
 (async function () {
     const platform = os.platform()
     const arch = os.arch()
-    console.log('Dowloading gactions CLI')
+    console.log('Downloading gactions CLI')
+    if (!files[platform] && !files[platform][arch]) {
+        console.log('gactions CLI is not downloaded because your platform/arch is not recognized')
+        return
+    }
     const res = await rp.get({
         url: files[platform][arch],
         encoding: null
     })
     const buffer = Buffer.from(res, 'utf8');
     console.log('gactions CLI downloaded')
-    fs.writeFileSync(path.resolve(__dirname, '../bin/gaction'), buffer);
+    const filename = 'gactions' + (platform == 'win32' ? '.exe' : '')
+    fs.writeFileSync(path.resolve(__dirname, '../bin/' + filename), buffer);
 })()
