@@ -1,7 +1,7 @@
 import { ConverseTesting, bot, user } from 'newbot/testing'
 import helloSkill from './hello'
 
-describe('Main Skill Test', () => {
+describe('Hello Skill Test', () => {
     let userConverse, converse
 
     beforeEach(() => {

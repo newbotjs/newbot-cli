@@ -32,7 +32,7 @@ import runSkill from '../build/run-skill'
 
 export default async ({
     port = 3000,
-    ngrok = false
+    ngrok = true
 } = {}) => {
     try {
 
@@ -51,6 +51,7 @@ export default async ({
         }
 
         if (!config.platforms) config.platforms = {}
+        if (!config.ngrok) config.ngrok = {}
 
         var watcher = chokidar.watch(`${files}/bot/**/*`, {
             ignored: '*.spec.js',
@@ -87,8 +88,15 @@ export default async ({
             }
         }, {
             title: `Connect to Ngrok`,
+            skip() {
+                if (!ngrok) {
+                    return 'ngrok is disabled'
+                }
+            },
             async task(ctx) {
-                ctx.url = await ngrokModule.connect(port)
+                ctx.url = await ngrokModule.connect(_.merge({
+                    addr: port
+                }, config.ngrok))
             }
         }, {
             title: `Set WebHook to Twitter platform`,
@@ -96,6 +104,9 @@ export default async ({
                 const {
                     twitter
                 } = config.platforms
+                if (!ngrok) {
+                    return 'ngrok is disabled'
+                }
                 if (!twitter) {
                     return 'Add "platforms.twitter" property in "newbot.config.js" file'
                 }
@@ -155,6 +166,9 @@ export default async ({
                 const {
                     viber
                 } = config.platforms
+                if (!ngrok) {
+                    return 'ngrok is disabled'
+                }
                 if (!viber) {
                     return 'Add "platforms.viber" property in "newbot.config.js" file'
                 }
@@ -175,6 +189,9 @@ export default async ({
                 const {
                     telegram
                 } = config.platforms
+                if (!ngrok) {
+                    return 'ngrok is disabled'
+                }
                 if (!telegram) {
                     return 'Add "platforms.telegram" property in "newbot.config.js" file'
                 }
@@ -195,6 +212,9 @@ export default async ({
                 const {
                     gactions
                 } = config.platforms
+                if (!ngrok) {
+                    return 'ngrok is disabled'
+                }
                 if (!gactions) {
                     return 'Add "platforms.gactions" property in "newbot.config.js" file to test Google Actions'
                 }
@@ -324,6 +344,8 @@ export default async ({
         }
 
         tasks.run().then((ctx) => {
+
+            if (!ctx.url) return
 
             var table = new Table({
                 chars: {
