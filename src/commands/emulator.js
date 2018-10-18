@@ -10,7 +10,8 @@ import Session from 'newbot-formats/session/bottender'
 import runSkill from '../build/run-skill'
 
 export default ({
-    source
+    source,
+    lang
 }) => {
     const files = process.cwd()
     
@@ -31,7 +32,12 @@ export default ({
             platform = source
         }
         let session = new Session(context, platform)
+
         await converse.exec(text, 'emulator', {
+            preUser(user) {
+                const currentLang = user.getLang()
+                if (lang && !currentLang) user.setLang(lang)
+            },
             async output(str) {
                 if (platform == 'website') {
                     if (!_.isString(str)) {

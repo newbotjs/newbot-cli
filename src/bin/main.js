@@ -39,6 +39,9 @@ program
 program
     .command('emulator', 'Run the console emulator', () => { }, emulatorCommand)
     .option('s', { alias: 'source', describe: 'Simulate platform [messenger, line, slack, telegram, viber]' })
+    .option('l', { alias: 'lang', describe: 'Set user language (ex: fr_FR, en_EN, es_ES, ...)' })
+    .help("?")
+    .alias("?", "help")
     .argv
 
 program
