@@ -1,4 +1,5 @@
 const path = require('path')
+const _ = require('lodash')
 
 var modulesToCompile = (modules) => new RegExp(
     `^((?!node_modules).)*$|(${modules.join('|')})(?!\/node_modules)`);
@@ -28,6 +29,12 @@ export default (skill) => {
         cache: false
     })
     if (skill) {
-        return require(skill)
+        const ret = require(skill)
+        if (_.isFunction(ret.default)) {
+            return {
+                default: ret.default()
+            }
+        }
+        return ret
     }
 }

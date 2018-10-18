@@ -122,7 +122,7 @@ export default async () => {
                         archive.directory(`${directory}/.build`, '.build')
                         archive.glob('**/*', {
                             cwd: directory,
-                            ignore: ['node_modules/**/*', 'node_modules']
+                            ignore: ['node_modules/**/*', 'node_modules', 'package-lock.json']
                         }, {})
                         archive.pipe(output);
                         archive.finalize()
