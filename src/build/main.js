@@ -32,8 +32,10 @@ function asset(options = {}) {
         resolveOptions.only = [/newbot/]
     }
 
+    const _root = options.root || root
+
     const optionsRollup = {
-        input: root ? `${path}/${root}` : `${path}/bot/main.js`,
+        input: _root ? `${path}/${_root}` : `${path}/bot/main.js`,
         external: [...dependencies],
         onwarn(warning, warn) {
             if (warning.code == 'UNRESOLVED_IMPORT') {

@@ -27,6 +27,7 @@ program
     .command('serve', 'start the server', () => { }, serveCommand)
     .option('p', { alias: 'port', describe: 'Listen on port (3000 by default)' })
     .option('n', { alias: 'ngrok', describe: 'Start Ngrok' })
+    .option('c', { alias: 'cloud', describe: 'Test your chatbot in NewBot Cloud' })
     .help("?")
     .alias("?", "help")
     .example("$0 serve -p 5000", "Change port to 5000")

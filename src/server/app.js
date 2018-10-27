@@ -21,6 +21,24 @@ module.exports = (app, files) => {
         res.render('index')
     })
 
+    app.get('/remote/skill.js', (req, res, next) => {
+        if (!global.code) {
+            const err = new Error('Not Found')
+            err.code = 404
+            return next(err)
+        }
+        res.send(global.code)
+    })
+
+    app.get('/remote/api.js', (req, res, next) => {
+        if (!global.codeApi) {
+            const err = new Error('Not Found')
+            err.code = 404
+            return next(err)
+        }
+        res.send(global.codeApi)
+    })
+
     app.get('/skill.js', (req, res) => {
         res.sendFile(`${files}/.build/browser.js`)
     })
@@ -31,4 +49,8 @@ module.exports = (app, files) => {
     })
 
     app.use('/static', express.static(__dirname + '/static'))
+
+    app.use((err, req, res, next) => {
+        res.status(err.code || 500).end(err.message)
+    })
 }

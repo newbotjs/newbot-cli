@@ -23,31 +23,45 @@ import {
     TelegramClient
 } from 'messaging-api-telegram'
 
+import mainConfig from '../config'
 import botbuilderPlatform from '../server/platforms/botbuilder'
 import bottenderPlatform from '../server/platforms/bottender'
 import gactionsPlatform from '../server/platforms/gactions'
 import twitterPlatform from '../server/platforms/twitter'
 import serverApp from '../server/app';
 import runSkill from '../build/run-skill'
+import connectCloud from '../core/cloud'
+import build from '../build/main'
+
+const rollup = require('rollup')
 
 export default async ({
     port = 3000,
-    ngrok = true
+    ngrok = true,
+    cloud = false
 } = {}) => {
     try {
 
         let config = {}
+        let apiFile = false
+        let disposeCode = false
 
         const app = express()
         const reloadServer = reload(app)
         const files = process.cwd()
+
+        let newbotCloud
+
+        if (cloud) {
+            newbotCloud = await connectCloud()
+        }
 
         try {
             const configFile = `${files}/newbot.config.js`
             fs.accessSync(configFile, fs.constants.R_OK | fs.constants.W_OK)
             config = require(configFile)
         } catch (err) {
-           if (err.code != 'ENOENT') console.log(err)
+            if (err.code != 'ENOENT') console.log(err)
         }
 
         if (!config.platforms) config.platforms = {}
@@ -97,6 +111,44 @@ export default async ({
                 ctx.url = await ngrokModule.connect(_.merge({
                     addr: port
                 }, config.ngrok))
+            }
+        }, {
+            title: `Connect to NewBot Cloud`,
+            skip() {
+                if (!ngrok) {
+                    return 'ngrok is disabled'
+                }
+                if (!newbotCloud) {
+                    return `Use the command "newbot serve --cloud" to test your chatbot on NewBot Cloud`
+                }
+            },
+            async task(ctx) {
+                disposeCode = true
+                const {
+                    configCloud,
+                    userToken
+                } = newbotCloud
+                await rp({
+                    url: `${mainConfig.urlCloud}/api/bots/${configCloud.botId}`,
+                    method: 'PUT',
+                    body: {
+                        dev: {
+                            webhook: ctx.url
+                        }
+                    },
+                    json: true,
+                    headers: {
+                        'x-access-token': userToken
+                    }
+                })
+                try {
+                    const configFile = `${files}/api.js`
+                    fs.accessSync(configFile, fs.constants.R_OK | fs.constants.W_OK)
+                    apiFile = true
+                    watcher.add(`${files}/api.js`)
+                } catch (err) {
+                    if (err.code != 'ENOENT') console.log(err)
+                }
             }
         }, {
             title: `Set WebHook to Twitter platform`,
@@ -326,7 +378,7 @@ export default async ({
             }
         }])
 
-        const loadApp = (resolve, reject) => {
+        const loadApp = async (resolve, reject) => {
             try {
                 let skill
                 do {
@@ -336,6 +388,47 @@ export default async ({
                 } while (!skill.default)
                 global.converse = new Converse(skill.default)
                 global.converse.debug = true
+                if (disposeCode) {
+                    const optionsRollup = build({
+                        type: 'node'
+                    })
+                    const bundle = await rollup.rollup(optionsRollup)
+                    const {
+                        code,
+                        map
+                    } = await bundle.generate({
+                        format: 'cjs',
+                        strict: false
+                    })
+                    global.code = code
+
+                    if (apiFile) {
+                        const optionsRollupApi = build({
+                            type: 'node',
+                            root: 'api.js'
+                        })
+                        const bundleApi = await rollup.rollup(optionsRollupApi)
+                        const {
+                            code: codeApi
+                        } = await bundleApi.generate({
+                            format: 'cjs',
+                            strict: false
+                        })
+                        global.codeApi = codeApi
+                    }
+
+                    const {
+                        configCloud,
+                        userToken
+                    } = newbotCloud
+                    await rp({
+                        url: `${mainConfig.urlCloud}/api/bots/${configCloud.botId}/dev/ping`,
+                        method: 'POST',
+                        headers: {
+                            'x-access-token': userToken
+                        }
+                    })
+                }
                 reloadServer.reload()
                 resolve()
             } catch (err) {
