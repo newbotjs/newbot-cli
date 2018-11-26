@@ -1,0 +1,4 @@
+@Intent(/test/i)
+test() {
+    > {{sentence}} skill works !
+}

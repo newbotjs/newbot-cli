@@ -10,6 +10,7 @@ import buildCommand from '../commands/build'
 import deployCommand from '../commands/deploy'
 import logoutCommand from '../commands/logout'
 import emulatorCommand from '../commands/emulator'
+import generateCommand from '../commands/generate'
 import pkg from '../../package.json'
 
 updateNotifier({ pkg }).notify()
@@ -41,6 +42,12 @@ program
     .command('emulator', 'Run the console emulator', () => { }, emulatorCommand)
     .option('s', { alias: 'source', describe: 'Simulate platform [messenger, line, slack, telegram, viber]' })
     .option('l', { alias: 'lang', describe: 'Set user language (ex: fr_FR, en_EN, es_ES, ...)' })
+    .help("?")
+    .alias("?", "help")
+    .argv
+
+program
+    .command('generate <type> <name>', 'Run the console emulator', () => { }, generateCommand)
     .help("?")
     .alias("?", "help")
     .argv

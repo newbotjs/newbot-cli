@@ -129,12 +129,10 @@ export default async ({
                     userToken
                 } = newbotCloud
                 await rp({
-                    url: `${mainConfig.urlCloud}/api/bots/${configCloud.botId}`,
-                    method: 'PUT',
+                    url: `${mainConfig.urlCloud}/api/bots/${configCloud.botId}/ngrok`,
+                    method: 'POST',
                     body: {
-                        dev: {
-                            webhook: ctx.url
-                        }
+                        url: ctx.url
                     },
                     json: true,
                     headers: {
