@@ -6,7 +6,13 @@ describe('Hello Skill Test', () => {
 
     beforeEach(() => {
         converse = new ConverseTesting(helloSkill)
-        userConverse = converse.createUser()
+        userConverse = converse.createUser({
+            session: {
+                message: {
+                    source: 'website'
+                }
+            }
+        })
     })
 
     it('User says "Hello"', () => {

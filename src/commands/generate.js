@@ -27,7 +27,7 @@ export default async ({ name, type }) => {
                     },
                     {
                         title: 'Copy and paste templates',
-                        task() {
+                        async task() {
                             const pathTpl = `${__dirname}/../../templates/skill`
 
                             const copy = (ext) => {
@@ -53,5 +53,7 @@ export default async ({ name, type }) => {
     ])
 
     await tasks.run()
-    console.log('your skill has been generated.'.green)
+    console.log(`Your skill has been generated.`.green)
+    console.log(`You can test with "newbot emulator --skill ${name}" command and enter "test" in the chatbot`)
+    console.log('Remember to connect the skill to a parent skill (main.js for example)')
 }

@@ -11,13 +11,12 @@ import runSkill from '../build/run-skill'
 
 export default ({
     source,
-    lang
+    lang,
+    skill
 }) => {
-    const files = process.cwd()
-    
-    const skill = runSkill(`${files}/bot/main`)
-
-    const converse = new Converse(skill.default)
+    const files = process.cwd() 
+    const skillBundle = runSkill(`${files}/bot/${skill ? `skills/${skill}/${skill}` : 'main' }`)
+    const converse = new Converse(skillBundle.default)
 
     const bot = new ConsoleBot({
         fallbackMethods: true
