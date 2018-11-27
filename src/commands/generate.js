@@ -15,8 +15,8 @@ export default async ({ name, type }) => {
             task() {
                 return new Listr([
                     {
-                        title: 'Create Folder in ~/bot/skill/',
-                        task() {
+                        title: 'Create Folder in ~/bot/skills/',
+                        async task() {
                             try {
                                 fs.mkdirSync(pathSkills)
                             }

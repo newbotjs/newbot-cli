@@ -2,6 +2,7 @@ import {
     ConsoleBot
 } from 'bottender'
 import _ from 'lodash'
+import PrettyError from 'pretty-error'
 import colorize from 'json-colorizer'
 import {
     Converse
@@ -22,6 +23,8 @@ export default ({
         fallbackMethods: true
     })
 
+    const pe = new PrettyError()
+
     bot.onEvent(async context => {
         const {
             text
@@ -32,25 +35,30 @@ export default ({
         }
         let session = new Session(context, platform)
 
-        await converse.exec(text, 'emulator', {
-            preUser(user) {
-                const currentLang = user.getLang()
-                if (lang && !currentLang) user.setLang(lang)
-            },
-            async output(str) {
-                if (platform == 'website') {
-                    if (!_.isString(str)) {
-                        str = colorize(JSON.stringify(str, null, 2))
+        try {
+            await converse.exec(text, 'emulator', {
+                preUser(user) {
+                    const currentLang = user.getLang()
+                    if (lang && !currentLang) user.setLang(lang)
+                },
+                async output(str) {
+                    if (platform == 'website') {
+                        if (!_.isString(str)) {
+                            str = colorize(JSON.stringify(str, null, 2))
+                        }
+                        await context.sendText(str)
+                    } else {
+                        session.send(str)
                     }
-                    await context.sendText(str)
-                } else {
-                    session.send(str)
+                },
+                data: {
+                    session
                 }
-            },
-            data: {
-                session
-            }
-        })
+            })
+        }
+        catch (err) {
+            console.log(pe.render(err))
+        }
     })
 
     bot.createRuntime()

@@ -4,6 +4,7 @@ import json from 'rollup-plugin-json'
 import { uglify } from 'rollup-plugin-uglify'
 import fs from 'fs'
 import _ from 'lodash'
+import Transpiler from 'newbot/src/transpiler/lexer'
 
 function asset(options = {}) {
     const path = process.cwd()
@@ -51,9 +52,11 @@ function asset(options = {}) {
                 name: 'converse',
                 async transform(code, id) {
                     if (/converse$/.test(id)) {
-                        code = code.replace(/`/g, '\\`')
+                        const transpiler = new Transpiler(code, id)
+                        const obj = transpiler.run()
+                        code = JSON.stringify(obj)
                         code = `
-                            export default \`${code}\`
+                            export default ${code}
                         `
                         return {
                             code
