@@ -1,5 +1,6 @@
 const path = require('path')
 const _ = require('lodash')
+const isPromise = require('../utils/is-promise')
 
 var modulesToCompile = (modules) => new RegExp(
     `^((?!node_modules).)*$|(${modules.join('|')})(?!\/node_modules)`);
@@ -8,7 +9,7 @@ var ifDoesntMatch = (pattern) => (input) => !pattern.test(input);
 
 const resolvePath = p => path.resolve(__dirname, `../../node_modules/babel-${p}`)
 
-export default (skill) => {
+export default async (skill) => {
     require("babel-register")({
         presets: [
             [resolvePath('preset-env'), {
@@ -31,8 +32,12 @@ export default (skill) => {
     if (skill) {
         const ret = require(skill)
         if (_.isFunction(ret.default)) {
+            let retFunc = ret.default()
+            if (isPromise(retFunc)) {
+                retFunc = await retFunc
+            }
             return {
-                default: ret.default()
+                default: retFunc
             }
         }
         return ret

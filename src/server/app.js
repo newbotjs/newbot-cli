@@ -1,8 +1,16 @@
+
 const exphbs = require('express-handlebars')
 const express = require('express')
 const bodyParser = require('body-parser')
+const http = require('http')
 
-module.exports = (app, files) => {
+module.exports = (app, io, files) => {
+
+    let socket
+
+    io.on('connection', (sock) => {
+        socket = sock
+    })
 
     app.use(
         bodyParser.json({
@@ -12,10 +20,26 @@ module.exports = (app, files) => {
         })
     )
 
+    app.use((req, res, next) => {
+        var oldSend = res.send;
+        res.send = function(...args) {
+            if (socket) {
+                socket.emit('req', {
+                    headers: req.headers,
+                    url: req.url,
+                    method: req.method,
+                    body: req.body
+                })
+            }
+            oldSend.apply(res, args)
+        }
+        next();
+    });
+
     app.engine('.hbs', exphbs({extname: '.hbs'}))
 
     app.set('view engine', '.hbs')
-    app.set('views', __dirname + '/views')
+    app.set('views', __dirname + '/../../src/server/views')
 
     app.get('/', (req, res) => {
         res.render('index')

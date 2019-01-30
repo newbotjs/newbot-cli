@@ -29,10 +29,9 @@
     "@types/execa": "^0.9.0",
     "actions-on-google": "^2.4.1",
     "archiver": "^2.1.1",
-    "babel-core": "^6.26.3",
     "babel-plugin-inline-import": "^3.0.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "body-parser": "^1.18.3",
     "botbuilder": "^3.15.0",
@@ -61,6 +60,7 @@
     "newbot": "*",
     "newbot-formats": "*",
     "ngrok": "^3.1.0",
+    "node-nlp": "^2.3.0",
     "nodemon": "^1.18.4",
     "npminstall": "^3.12.0",
     "parcel-bundler": "^1.10.2",
@@ -72,17 +72,23 @@
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-uglify": "^6.0.0",
+    "socket.io": "^2.2.0",
     "systemjs": "^0.21.5",
     "systemjs-builder": "^0.16.13",
     "systemjs-plugin-babel": "0.0.25",
     "twit": "^2.2.11",
     "update-notifier": "^2.5.0",
     "validator": "^10.8.0",
+    "webpack-node-externals": "^1.7.2",
     "yargs": "^12.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0"
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.27.1"
   }
 }

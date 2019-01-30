@@ -2,15 +2,21 @@ import {
     MessengerBot,
     ViberBot,
     TelegramBot,
-    SlackBot
+    LineBot,
+    SlackBot,
+    MessengerHandler
 } from 'bottender'
 import {
     registerRoutes
 } from 'bottender/express'
 import Session from 'newbot-formats/session/bottender'
+import PrettyError from 'pretty-error'
 
 export default (app, config) => {
-    const handler = async context => {
+
+    const pe = new PrettyError()
+    
+    const event = async context => {
         const {
             text,
             isText
@@ -28,6 +34,13 @@ export default (app, config) => {
         })
     }
 
+    const error = (context, err) => {
+        console.log(pe.render(err))
+    }
+
+    const handler = new MessengerHandler()
+        .onEvent(event)
+        .onError(error)
 
     if (config.platforms.messenger) {
         const messengerBot = new MessengerBot(config.platforms.messenger).onEvent(handler)
@@ -42,10 +55,18 @@ export default (app, config) => {
             path: '/emulator/viber'
         })
     }
+
     if (config.platforms.telegram) {
         const telegramBot = new TelegramBot(config.platforms.telegram).onEvent(handler)
         registerRoutes(app, telegramBot, {
             path: '/emulator/telegram'
+        })
+    }
+
+    if (config.platforms.line) {
+        const lineBot = new LineBot(config.platforms.line).onEvent(handler)
+        registerRoutes(app, lineBot, {
+            path: '/emulator/line'
         })
     }
 

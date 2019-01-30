@@ -54,9 +54,13 @@ function asset(options = {}) {
                     if (/converse$/.test(id)) {
                         const transpiler = new Transpiler(code, id)
                         const obj = transpiler.run()
-                        code = JSON.stringify(obj)
+                        const compiled = JSON.stringify(obj)
+                        code = code.replace(/`/g, '\\`')
                         code = `
-                            export default ${code}
+export default {
+    code: \`${code}\`,
+    compiled: ${compiled}
+}
                         `
                         return {
                             code

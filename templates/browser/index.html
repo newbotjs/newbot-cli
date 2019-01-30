@@ -1,9 +1,22 @@
-<script src="newbot.js"></script>
-<script src="skill.js"></script>
+<script src="https://unpkg.com/node-nlp@2.3.0/dist/bundle.js"></script>
+<script src="https://unpkg.com/newbot@latest/dist/newbot.min.js"></script>
+<script src="main.js"></script>
+<div>
+    <input type="text" id="text">
+    <button id="submit">Ok</button>
+    <pre id="result"></pre>
+</div>
 <script>
-    const converse = new NewBot(MainSkill)
-    converse.exec('hello', (output, next) => {
-        console.log(output)
-        next()
+    MainSkill().then((skill) => {
+        var converse = new NewBot(skill)
+        document.getElementById('submit').addEventListener('click', function() {
+            var text = document.getElementById('text').value
+            var result = document.getElementById('result')
+            converse.exec(text, (output, done) => {
+                result.innerText = JSON.stringify(output, null, 2)
+                done()
+            })
+        })
     })
+    
 </script>

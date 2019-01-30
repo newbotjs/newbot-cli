@@ -32,6 +32,7 @@ import serverApp from '../server/app';
 import runSkill from '../build/run-skill'
 import connectCloud from '../core/cloud'
 import build from '../build/main'
+import socketIo from 'socket.io'
 
 const rollup = require('rollup')
 
@@ -47,6 +48,9 @@ export default async ({
         let disposeCode = false
 
         const app = express()
+        const server = http.Server(app)
+        const io = socketIo(server)
+
         const reloadServer = reload(app)
         const files = process.cwd()
 
@@ -93,7 +97,7 @@ export default async ({
                     })
                 }).then(() => {
                     return new Promise((resolve, reject) => {
-                        app.listen(port, (err) => {
+                        server.listen(port, (err) => {
                             if (err) return reject(err)
                             resolve()
                         })
@@ -112,7 +116,7 @@ export default async ({
                     addr: port
                 }, config.ngrok))
             }
-        }, /*{
+        }, {
             title: `Connect to NewBot Cloud`,
             skip() {
                 if (!ngrok) {
@@ -148,7 +152,7 @@ export default async ({
                     if (err.code != 'ENOENT') console.log(err)
                 }
             }
-        }, */{
+        }, {
             title: `Set WebHook to Twitter platform`,
             skip() {
                 const {
@@ -382,7 +386,7 @@ export default async ({
                 do {
                     const p = `${files}/bot/main.js`
                     decache(p)
-                    skill = runSkill(p)
+                    skill = await runSkill(p)
                 } while (!skill.default)
                 global.converse = new Converse(skill.default)
                 global.converse.debug = true
@@ -464,6 +468,10 @@ export default async ({
                 table.push(['Slack WebHook URL', ctx.url + '/emulator/slack'])
             }
 
+            if (config.platforms.line) {
+                table.push(['Line WebHook URL', ctx.url + '/emulator/line'])
+            }
+
             if (config.platforms.messenger) {
                 table.push([
                     'Messenger WebHook URL', ctx.url + '/emulator/messenger',
@@ -475,7 +483,7 @@ export default async ({
         })
 
 
-        serverApp(app, files)
+        serverApp(app, io, files)
 
         botbuilderPlatform(app)
         bottenderPlatform(app, config)

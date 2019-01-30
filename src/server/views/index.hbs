@@ -1,10 +1,7 @@
-<script src="newbot.js"></script>
-<script src="skill.js"></script>
-<script src="/reload/reload.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"></script>
 <script>
-    const converse = new NewBot(MainSkill)
-    converse.exec('hi', (output, next) => {
-        console.log(output)
-        next()
-    })
+   var socket = io('http://localhost:3000')
+   socket.on('req', (req) => {
+       console.log(JSON.stringify(req, null, 2))
+   })
 </script>

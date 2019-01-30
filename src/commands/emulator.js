@@ -10,13 +10,13 @@ import {
 import Session from 'newbot-formats/session/bottender'
 import runSkill from '../build/run-skill'
 
-export default ({
+export default async ({
     source,
     lang,
     skill
 }) => {
     const files = process.cwd() 
-    const skillBundle = runSkill(`${files}/bot/${skill ? `skills/${skill}/${skill}` : 'main' }`)
+    const skillBundle = await runSkill(`${files}/bot/${skill ? `skills/${skill}/${skill}` : 'main' }`)
     const converse = new Converse(skillBundle.default)
 
     const bot = new ConsoleBot({
