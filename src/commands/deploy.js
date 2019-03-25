@@ -3,10 +3,8 @@ import fs from 'fs'
 import archiver from 'archiver'
 import Listr from 'listr'
 import config from '../config'
-import build from '../build/main'
 import cloud from '../core/cloud'
-
-const rollup = require('rollup')
+import build from '../build/webpack'
 
 export default async () => {
     const directory = process.cwd()
@@ -22,15 +20,10 @@ export default async () => {
         const tasks = new Listr([{
                 title: 'Build',
                 async task() {
-                    const optionsRollup = build({
-                        type: 'node'
-                    })
-                    const bundle = await rollup.rollup(optionsRollup)
-                    await bundle.write({
-                        format: 'cjs',
-                        dir: 'dist',
-                        file: 'dist/node/bot.js',
-                        strict: false
+                    return build({
+                        type: 'node',
+                        dir: 'dist/node',
+                        file: 'bot.js'
                     })
                 }
             },
@@ -52,7 +45,7 @@ export default async () => {
                         archive.on('warning', reject)
                         archive.on('error', reject)
 
-                        archive.directory(`${directory}/.build`, '.build')
+                        //archive.directory(`${directory}/.build`, '.build')
                         archive.glob('**/*', {
                             cwd: directory,
                             ignore: ['node_modules/**/*', 'node_modules', 'package-lock.json']
@@ -82,6 +75,6 @@ export default async () => {
         await tasks.run()
         console.log('[NewBot Cloud] The chatbot has been successfully deployed'.green)
     } catch (err) {
-        console.log(err.message.red)
+        console.log(err[0])
     }
 }

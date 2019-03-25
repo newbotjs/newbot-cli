@@ -349,7 +349,7 @@ export default async ({
                                 json.conversations.newbot.url = ctx.url + '/emulator/gactions'
                                 fs.writeFileSync(file, JSON.stringify(json, null, 2), 'utf-8')
                                 actionPackages += ' --action_package ' + file
-                            })
+                    12        })
                             const shell = `${gactions.binPath || Path.resolve(__dirname, '../bin/gactions')} update ${actionPackages} --project ${gactions.projectId}`
                             try {
                                 fs.accessSync(`${files}/creds.data`, fs.constants.R_OK | fs.constants.W_OK)
@@ -424,7 +424,7 @@ export default async ({
                         userToken
                     } = newbotCloud
                     await rp({
-                        url: `${mainConfig.urlCloud}/api/bots/${configCloud.botId}/dev/ping`,
+                        url: `${mainConfig.urlCloud}/api/bots/${configCloud.botId}/dev/reload`,
                         method: 'POST',
                         headers: {
                             'x-access-token': userToken

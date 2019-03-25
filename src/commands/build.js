@@ -78,6 +78,11 @@ export default async () => {
         }
     ])
 
-    tasks.run()
+   try {
+        await tasks.run()
+   }
+   catch (err) {
+       console.log(err[0])
+   }
 
 }
