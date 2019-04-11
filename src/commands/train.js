@@ -20,6 +20,7 @@ export default async () => {
     const mainSkill = `${directory}/bot/main.js`
 
     const skill = await runSkill(mainSkill)
+    const languages = skill.default.languages ? skill.default.languages.packages : ['en_EN']
 
     const tasks = new Listr([{
             title: 'Extract Intents',
@@ -49,7 +50,7 @@ export default async () => {
                     {
                         title: 'Translate',
                         task() {
-                            const langFiles = Object.keys(skill.default.languages.packages)
+                            const langFiles = Object.keys(languages)
                             let cacheClone = []
                             for (let i = 0 ; i < cache.length ; i++) {
                                 let params = cache[i]

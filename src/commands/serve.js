@@ -76,7 +76,15 @@ export default async ({
             persistent: true
         })
 
-        const tasks = new Listr([{
+        const tasks = new Listr([
+            {
+                title: `NewBot Framework Version : ${Converse.version}`,
+                task() {
+
+                }
+            },
+            
+            {
             title: `Listen your bot in port ${port}`.green,
             task() {
                 return new Promise((resolve, reject) => {
@@ -116,7 +124,7 @@ export default async ({
                     addr: port
                 }, config.ngrok))
             }
-        }, {
+        }, /* {
             title: `Connect to NewBot Cloud`,
             skip() {
                 if (!ngrok) {
@@ -152,7 +160,7 @@ export default async ({
                     if (err.code != 'ENOENT') console.log(err)
                 }
             }
-        }, {
+        }, */ {
             title: `Set WebHook to Twitter platform`,
             skip() {
                 const {

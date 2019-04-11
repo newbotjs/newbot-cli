@@ -35,6 +35,10 @@ Options :
 
 `newbot build`
 
+## Train
+
+`newbot train`
+
 ## Deploy on NewBot Cloud
 
 `newbot deploy`

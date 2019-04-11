@@ -73,7 +73,7 @@ export default async () => {
                             copy('index.html')
                         }
                     }
-                ], {concurrent: true})
+                ])
             }
         }
     ])
