@@ -12,6 +12,7 @@ import logoutCommand from '../commands/logout'
 import emulatorCommand from '../commands/emulator'
 import generateCommand from '../commands/generate'
 import trainCommand from '../commands/train'
+import setWebhooksCommand from '../commands/setwebhooks'
 import pkg from '../../package.json'
 
 updateNotifier({
@@ -43,6 +44,10 @@ program
         alias: 'cloud',
         describe: 'Test your chatbot in NewBot Cloud'
     })
+    .option('e', {
+        alias: 'entry',
+        describe: 'name of entry file (main.js by default)'
+    })
     .help("?")
     .alias("?", "help")
     .example("$0 serve -p 5000", "Change port to 5000")
@@ -50,6 +55,14 @@ program
 
 program
     .command('build', 'build your chatbot skills', () => {}, buildCommand)
+    .option('e', {
+        alias: 'entry',
+        describe: 'name of entry file (main.js by default)'
+    })
+    .option('n', {
+        alias: 'node',
+        describe: 'Build NodeJS only'
+    })
     .argv
 
 program
@@ -78,6 +91,10 @@ program
 
 program
     .command('train', 'train your chatbot with NLP system', () => {}, trainCommand)
+    .argv
+
+program
+    .command('setwebhooks', 'Assign webhooks from different platforms to your production server', () => {}, setWebhooksCommand)
     .argv
 
 program

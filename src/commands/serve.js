@@ -16,12 +16,6 @@ import moment from 'moment'
 import Table from 'cli-table'
 import ngrokModule from 'ngrok'
 import execa from 'execa'
-import {
-    ViberClient
-} from 'messaging-api-viber'
-import {
-    TelegramClient
-} from 'messaging-api-telegram'
 
 import mainConfig from '../config'
 import botbuilderPlatform from '../server/platforms/botbuilder'
@@ -34,16 +28,21 @@ import connectCloud from '../core/cloud'
 import build from '../build/main'
 import socketIo from 'socket.io'
 
+import getConfigFile from '../core/get-config-file'
+
+import webhookViber from '../webhooks/viber'
+import webhookTelegram from '../webhooks/telegram'
+
 const rollup = require('rollup')
 
 export default async ({
     port = 3000,
     ngrok = true,
-    cloud = false
+    cloud = false,
+    entry = 'main.js'
 } = {}) => {
     try {
 
-        let config = {}
         let apiFile = false
         let disposeCode = false
 
@@ -60,16 +59,7 @@ export default async ({
             newbotCloud = await connectCloud()
         }
 
-        try {
-            const configFile = `${files}/newbot.config.js`
-            fs.accessSync(configFile, fs.constants.R_OK | fs.constants.W_OK)
-            config = require(configFile)
-        } catch (err) {
-            if (err.code != 'ENOENT') console.log(err)
-        }
-
-        if (!config.platforms) config.platforms = {}
-        if (!config.ngrok) config.ngrok = {}
+        let config = getConfigFile()
 
         var watcher = chokidar.watch(`${files}/bot/**/*`, {
             ignored: '*.spec.js',
@@ -222,53 +212,10 @@ export default async ({
                     oauth
                 })
             }
-        }, {
-            title: `Set WebHook to Viber platform`,
-            skip() {
-                const {
-                    viber
-                } = config.platforms
-                if (!ngrok) {
-                    return 'ngrok is disabled'
-                }
-                if (!viber) {
-                    return 'Add "platforms.viber" property in "newbot.config.js" file'
-                }
-                if (!viber.accessToken) {
-                    return 'Add "platforms.viber.accessToken" property in "newbot.config.js" file with authentification token'
-                }
-            },
-            task(ctx) {
-                const {
-                    accessToken
-                } = config.platforms.viber
-                const client = ViberClient.connect(accessToken)
-                return client.setWebhook(ctx.url + '/emulator/viber')
-            }
-        }, {
-            title: `Set WebHook to Telegram platform`,
-            skip() {
-                const {
-                    telegram
-                } = config.platforms
-                if (!ngrok) {
-                    return 'ngrok is disabled'
-                }
-                if (!telegram) {
-                    return 'Add "platforms.telegram" property in "newbot.config.js" file'
-                }
-                if (!telegram.accessToken) {
-                    return 'Add "platforms.telegram.accessToken" property in "newbot.config.js" file with authentification token'
-                }
-            },
-            task(ctx) {
-                const {
-                    accessToken
-                } = config.platforms.telegram
-                const client = TelegramClient.connect(accessToken)
-                return client.setWebhook(ctx.url + '/emulator/telegram')
-            }
-        }, {
+        }, 
+        webhookViber(config, { ngrok }), 
+        webhookTelegram(config, { ngrok }), 
+        {
             title: 'Auto configuration Google Actions',
             skip() {
                 const {
@@ -392,7 +339,7 @@ export default async ({
             try {
                 let skill
                 do {
-                    const p = `${files}/bot/main.js`
+                    const p = `${files}/bot/${entry}`
                     decache(p)
                     skill = await runSkill(p)
                 } while (!skill.default)

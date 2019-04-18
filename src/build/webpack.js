@@ -64,7 +64,7 @@ function asset(options = {}) {
             }
         }
 
-        entry.push(root ? `${path}/${_root}` : `${path}/bot/main.js`)
+        entry.push(root ? `${path}/${_root}` : `${path}/bot/${options.entry}`)
 
         const webpackOptions = {
             mode: 'production',
@@ -85,7 +85,9 @@ function asset(options = {}) {
         }
 
         if (options.type == 'node') {
-            webpackOptions.externals = [nodeExternals()]
+            webpackOptions.externals = [nodeExternals({
+                whitelist:  [/^newbot-/]
+            })]
             webpackOptions.node = {
                 __dirname: false
             }

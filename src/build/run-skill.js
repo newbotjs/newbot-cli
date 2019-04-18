@@ -5,8 +5,11 @@ const isPromise = require('../utils/is-promise')
 var modulesToCompile = (modules) => new RegExp(
     `^((?!node_modules).)*$|(${modules.join('|')})(?!\/node_modules)`);
 
-var ifDoesntMatch = (pattern) => (input) => !pattern.test(input);
-
+var ifDoesntMatch = (pattern) => (input) => {
+    if (input.includes('node_modules/newbot-')) return false
+    if (input.includes('node_modules')) return true 
+    return false
+}
 const resolvePath = p => path.resolve(__dirname, `../../node_modules/babel-${p}`)
 
 export default async (skill) => {

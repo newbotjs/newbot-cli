@@ -6,7 +6,7 @@ import { ncp } from 'ncp'
 
 const rollup = require('rollup')
 
-export default async () => {
+export default async ({ entry = 'main.js', node = false }) => {
     const path = process.cwd()
     const dist = `${path}/dist` 
 
@@ -16,12 +16,16 @@ export default async () => {
                 return build({
                     type: 'node',
                     dir: 'dist/node',
-                    file: 'bot.js'
+                    file: 'bot.js',
+                    entry
                 })
             }
         },
        {
             title: 'Build your chatbot for browser',
+            skip() {
+                return node
+            },
             task() {
                 return new Listr([
                     {
@@ -31,7 +35,8 @@ export default async () => {
                                 type: 'browser',
                                 dir: 'dist/browser',
                                 file: 'main.js',
-                                var: 'MainSkill'
+                                var: 'MainSkill',
+                                entry
                             })
                         }
                     },

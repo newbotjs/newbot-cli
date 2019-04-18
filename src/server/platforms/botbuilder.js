@@ -18,7 +18,7 @@ export default (app) => {
             data: {
                 session
             }
-        })
+        }).catch(err => console.log(err))
     })
     app.post('/emulator', connector.listen())
 }
