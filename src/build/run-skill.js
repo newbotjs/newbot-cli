@@ -2,14 +2,15 @@ const path = require('path')
 const _ = require('lodash')
 const isPromise = require('../utils/is-promise')
 
-var modulesToCompile = (modules) => new RegExp(
-    `^((?!node_modules).)*$|(${modules.join('|')})(?!\/node_modules)`);
+var ifDoesntMatch = function ifDoesntMatch(test) {  
+    return function (input) {
+        const pattern = /node_modules\/newbot-[^\/]+\/(?!(node_modules))/g
+        if (pattern.test(input)) return false;
+        if (input.includes('node_modules')) return true;
+        return false;
+    };
+};
 
-var ifDoesntMatch = (pattern) => (input) => {
-    if (input.includes('node_modules/newbot-')) return false
-    if (input.includes('node_modules')) return true 
-    return false
-}
 const resolvePath = p => path.resolve(__dirname, `../../node_modules/babel-${p}`)
 
 export default async (skill) => {
@@ -21,7 +22,7 @@ export default async (skill) => {
                 }
             }]
         ],
-        ignore: ifDoesntMatch(modulesToCompile(['newbot-formats'])),
+        ignore: ifDoesntMatch(),
         plugins: [
             resolvePath('plugin-transform-object-rest-spread'),
             [resolvePath("plugin-inline-import"), {
