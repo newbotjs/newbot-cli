@@ -3,9 +3,6 @@ import http from 'http'
 import fs from 'fs'
 import Path from 'path'
 import _ from 'lodash'
-import {
-    Converse
-} from 'newbot'
 
 import rp from 'request-promise'
 import chokidar from 'chokidar'
@@ -28,7 +25,10 @@ import connectCloud from '../core/cloud'
 import build from '../build/main'
 import socketIo from 'socket.io'
 
+import analysis from './analysis'
+
 import getConfigFile from '../core/get-config-file'
+import Converse from '../core/get-newbot'
 
 import webhookViber from '../webhooks/viber'
 import webhookTelegram from '../webhooks/telegram'
@@ -65,7 +65,7 @@ export default async ({
             ignored: '*.spec.js',
             persistent: true
         })
-
+        
         const tasks = new Listr([
             {
                 title: `NewBot Framework Version : ${Converse.version}`,
