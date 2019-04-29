@@ -4,9 +4,7 @@ import {
 import _ from 'lodash'
 import PrettyError from 'pretty-error'
 import colorize from 'json-colorizer'
-import {
-    Converse
-} from 'newbot'
+import getConverse from '../core/get-newbot'
 import Session from 'newbot-formats/session/bottender'
 import runSkill from '../build/run-skill'
 
@@ -15,6 +13,7 @@ export default async ({
     lang,
     skill
 }) => {
+    const Converse = getConverse()
     const files = process.cwd() 
     const skillBundle = await runSkill(`${files}/bot/${skill ? `skills/${skill}/${skill}` : 'main' }`)
     const converse = new Converse(skillBundle.default)

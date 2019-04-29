@@ -28,7 +28,7 @@ import socketIo from 'socket.io'
 import analysis from './analysis'
 
 import getConfigFile from '../core/get-config-file'
-import Converse from '../core/get-newbot'
+import getConverse from '../core/get-newbot'
 
 import webhookViber from '../webhooks/viber'
 import webhookTelegram from '../webhooks/telegram'
@@ -42,6 +42,8 @@ export default async ({
     entry = 'main.js'
 } = {}) => {
     try {
+
+        const Converse = getConverse()
 
         let apiFile = false
         let disposeCode = false
