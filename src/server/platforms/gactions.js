@@ -5,8 +5,8 @@ export default (app) => {
     const action = gactions.actionssdk()
 
     const handle = (conv, input) => {
-        const { userId } = conv.user
         const session = new Session(gactions, conv)
+        const userId = session.userId()
         return global.converse.exec(input, userId, {
             output(str, next) {
                 session.send(str)

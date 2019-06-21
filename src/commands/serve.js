@@ -312,15 +312,17 @@ export default async ({
                                 fs.accessSync(`${files}/creds.data`, fs.constants.R_OK | fs.constants.W_OK)
                                 await execa.shell(shell)
                             } catch (e) {
-                                await execa.shell(shell, {
-                                    input: process.stdin
-                                }).stdout.pipe(process.stdout)
+                                setTimeout(_ => {
+                                   /* execa.shell(shell, {
+                                        input: process.stdin
+                                    }).stdout.pipe(process.stdout)*/
+                                    console.log(e)
+                                }, 2000)
+                                
                             }
                         }
                     }
-                ], {
-                    concurrent: true
-                })
+                ])
             }
         }])
 
