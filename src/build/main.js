@@ -4,6 +4,7 @@ import json from 'rollup-plugin-json'
 import { uglify } from 'rollup-plugin-uglify'
 import fs from 'fs'
 import _ from 'lodash'
+import 'newbot/src/transpiler/load'
 import Transpiler from 'newbot/src/transpiler/lexer'
 
 function asset(options = {}) {

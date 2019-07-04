@@ -1,10 +1,10 @@
 import fs from 'fs'
 
-export default function() {
+export default function(nameFile = 'newbot.config.js') {
     const files = process.cwd()
     let config = {}
     try {
-        const configFile = `${files}/newbot.config.js`
+        const configFile = `${files}/${nameFile}`
         fs.accessSync(configFile, fs.constants.R_OK | fs.constants.W_OK)
         config = require(configFile)
     } catch (err) {

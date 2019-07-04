@@ -48,6 +48,10 @@ program
         alias: 'entry',
         describe: 'name of entry file (main.js by default)'
     })
+    .option('cf', {
+        alias: 'config',
+        describe: 'name of config file (newbot.config.js by default)'
+    })
     .help("?")
     .alias("?", "help")
     .example("$0 serve -p 5000", "Change port to 5000")
@@ -99,6 +103,10 @@ program
 
 program
     .command('deploy', 'Deploy your chatbot to NewBot Cloud', () => {}, deployCommand)
+    .option('e', {
+        alias: 'entry',
+        describe: 'name of entry file (main.js by default)'
+    })
     .argv
 
 program

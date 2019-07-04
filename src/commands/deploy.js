@@ -6,7 +6,7 @@ import config from '../config'
 import cloud from '../core/cloud'
 import build from '../build/webpack'
 
-export default async () => {
+export default async ({ entry = 'main.js' }) => {
     const directory = process.cwd()
     try {
 
@@ -23,7 +23,8 @@ export default async () => {
                     return build({
                         type: 'node',
                         dir: 'dist/node',
-                        file: 'bot.js'
+                        file: 'bot.js',
+                        entry
                     })
                 }
             },

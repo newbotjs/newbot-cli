@@ -39,7 +39,8 @@ export default async ({
     port = 3000,
     ngrok = true,
     cloud = false,
-    entry = 'main.js'
+    entry = 'main.js',
+    config: configFile
 } = {}) => {
     try {
 
@@ -61,7 +62,7 @@ export default async ({
             newbotCloud = await connectCloud()
         }
 
-        let config = getConfigFile()
+        let config = getConfigFile(configFile)
 
         var watcher = chokidar.watch(`${files}/bot/**/*`, {
             ignored: '*.spec.js',
@@ -112,11 +113,16 @@ export default async ({
                 }
             },
             async task(ctx) {
-                ctx.url = await ngrokModule.connect(_.merge({
-                    addr: port
-                }, config.ngrok))
+                if (config.ngrok && config.ngrok.url) {
+                    ctx.url = config.ngrok.url
+                }
+                else {
+                    ctx.url = await ngrokModule.connect(_.merge({
+                        addr: undefined
+                    }, config.ngrok))
+                }
             }
-        }, /* {
+        },  {
             title: `Connect to NewBot Cloud`,
             skip() {
                 if (!ngrok) {
@@ -132,6 +138,7 @@ export default async ({
                     configCloud,
                     userToken
                 } = newbotCloud
+                await buildRemoteSkill()
                 await rp({
                     url: `${mainConfig.urlCloud}/api/bots/${configCloud.botId}/ngrok`,
                     method: 'POST',
@@ -152,7 +159,7 @@ export default async ({
                     if (err.code != 'ENOENT') console.log(err)
                 }
             }
-        }, */ {
+        },  {
             title: `Set WebHook to Twitter platform`,
             skip() {
                 const {
@@ -339,6 +346,35 @@ export default async ({
             }
         }])
 
+        const buildRemoteSkill = async () => {
+            const optionsRollup = build({
+                type: 'node'
+            })
+            const bundle = await rollup.rollup(optionsRollup)
+            const {
+                code,
+                map
+            } = await bundle.generate({
+                format: 'cjs',
+                strict: false
+            })
+            global.code = code
+            if (apiFile) {
+                const optionsRollupApi = build({
+                    type: 'node',
+                    root: 'api.js'
+                })
+                const bundleApi = await rollup.rollup(optionsRollupApi)
+                const {
+                    code: codeApi
+                } = await bundleApi.generate({
+                    format: 'cjs',
+                    strict: false
+                })
+                global.codeApi = codeApi
+            }
+        }
+
         const loadApp = async (resolve, reject) => {
             try {
                 let skill
@@ -350,34 +386,7 @@ export default async ({
                 global.converse = new Converse(skill.default)
                 global.converse.debug = true
                 if (disposeCode) {
-                    const optionsRollup = build({
-                        type: 'node'
-                    })
-                    const bundle = await rollup.rollup(optionsRollup)
-                    const {
-                        code,
-                        map
-                    } = await bundle.generate({
-                        format: 'cjs',
-                        strict: false
-                    })
-                    global.code = code
-
-                    if (apiFile) {
-                        const optionsRollupApi = build({
-                            type: 'node',
-                            root: 'api.js'
-                        })
-                        const bundleApi = await rollup.rollup(optionsRollupApi)
-                        const {
-                            code: codeApi
-                        } = await bundleApi.generate({
-                            format: 'cjs',
-                            strict: false
-                        })
-                        global.codeApi = codeApi
-                    }
-
+                    await buildRemoteSkill()
                     const {
                         configCloud,
                         userToken
@@ -388,11 +397,12 @@ export default async ({
                         headers: {
                             'x-access-token': userToken
                         }
-                    })
+                    }) 
                 }
                 reloadServer.reload()
                 resolve()
             } catch (err) {
+                console.log(err)
                 reject(err)
             }
         }
