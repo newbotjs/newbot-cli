@@ -123,7 +123,7 @@ export default async ({
                     }, config.ngrok))
                 }
             }
-        },  {
+        }, /* {
             title: `Connect to NewBot Cloud`,
             skip() {
                 if (!ngrok) {
@@ -160,7 +160,7 @@ export default async ({
                     if (err.code != 'ENOENT') console.log(err)
                 }
             }
-        },  {
+        }, */ {
             title: `Set WebHook to Twitter platform`,
             skip() {
                 const {
