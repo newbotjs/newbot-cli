@@ -1,6 +1,7 @@
 import express from 'express'
 import http from 'http'
 import fs from 'fs'
+import os from 'os'
 import Path from 'path'
 import _ from 'lodash'
 
@@ -306,15 +307,21 @@ export default async ({
                                 gactions
                             } = config.platforms
                             let actionPackages = ''
+                            const separator = os.platform() == 'win32' ? '\\' : '/'
+                            const replaceBlankChar = str => str
+                                .split(separator)
+                                .map(str => /\s+/g.test(str) ? `"${str}"`: str)
+                                .join(separator)
                             actionFiles().forEach(filename => {
                                 const file = `${gactionsDir}/${filename}`
                                 let json = fs.readFileSync(file, 'utf-8')
                                 json = JSON.parse(json)
                                 json.conversations.newbot.url = ctx.url + '/emulator/gactions'
                                 fs.writeFileSync(file, JSON.stringify(json, null, 2), 'utf-8')
-                                actionPackages += ' --action_package ' + file
+                                actionPackages += ' --action_package ' + replaceBlankChar(file)
                     12        })
-                            const shell = `${gactions.binPath || Path.resolve(__dirname, '../bin/gactions')} update ${actionPackages} --project ${gactions.projectId}`
+                            const binPath = replaceBlankChar(gactions.binPath || Path.resolve(__dirname, '../bin/gactions'))
+                            const shell = `${binPath} update ${actionPackages} --project ${gactions.projectId}`
                             try {
                                 fs.accessSync(`${files}/creds.data`, fs.constants.R_OK | fs.constants.W_OK)
                                 await execa.shell(shell)
