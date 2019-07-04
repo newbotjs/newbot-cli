@@ -466,7 +466,7 @@ export default async ({
         bottenderPlatform(app, config)
 
         if (config.platforms.gactions) {
-            gactionsPlatform(app)
+            gactionsPlatform(app, config)
         }
 
         if (config.platforms.twitter) {
