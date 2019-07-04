@@ -119,7 +119,7 @@ export default async ({
                 }
                 else {
                     ctx.url = await ngrokModule.connect(_.merge({
-                        addr: undefined
+                        addr: port
                     }, config.ngrok))
                 }
             }
@@ -331,6 +331,7 @@ export default async ({
                                         input: process.stdin
                                     }).stdout.pipe(process.stdout)*/
                                     console.log(e)
+                                    console.log('Shell Command: ', shell)
                                 }, 2000)
                                 
                             }
