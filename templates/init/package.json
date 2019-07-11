@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "npm test"
+    {{#if server }}
+    ,"start": "node server/app",
+    "dev": "nodemon server/app"
+    {{/if}}
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "newbot-formats": "*",
-    "newbot": "*"
-  }
+  "license": "MIT",
+  "dependencies": {}
 }

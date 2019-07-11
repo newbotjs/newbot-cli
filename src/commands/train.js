@@ -9,14 +9,14 @@ import {
 } from 'node-nlp'
 import runSkill from '../build/run-skill'
 
-export default async () => {
+export default async (onlyTasks = false, path) => {
 
     let manager
     let cache = []
     const cacheLang = {}
     const converse = new Converse()
 
-    const directory = process.cwd()
+    const directory = path || process.cwd()
     const mainSkill = `${directory}/bot/main.js`
 
     const skill = await runSkill(mainSkill)
@@ -24,7 +24,7 @@ export default async () => {
 
     const tasks = new Listr([{
             title: 'Extract Intents',
-            task() {
+            task() {cd 
                 return new Listr([{
                         title: 'Get Intents',
                         async task() {
@@ -105,6 +105,10 @@ export default async () => {
             }
         }
     ])
-
-    await tasks.run()
+    if (onlyTasks) {
+        return tasks
+    }
+    else {
+        await tasks.run()
+    }
 }

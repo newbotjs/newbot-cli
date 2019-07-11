@@ -92,7 +92,7 @@ export default () => {
                     }
                 }
 
-                if (retCloud.token) {
+                if (retCloud && retCloud.token) {
                     const configCloud = {
                         userToken: retCloud.token
                     }

@@ -1,4 +1,26 @@
+{{#unless native_nlp}}
+{{#unless dialogflow}}
 @Intent(/hello/i)
 hello() {
     > Hey !
 }
+{{/unless}}
+{{/unless}}
+{{#if native_nlp}}
+@Intent('greeting', [
+    'Hey',
+    'Hello',
+    'Good afternoon',
+    'Good morning',
+    'Hi'
+])
+hello() {
+    > Hey !
+}
+{{/if}}
+{{#if dialogflow}}
+@Intent('input.welcome')
+hello() {
+    > { :intent.response }
+}
+{{/if}}

@@ -2,8 +2,9 @@ import fs from 'fs'
 import colors from 'colors'
 
 export default () => {
+    const env = process.env.NODE_ENV
     return new Promise(async (resolve, reject) => {
-        const cloudFile = __dirname + '/../../.newbot-cloud'
+        const cloudFile = __dirname + '/../../.newbot-cloud' + (env ? '-' + env : '')
         try {
             fs.unlinkSync(cloudFile, 'utf-8')
             console.log('[NewBot Cloud] You are disconnected'.green)

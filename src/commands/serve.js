@@ -1,7 +1,7 @@
 import express from 'express'
 import http from 'http'
 import fs from 'fs'
-import os from 'os'
+
 import Path from 'path'
 import _ from 'lodash'
 
@@ -14,12 +14,9 @@ import moment from 'moment'
 import Table from 'cli-table'
 import ngrokModule from 'ngrok'
 import execa from 'execa'
+import expressBot from 'newbot-express'
 
 import mainConfig from '../config'
-import botbuilderPlatform from '../server/platforms/botbuilder'
-import bottenderPlatform from '../server/platforms/bottender'
-import gactionsPlatform from '../server/platforms/gactions'
-import twitterPlatform from '../server/platforms/twitter'
 import serverApp from '../server/app';
 import runSkill from '../build/run-skill'
 import connectCloud from '../core/cloud'
@@ -30,6 +27,8 @@ import analysis from './analysis'
 
 import getConfigFile from '../core/get-config-file'
 import getConverse from '../core/get-newbot'
+
+import replaceBlankChar from '../utils/link-cli'
 
 import webhookViber from '../webhooks/viber'
 import webhookTelegram from '../webhooks/telegram'
@@ -307,11 +306,6 @@ export default async ({
                                 gactions
                             } = config.platforms
                             let actionPackages = ''
-                            const separator = os.platform() == 'win32' ? '\\' : '/'
-                            const replaceBlankChar = str => str
-                                .split(separator)
-                                .map(str => /\s+/g.test(str) ? `"${str}"`: str)
-                                .join(separator)
                             actionFiles().forEach(filename => {
                                 const file = `${gactionsDir}/${filename}`
                                 let json = fs.readFileSync(file, 'utf-8')
@@ -462,16 +456,36 @@ export default async ({
 
         serverApp(app, io, files)
 
-        botbuilderPlatform(app)
-        bottenderPlatform(app, config)
-
-        if (config.platforms.gactions) {
-            gactionsPlatform(app, config)
-        }
-
-        if (config.platforms.twitter) {
-            twitterPlatform(app, config)
-        }
+        expressBot({
+            botPath: files,
+            botframework: {
+                path: '/emulator'
+            },
+            messenger: {
+                path: '/emulator/messenger'
+            },
+            viber: {
+                path: '/emulator/viber'
+            },
+            messenger: {
+                path: '/emulator/messenger'
+            },
+            telegram: {
+                path: '/emulator/telegram'
+            },
+            line: {
+                path: '/emulator/line'
+            },
+            slack: {
+                path: '/emulator/slack'
+            },
+            gactions: {
+                path: '/emulator/gactions'
+            },
+            twitter: {
+                path: '/emulator/twitter'
+            }
+        }, app)
 
     } catch (err) {
         console.log(err)

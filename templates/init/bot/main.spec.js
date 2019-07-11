@@ -11,7 +11,7 @@ describe('Main Skill Test', () => {
 
     it('Start Conversation', () => {
         return userConverse.conversation(
-            bot `Hello world`
+            {{#if i18n }}bot `Hello world`{{else}}bot `hello world`{{/if}}
         )
     })
 })

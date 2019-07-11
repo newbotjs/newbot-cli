@@ -1,5 +1,11 @@
 module.exports = {
     map: {
+        {{#if native_nlp }}
+        'newbot-nlp': {
+            node: 'newbot-nlp/entry/node',
+            browser: 'newbot-nlp/entry/browser'
+        },
+        {{/if}}
         'newbot-formats': {
             node: 'newbot-formats/node',
             browser: 'newbot-formats/browser'

@@ -69,6 +69,17 @@ export default async ({ entry = 'main.js' }) => {
                         headers: {
                             'x-access-token': userToken
                         }
+                    }).catch(err => {
+                        if (err.statusCode == 403) {
+                            switch (err.error.message) {
+                                case 'ROLE_NOT_AUTHORIZED':
+                                    throw 'Your role does not allow you to create deploy code. Please contact the chatbot owner for permission'
+                                default:
+                                    throw 'You do not have permission to deploy code'
+                            }
+                           
+                        }
+                        throw err
                     })
                 }
             }
@@ -76,6 +87,6 @@ export default async ({ entry = 'main.js' }) => {
         await tasks.run()
         console.log('[NewBot Cloud] The chatbot has been successfully deployed'.green)
     } catch (err) {
-        console.log(err[0])
+        console.log(err)
     }
 }

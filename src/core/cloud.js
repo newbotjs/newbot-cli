@@ -82,6 +82,17 @@ export default async () => {
         }
         return { userToken, configCloud }
     } catch (err) {
-        console.log(err.message.red)
+        if (err.statusCode == 403) {
+            switch (err.error.message) {
+                case 'MAX_BOTS_EXCEEDED':
+                    throw 'You have reached the chatbot creation limit. Please upgrade your account on https://app.newbot.io/me/upgrade'
+                case 'ROLE_NOT_AUTHORIZED':
+                    throw 'Your role does not allow you to create a chatbot'
+                default:
+                    throw 'You do not have permission to create a chatbot'
+            }
+           
+        }
+        throw err.message.red
     }
 }
