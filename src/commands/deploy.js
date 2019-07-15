@@ -1,7 +1,11 @@
 import rp from 'request-promise'
 import fs from 'fs'
 import archiver from 'archiver'
+import {
+    Converse
+} from 'newbot'
 import Listr from 'listr'
+import runSkill from '../build/run-skill'
 import config from '../config'
 import cloud from '../core/cloud'
 import build from '../build/webpack'
@@ -15,9 +19,12 @@ export default async ({ entry = 'main.js' }) => {
             configCloud
         } = await cloud()
 
+        const mainSkill = `${directory}/bot/main.js`
+
         const zipFile = __dirname + '/../../tmp/bot.zip'
 
-        const tasks = new Listr([{
+        const tasks = new Listr([
+             {
                 title: 'Build',
                 async task() {
                     return build({
@@ -55,8 +62,41 @@ export default async ({ entry = 'main.js' }) => {
                         archive.finalize()
                     })
                 }
-            },
+            }, 
             {
+                title: 'Get Intents',
+                async skip(ctx) {
+                    const skill = await runSkill(mainSkill)
+                    const converse = new Converse()
+                    await converse.loadOptions(skill.default)
+                    ctx.intents = await converse.getAllIntents()
+                    if (ctx.intents.length == 0) {
+                        return 'No intentions found'
+                    }
+                },
+                async task(ctx) {
+                    const { intents } = ctx
+                    const intentsObj = {}
+                    for (let intent of intents) {
+                        let [intentName, utterances] = intent.params
+                        if (!utterances) continue 
+                        if (!intentsObj[intentName]) intentsObj[intentName] = []
+                        intentsObj[intentName] = intentsObj[intentName].concat(utterances)
+                    }
+                    await rp({
+                        url: `${config.urlCloud}/api/bots/${configCloud.botId}/deployIntents`,
+                        method: 'POST',
+                        body: {
+                            intents: intentsObj
+                        },
+                        json: true,
+                        headers: {
+                            'x-access-token': userToken
+                        }
+                    })
+                }
+            },
+           {
                 title: 'Deploy on NewBot Cloud',
                 task() {
                     return rp({

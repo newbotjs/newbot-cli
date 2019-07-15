@@ -9,7 +9,7 @@ import {
 } from 'node-nlp'
 import runSkill from '../build/run-skill'
 
-export default async (onlyTasks = false, path) => {
+export default async ({onlyTasks = false, path} = {}) => {
 
     let manager
     let cache = []
@@ -24,7 +24,7 @@ export default async (onlyTasks = false, path) => {
 
     const tasks = new Listr([{
             title: 'Extract Intents',
-            task() {cd 
+            task() {
                 return new Listr([{
                         title: 'Get Intents',
                         async task() {
