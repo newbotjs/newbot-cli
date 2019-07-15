@@ -4,5 +4,4 @@ node_modules
 .newbot-cloud
 tmp
 dist/bin/gactions
-src
 .babelrc

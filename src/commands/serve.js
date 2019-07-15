@@ -14,7 +14,7 @@ import moment from 'moment'
 import Table from 'cli-table'
 import ngrokModule from 'ngrok'
 import execa from 'execa'
-import expressBot from 'newbot-express'
+import expressNewBot from 'newbot-express'
 
 import mainConfig from '../config'
 import serverApp from '../server/app';
@@ -48,10 +48,15 @@ export default async ({
 
         let apiFile = false
         let disposeCode = false
+        let socket
 
         const app = express()
         const server = http.Server(app)
         const io = socketIo(server)
+
+        io.on('connection', (sock) => {
+            socket = sock
+        })
 
         const reloadServer = reload(app)
         const files = process.cwd()
@@ -64,10 +69,7 @@ export default async ({
 
         let config = getConfigFile(configFile)
 
-        var watcher = chokidar.watch(`${files}/bot/**/*`, {
-            ignored: '*.spec.js',
-            persistent: true
-        })
+        let watcher
         
         const tasks = new Listr([
             {
@@ -76,11 +78,35 @@ export default async ({
 
                 }
             },
+
+            {
+                title: `Connect to Ngrok`,
+                skip() {
+                    if (!ngrok) {
+                        return 'ngrok is disabled'
+                    }
+                },
+                async task(ctx) {
+                    if (config.ngrok && config.ngrok.url) {
+                        ctx.url = config.ngrok.url
+                    }
+                    else {
+                        ctx.url = await ngrokModule.connect(_.merge({
+                            addr: port
+                        }, config.ngrok))
+                    }
+                    process.env.SERVER_URL = ctx.url
+                }
+            },
             
             {
             title: `Listen your bot in port ${port}`.green,
             task() {
                 return new Promise((resolve, reject) => {
+                    watcher = chokidar.watch(`${files}/bot/**/*`, {
+                        ignored: '*.spec.js',
+                        persistent: true
+                    })
                     watcher.on('ready', () => {
                         let lastDate = new Date().getTime()
                         watcher.on('all', (ev, path) => {
@@ -104,23 +130,6 @@ export default async ({
                         })
                     })
                 })
-            }
-        }, {
-            title: `Connect to Ngrok`,
-            skip() {
-                if (!ngrok) {
-                    return 'ngrok is disabled'
-                }
-            },
-            async task(ctx) {
-                if (config.ngrok && config.ngrok.url) {
-                    ctx.url = config.ngrok.url
-                }
-                else {
-                    ctx.url = await ngrokModule.connect(_.merge({
-                        addr: port
-                    }, config.ngrok))
-                }
             }
         }, /* {
             title: `Connect to NewBot Cloud`,
@@ -409,6 +418,77 @@ export default async ({
             }
         }
 
+        serverApp(app, socket, files)
+
+        const expressBot = expressNewBot({
+            botPath: files,
+            botConfigFile: config,
+            botframework: {
+                path: '/emulator'
+            },
+            messenger: {
+                path: '/emulator/messenger'
+            },
+            viber: {
+                path: '/emulator/viber'
+            },
+            messenger: {
+                path: '/emulator/messenger'
+            },
+            telegram: {
+                path: '/emulator/telegram'
+            },
+            line: {
+                path: '/emulator/line'
+            },
+            slack: {
+                path: '/emulator/slack'
+            },
+            gactions: {
+                path: '/emulator/gactions'
+            },
+            twitter: {
+                path: '/emulator/twitter'
+            },
+            output: {
+                debug(type, val) {
+                    const user = val.user
+                    val.user = {
+                        adress: user.address,
+                        _infoAddress: user._infoAddress,
+                        varFn: user.varFn,
+                        magicVar: user.magicVar,
+                        variables: user.variables,
+                        id: user.id,
+                        lang: user.lang
+                    }
+                    if (val.data && val.data.session) {
+                        val.platform = val.data.session.message.source
+                        val.data = undefined
+                    }
+                    val._instructions = undefined
+                    if (socket) socket.emit('debug', { 
+                        type,
+                        val
+                    })
+                }
+            }
+        }, app, true)
+
+        try {
+            const serverRoutes = `${files}/server/routes.js`
+            fs.accessSync(serverRoutes, fs.constants.R_OK | fs.constants.W_OK)
+            const routesModule = require(serverRoutes)
+            routesModule(app, expressBot)
+        } catch (err) {
+            if (err.code != 'ENOENT') {
+                console.log(err)
+            }
+            else {
+                console.log(`File not found : ${serverRoutes}. Ignored file`)
+            }
+        }
+
         tasks.run().then((ctx) => {
 
             if (!ctx.url) return
@@ -452,40 +532,6 @@ export default async ({
 
             console.log(table.toString())
         })
-
-
-        serverApp(app, io, files)
-
-        expressBot({
-            botPath: files,
-            botframework: {
-                path: '/emulator'
-            },
-            messenger: {
-                path: '/emulator/messenger'
-            },
-            viber: {
-                path: '/emulator/viber'
-            },
-            messenger: {
-                path: '/emulator/messenger'
-            },
-            telegram: {
-                path: '/emulator/telegram'
-            },
-            line: {
-                path: '/emulator/line'
-            },
-            slack: {
-                path: '/emulator/slack'
-            },
-            gactions: {
-                path: '/emulator/gactions'
-            },
-            twitter: {
-                path: '/emulator/twitter'
-            }
-        }, app)
 
     } catch (err) {
         console.log(err)
