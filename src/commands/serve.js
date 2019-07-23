@@ -14,6 +14,7 @@ import moment from 'moment'
 import Table from 'cli-table'
 import ngrokModule from 'ngrok'
 import execa from 'execa'
+import stringify from 'json-stringify-safe';
 import expressNewBot from 'newbot-express'
 
 import mainConfig from '../config'
@@ -450,6 +451,9 @@ export default async ({
             twitter: {
                 path: '/emulator/twitter'
             },
+            alexa: {
+                path: '/emulator/alexa'
+            },
             output: {
                 debug(type, val) {
                     const user = val.user
@@ -469,7 +473,7 @@ export default async ({
                     val._instructions = undefined
                     if (socket) socket.emit('debug', { 
                         type,
-                        val
+                        val: stringify(val)
                     })
                 }
             }

@@ -63,6 +63,7 @@ function asset(options = {}) {
                 entry = entry.concat(bundles.map(b => Path.resolve(path, b.bundle)))
             }
         }
+       
 
         entry.push(root ? `${path}/${_root}` : `${path}/bot/${options.entry}`)
 
@@ -77,7 +78,7 @@ function asset(options = {}) {
                 libraryExport: 'default'
             },
             module: {
-                rules
+                rules,
             },
             resolve: {
                 alias
@@ -85,9 +86,14 @@ function asset(options = {}) {
         }
 
         if (options.type == 'node') {
-            webpackOptions.externals = [nodeExternals({
-                whitelist:  [/^newbot-/]
-            })]
+            webpackOptions.externals = [
+                (context, request, callback) => {
+                    if (path == context || request.startsWith('.') || request.startsWith('newbot-')) {
+                        return callback()
+                    }
+                    return callback(null, 'commonjs ' + request)
+                }
+            ]
             webpackOptions.node = {
                 __dirname: false
             }

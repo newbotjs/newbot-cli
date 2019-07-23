@@ -69,11 +69,12 @@
         mounted() {
             this.socket = io(window.location.host)
             this.socket.on('debug', res => {
-                const {
+                let {
                     type,
                     val
                 } = res
 
+                val = JSON.parse(val)
 
                 if (type == 'begin') {
                     this.processus.push([])

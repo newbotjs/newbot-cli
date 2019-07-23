@@ -54,6 +54,7 @@
     "inquirer": "^6.2.0",
     "js-beautify": "^1.10.0",
     "json-colorizer": "^1.1.1",
+    "json-stringify-safe": "^5.0.1",
     "listr": "^0.14.2",
     "lodash": "^4.17.11",
     "messaging-api-telegram": "^0.7.8",
