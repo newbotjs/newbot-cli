@@ -64,7 +64,7 @@ export default async ({ entry = 'main.js' }) => {
                 }
             }, 
             {
-                title: 'Get Intents',
+                title: 'Sync intents',
                 async skip(ctx) {
                     const skill = await runSkill(mainSkill)
                     const converse = new Converse()
@@ -119,7 +119,7 @@ export default async ({ entry = 'main.js' }) => {
                             }
                            
                         }
-                        throw err
+                        throw err.message
                     })
                 }
             }

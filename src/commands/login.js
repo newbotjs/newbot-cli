@@ -72,8 +72,17 @@ export default () => {
                         type: 'password',
                         name: 'confirm_password',
                         message: 'Confirm your password'
+                    }, 
+                    {
+                        type: 'confirm',
+                        name: 'cgu',
+                        message: 'I downloaded and approved the Terms of Service of NewBot.io : https://app.newbot.io/assets/pdf/cgu_en.pdf'
                     }])
                     try {
+                        if (!body.cgu) {
+                            console.log('[NewBot Cloud] You must accept the terms of use before creating an account'.red)
+                            return
+                        }
                         retCloud = await rp({
                             url: `${config.urlCloud}/api/users`,
                             method: 'POST',
