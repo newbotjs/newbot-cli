@@ -19,6 +19,7 @@ import expressNewBot from 'newbot-express'
 
 import mainConfig from '../config'
 import serverApp from '../server/app';
+import serverLog from '../server/log';
 import runSkill from '../build/run-skill'
 import connectCloud from '../core/cloud'
 import build from '../build/main'
@@ -46,6 +47,8 @@ export default async ({
     try {
 
         const Converse = getConverse()
+
+        global.logs = []
 
         let apiFile = false
         let disposeCode = false
@@ -420,6 +423,10 @@ export default async ({
         }
 
         serverApp(app, socket, files)
+        serverLog(app,  {
+            Converse,
+            path: files
+        })
 
         const expressBot = expressNewBot({
             botPath: files,
@@ -471,9 +478,30 @@ export default async ({
                         val.data = undefined
                     }
                     val._instructions = undefined
-                    if (socket) socket.emit('debug', { 
+                    
+
+                    if (type == 'begin') {
+                        global.logs.push([])
+                    }
+    
+                    const last =  global.logs.length - 1
+    
+                    if (val.level == 'root' &&  global.logs[last] &&  global.logs[last].findIndex(p => p.level == 'root') !=
+                        1) {
+                        return
+                    }
+
+                    const event = {
                         type,
+                        date: new Date(),
                         val: stringify(val)
+                    }
+    
+                    global.logs[last].push(event)
+
+                    if (socket) socket.emit('debug', {
+                        event, 
+                        index: last
                     })
                 }
             }

@@ -17,9 +17,12 @@
         </pre>
     </b-modal>
     <b-tabs content-class="mt-3" v-if="!empty">
-        <b-tab :title="'#' + (index+1)" v-for="(items, index) in processus" :active="active == index">
+        <b-tab :title="'#' + (+index+1)" v-for="(items, index) in processus" :active="active == index">
+            <div class="mt-2 mb-2 ml-4">
+                <a class="btn btn-primary" :href="'log/' + index + '/download'">Download Log</a>
+            </div>
             <table class="table" class="mt-4">
-                <div v-if="true">
+                <div>
                     <thead>
                         <tr>
                             <th scope="col">Date</th>
@@ -61,47 +64,61 @@
         data() {
             return {
                 socket: null,
-                processus: [],
+                processus: {},
                 currentUser: '',
                 active: 0
             }
         },
-        mounted() {
+        async mounted() {
+            const logs = await fetch('/logs').then(res => res.json())
+
+            for (let i=0 ; i < logs.length ; i++) {
+                for (let log of logs[i])  {
+                    this.add({
+                        event: log,
+                        index: i
+                    })
+                }
+            }
+
             this.socket = io(window.location.host)
-            this.socket.on('debug', res => {
-                let {
-                    type,
-                    val
-                } = res
-
-                val = JSON.parse(val)
-
-                if (type == 'begin') {
-                    this.processus.push([])
-                }
-
-                const last = this.processus.length - 1
-
-                if (val.level == 'root' && this.processus[last] && this.processus[last].findIndex(p => p.level == 'root') !=
-                    1) {
-                    return
-                }
-
-                this.processus[last].push({
-                    type,
-                    date: new Date(),
-                    ...val
-                })
-
-                this.active = last
-            })
+            this.socket.on('debug', this.add.bind(this))
         },
         computed: {
             empty() {
-                return this.processus.length == 0
+                const keys = Object.keys(this.processus)
+                return keys.length == 0
             }
         },
         methods: {
+            add({
+                event,
+                index
+            }) {
+                {
+                    let {
+                        type,
+                        date,
+                        val
+                    } = event
+
+                    val = JSON.parse(val)
+
+                    if (!this.processus[index]) {
+                        this.processus[index] = []
+                    }
+
+                    this.processus[index].push({
+                        type,
+                        date,
+                        ...val
+                    })
+
+                    this.processus = Object.assign({}, this.processus)
+
+                    this.active = index
+                }
+            },
             modalUser(user) {
                 this.currentUser = user
                 this.$bvModal.show('modal-user')
@@ -128,7 +145,7 @@
             },
             serialize(val) {
                 const clone = Object.assign({}, val)
-                clone.user = clone.level = clone.namespace = close.date = undefined
+                clone.user = clone.level = clone.namespace = clone.date = undefined
                 return clone
             }
         }

@@ -2,7 +2,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-
 module.exports = (app, socket, files) => {
 
     app.use(
@@ -28,6 +27,11 @@ module.exports = (app, socket, files) => {
         }
         next();
     });
+
+    app.get('/logs', (req, res, next) => {
+        res.json(global.logs)
+    })
+
 
     app.get('/remote/skill.js', (req, res, next) => {
         if (!global.code) {
