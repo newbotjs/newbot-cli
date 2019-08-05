@@ -2,15 +2,30 @@ import Listr from 'listr'
 import fs from 'fs'
 import build from '../build/webpack'
 import Handlebars from 'handlebars'
-import { ncp } from 'ncp'
+import trainTasks from './train'
+import {
+    ncp
+} from 'ncp'
 
 const rollup = require('rollup')
 
-export default async ({ entry = 'main.js', node = false }) => {
+export default async ({
+    entry = 'main.js',
+    node = false
+}) => {
     const path = process.cwd()
-    const dist = `${path}/dist` 
+    const dist = `${path}/dist`
 
     const tasks = new Listr([{
+            title: 'Train Bot',
+            task() {
+                return trainTasks({
+                    onlyTasks: true
+                })
+            }
+        },
+
+        {
             title: 'Build your chatbot for NodeJS',
             task() {
                 return build({
@@ -21,32 +36,31 @@ export default async ({ entry = 'main.js', node = false }) => {
                 })
             }
         },
-       {
+        {
             title: 'Build your chatbot for browser',
             skip() {
                 return node
             },
             task() {
-                return new Listr([
-                    {
+                return new Listr([{
                         title: 'Build source',
                         task() {
                             return build({
                                 type: 'browser',
                                 dir: 'dist/browser',
-                                file: 'main.js',
+                                file: 'skill.js',
                                 var: 'MainSkill',
                                 entry
                             })
                         }
                     },
+
                     {
                         title: 'Copy model directory',
                         skip() {
                             try {
                                 fs.statSync(`${path}/bot/model`)
-                            }
-                            catch (err) {
+                            } catch (err) {
                                 if (err && err.code === 'ENOENT') {
                                     return 'Ignore because model directory not exists'
                                 }
@@ -83,11 +97,10 @@ export default async ({ entry = 'main.js', node = false }) => {
         }
     ])
 
-   try {
+    try {
         await tasks.run()
-   }
-   catch (err) {
-       console.log(err[0])
-   }
+    } catch (err) {
+        console.log(err[0])
+    }
 
 }
