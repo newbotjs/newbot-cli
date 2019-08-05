@@ -54,7 +54,8 @@ function asset(options = {}) {
                 use: {
                     loader: Path.resolve(__dirname, '../../node_modules/babel-loader'),
                     options: {
-                        presets: require('babel-preset-env')
+                        presets: require('babel-preset-env'),
+                        plugins: require('babel-plugin-transform-object-rest-spread')
                     }
                 }
             })
