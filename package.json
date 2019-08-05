@@ -1,6 +1,6 @@
 {
   "name": "newbot-cli",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "",
   "main": "./dist/bin/main.js",
   "bin": {
@@ -66,7 +66,7 @@
     "newbot-express": "*",
     "newbot-formats": "*",
     "ngrok": "^3.1.0",
-    "node-nlp": "^2.3.0",
+    "node-nlp": "^3.4.0",
     "nodemon": "^1.18.4",
     "npminstall": "^3.12.0",
     "parcel-bundler": "^1.10.2",

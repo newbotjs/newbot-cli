@@ -30,6 +30,8 @@ import analysis from './analysis'
 import getConfigFile from '../core/get-config-file'
 import getConverse from '../core/get-newbot'
 
+import trainTasks from './train'
+
 import replaceBlankChar from '../utils/link-cli'
 
 import webhookViber from '../webhooks/viber'
@@ -80,6 +82,15 @@ export default async ({
                 title: `NewBot Framework Version : ${Converse.version}`,
                 task() {
 
+                }
+            },
+
+            {
+                title: 'Train Bot',
+                task() {
+                    return trainTasks({
+                        onlyTasks: true
+                    })
                 }
             },
 
@@ -398,7 +409,9 @@ export default async ({
                     decache(p)
                     skill = await runSkill(p)
                 } while (!skill.default)
-                global.converse = new Converse(skill.default)
+                global.converse = new Converse(skill.default, {
+                    model: files + '/bot/model/model.nlp'
+                })
                 global.converse.debug = true
                 if (disposeCode) {
                     await buildRemoteSkill()
@@ -507,8 +520,9 @@ export default async ({
             }
         }, app, true)
 
+        const serverRoutes  = `${files}/server/routes.js`
+
         try {
-            const serverRoutes = `${files}/server/routes.js`
             fs.accessSync(serverRoutes, fs.constants.R_OK | fs.constants.W_OK)
             const routesModule = require(serverRoutes)
             routesModule(app, expressBot)

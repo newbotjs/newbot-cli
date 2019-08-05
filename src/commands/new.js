@@ -124,7 +124,7 @@ export default async ({ name }) => {
                             copy('bot/main.spec.js')
                             copy('bot/main.converse')
                             copy('package.json')
-                            copy('.gitignore')
+                            //copy('.gitignore')
                             copy('index.js')
                             copy('emulator.bot')
                             copy('newbot.config.js')

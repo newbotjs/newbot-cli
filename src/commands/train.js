@@ -79,6 +79,7 @@ export default async ({onlyTasks = false, path} = {}) => {
                             manager = new NlpManager({
                                 languages: Object.keys(cacheLang)
                             })
+                            console.log(cache)
                             for (let params of cache) {
                                 manager.addDocument(...params)
                             }
