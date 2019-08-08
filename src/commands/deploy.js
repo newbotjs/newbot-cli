@@ -8,6 +8,7 @@ import Listr from 'listr'
 import runSkill from '../build/run-skill'
 import config from '../config'
 import cloud from '../core/cloud'
+import logger from '../core/log'
 import build from '../build/webpack'
 
 export default async ({ entry = 'main.js' }) => {
@@ -56,7 +57,7 @@ export default async ({ entry = 'main.js' }) => {
                         //archive.directory(`${directory}/.build`, '.build')
                         archive.glob('**/*', {
                             cwd: directory,
-                            ignore: ['node_modules/**/*', 'node_modules', 'package-lock.json']
+                            ignore: ['node_modules/**/*', 'node_modules', 'package-lock.json', '.logs', '.logs/*']
                         }, {})
                         archive.pipe(output);
                         archive.finalize()
@@ -110,6 +111,7 @@ export default async ({ entry = 'main.js' }) => {
                             'x-access-token': userToken
                         }
                     }).catch(err => {
+                        logger.log('error', err.message)
                         if (err.statusCode == 403) {
                             switch (err.error.message) {
                                 case 'ROLE_NOT_AUTHORIZED':
