@@ -11,7 +11,7 @@ var ifDoesntMatch = function ifDoesntMatch(test) {
     };
 };
 
-const resolvePath = p => path.resolve(__dirname, `../../node_modules/babel-${p}`)
+const resolvePath = p => require.resolve(`babel-${p}`)
 
 export default async (skill) => {
     require("babel-register")({
