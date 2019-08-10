@@ -16,6 +16,7 @@ import ngrokModule from 'ngrok'
 import execa from 'execa'
 import stringify from 'json-stringify-safe';
 import expressNewBot from 'newbot-express'
+import converseOutput from 'newbot-express/output'
 
 import mainConfig from '../config'
 import serverApp from '../server/app';
@@ -55,14 +56,11 @@ export default async ({
         let apiFile = false
         let disposeCode = false
         let socket
+        let ngrokIgnore = false
 
         const app = express()
         const server = http.Server(app)
         const io = socketIo(server)
-
-        io.on('connection', (sock) => {
-            socket = sock
-        })
 
         const reloadServer = reload(app)
         const files = process.cwd()
@@ -96,7 +94,13 @@ export default async ({
 
             {
                 title: `Connect to Ngrok`,
-                skip() {
+                skip(ctx) {
+                    const { platforms } = config
+                    if (!platforms || (platforms && Object.keys(platforms).length == 0)) {
+                        process.env.SERVER_URL = ctx.url = 'http://localhost:' + port
+                        ngrokIgnore = true
+                        return 'ngrok is not launched because no external platform'
+                    }
                     if (!ngrok) {
                         return 'ngrok is disabled'
                     }
@@ -441,6 +445,77 @@ export default async ({
             path: files
         })
 
+        const output = {
+            debug(type, val) {
+                const user = val.user
+                val.user = {
+                    adress: user.address,
+                    _infoAddress: user._infoAddress,
+                    varFn: user.varFn,
+                    magicVar: user.magicVar,
+                    variables: user.variables,
+                    id: user.id,
+                    lang: user.lang
+                }
+                if (val.data && val.data.session) {
+                    val.platform = val.data.session.message.source
+                    val.data = undefined
+                }
+                val._instructions = undefined
+                
+
+                if (type == 'begin') {
+                    global.logs.push([])
+                }
+
+                const last =  global.logs.length - 1
+
+                if (val.level == 'root' &&  global.logs[last] &&  global.logs[last].findIndex(p => p.level == 'root') !=
+                    1) {
+                    return
+                }
+
+                const event = {
+                    type,
+                    date: new Date(),
+                    val: stringify(val)
+                }
+
+                global.logs[last].push(event)
+
+                if (socket) socket.emit('debug', {
+                    event, 
+                    index: last
+                })
+            }
+        }
+
+        io.on('connection', (sock) => {
+            socket = sock
+            socket.on('message', (data) => {
+                const { event } = data
+                const userId = 'emulator-user'
+                const options = converseOutput({
+                    message: {
+                        source: 'website'
+                    },
+                    source: 'website',
+                    send(output) {
+                        socket.emit('message', output)
+                    },
+                    user: {
+                        id: userId
+                    }
+                }, { output })
+                if (event) {
+                    global.converse.event(event.name, event.data, userId, options).catch(console.log)
+                } else {
+                    global.converse.exec(data, userId, options).catch(console.log)
+                }
+            })
+        })
+        
+
         const expressBot = expressNewBot({
             botPath: files,
             botConfigFile: config,
@@ -474,50 +549,7 @@ export default async ({
             alexa: {
                 path: '/emulator/alexa'
             },
-            output: {
-                debug(type, val) {
-                    const user = val.user
-                    val.user = {
-                        adress: user.address,
-                        _infoAddress: user._infoAddress,
-                        varFn: user.varFn,
-                        magicVar: user.magicVar,
-                        variables: user.variables,
-                        id: user.id,
-                        lang: user.lang
-                    }
-                    if (val.data && val.data.session) {
-                        val.platform = val.data.session.message.source
-                        val.data = undefined
-                    }
-                    val._instructions = undefined
-                    
-
-                    if (type == 'begin') {
-                        global.logs.push([])
-                    }
-    
-                    const last =  global.logs.length - 1
-    
-                    if (val.level == 'root' &&  global.logs[last] &&  global.logs[last].findIndex(p => p.level == 'root') !=
-                        1) {
-                        return
-                    }
-
-                    const event = {
-                        type,
-                        date: new Date(),
-                        val: stringify(val)
-                    }
-    
-                    global.logs[last].push(event)
-
-                    if (socket) socket.emit('debug', {
-                        event, 
-                        index: last
-                    })
-                }
-            }
+            output
         }, app, true)
 
         const serverRoutes  = `${files}/server/routes.js`
@@ -537,7 +569,7 @@ export default async ({
 
         tasks.run().then((ctx) => {
 
-            if (!ctx.url) return
+            if (!ctx.url || ngrokIgnore) return
 
             var table = new Table({
                 chars: {

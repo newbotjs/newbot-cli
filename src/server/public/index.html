@@ -1,61 +1,79 @@
+<script src="https://unpkg.com/vue"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-<!-- Load required Bootstrap and BootstrapVue CSS -->
+<script src="https://chatbox.newbot.io/components/chatbot-sandbox.min.js"></script>
 <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
-
-<!-- Load polyfills to support older browsers -->
 <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
-
-<!-- Load Vue followed by BootstrapVue -->
-<script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
 <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+<link href="https://chatbox.newbot.io/css/common.css" rel="stylesheet" />
+
+<style>
+    .emulator {
+        position: absolute;
+        top: 43px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+    }
+</style>
 
 <div id="app">
-    <b-modal id="modal-user" title="User Info">
-        <pre>
-            {{ currentUser | json }}
-        </pre>
-    </b-modal>
-    <b-tabs content-class="mt-3" v-if="!empty">
-        <b-tab :title="'#' + (+index+1)" v-for="(items, index) in processus" :active="active == index">
-            <div class="mt-2 mb-2 ml-4">
-                <a class="btn btn-primary" :href="'log/' + index + '/download'">Download Log</a>
-            </div>
-            <table class="table" class="mt-4">
-                <div>
-                    <thead>
-                        <tr>
-                            <th scope="col">Date</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Skill</th>
-                            <th scope="col">Function</th>
-                            <th scope="col">User</th>
-                            <th scope="col">Platform</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="item in items">
-                            <th>{{ item.date }}</th>
-                            <td>
-                                <pre>{{ item | serialize | json }}</pre>
-                            </td>
-                            <td>{{ item.namespace }}</td>
-                            <td>{{ item.level }}</td>
-                            <td>
-                                {{ item.user.id }}
-                                <b-button @click="modalUser(item.user)">More...</b-button>
-                            </td>
-                            <td>{{ item.platform }}</td>
-                        </tr>
-                    </tbody>
-                </div>
-
-            </table>
+    <b-tabs>
+        <b-tab title="Emulator" class="emulator">
+            <chatbot-sandbox :url="serverUrl" :emulator="true"></chatbot-sandbox>
         </b-tab>
+        <b-tab title="Debug">
+
+            <b-modal id="modal-user" title="User Info">
+                <pre>
+                            {{ currentUser | json }}
+                        </pre>
+            </b-modal>
+            <b-tabs content-class="mt-3" v-if="!empty">
+                <b-tab :title="'#' + (+index+1)" v-for="(items, index) in processus" :active="active == index">
+                    <div class="mt-2 mb-2 ml-4">
+                        <a class="btn btn-primary" :href="'log/' + index + '/download'">Download Log</a>
+                    </div>
+                    <table class="table" class="mt-4">
+                        <div>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Skill</th>
+                                    <th scope="col">Function</th>
+                                    <th scope="col">User</th>
+                                    <th scope="col">Platform</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in items">
+                                    <th>{{ item.date }}</th>
+                                    <td>
+                                        <pre>{{ item | serialize | json }}</pre>
+                                    </td>
+                                    <td>{{ item.namespace }}</td>
+                                    <td>{{ item.level }}</td>
+                                    <td>
+                                        {{ item.user.id }}
+                                        <b-button @click="modalUser(item.user)">More...</b-button>
+                                    </td>
+                                    <td>{{ item.platform }}</td>
+                                </tr>
+                            </tbody>
+                        </div>
+
+                    </table>
+                </b-tab>
+            </b-tabs>
+            <div v-else>
+                <p><a href="https://newbot.io/en/docs/essential/emulator.html">Use emulator to test your chatbot</a></p>
+            </div>
+
+        </b-tab>
+
     </b-tabs>
-    <div v-else>
-        <p><a href="https://newbot.io/en/docs/essential/emulator.html">Use emulator to test your chatbot</a></p>
-    </div>
 </div>
 
 <script>
@@ -72,8 +90,8 @@
         async mounted() {
             const logs = await fetch('/logs').then(res => res.json())
 
-            for (let i=0 ; i < logs.length ; i++) {
-                for (let log of logs[i])  {
+            for (let i = 0; i < logs.length; i++) {
+                for (let log of logs[i]) {
                     this.add({
                         event: log,
                         index: i
@@ -81,13 +99,15 @@
                 }
             }
 
-            this.socket = io(window.location.host)
-            this.socket.on('debug', this.add.bind(this))
+            window.socket.on('debug', this.add.bind(this))
         },
         computed: {
             empty() {
                 const keys = Object.keys(this.processus)
                 return keys.length == 0
+            },
+            serverUrl() {
+                return window.location.host
             }
         },
         methods: {
