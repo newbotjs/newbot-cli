@@ -21,6 +21,10 @@ updateNotifier({
 
 program
     .command('test', 'Run units tests', () => {}, testCommand)
+    .option('t', {
+        alias: 'timeout',
+        describe: 'Test-specific timeouts may be applied (5000ms by default). Put 0 to disable timeout'
+    })
     .option('h', {
         alias: 'help'
     })

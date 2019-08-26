@@ -4,12 +4,16 @@ import {
 } from 'glob'
 import runSkill from '../build/run-skill'
 
-export default () => {
+export default ({ timeout = 5000 } = {}) => {
+
+    if (timeout == 0) timeout = false
 
     runSkill()
 
     const directory = process.cwd()
-    const mocha = new Mocha()
+    const mocha = new Mocha({
+        timeout
+    })
 
     const testFiles = sync(`${directory}/bot/**/*.spec.js`, {
         ignore: '**/node_modules/**'

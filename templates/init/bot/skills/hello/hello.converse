@@ -1,12 +1,4 @@
-{{#unless native_nlp}}
 {{#unless dialogflow}}
-@Intent(/hello/i)
-hello() {
-    > Hey !
-}
-{{/unless}}
-{{/unless}}
-{{#if native_nlp}}
 @Intent('greeting', [
     'Hey',
     'Hello',
@@ -17,7 +9,7 @@ hello() {
 hello() {
     > Hey !
 }
-{{/if}}
+{{/unless}}
 {{#if dialogflow}}
 @Intent('input.welcome')
 hello() {
