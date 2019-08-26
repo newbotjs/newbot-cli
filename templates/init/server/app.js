@@ -1,10 +1,12 @@
 const express = require('express')
-const bot = require('newbot-express')
+const expressNewBot = require('newbot-express')
+const routes = require('./routes')
 
 const app = express()
 
-bot({
+const expressBot = expressNewBot({
     botPath: __dirname + '/..',
+    modelPath: 'model/model.nlp',
     /*botframework: {
         path: '/botframework'
     },
@@ -12,5 +14,15 @@ bot({
         path: '/viber'
     }*/
 }, app)
+
+/*
+Example to use the converse instance (https://newbot.io/en/docs/avanced/middleware.html)
+
+expressBot.converse.use({
+
+})
+*/
+
+routes(app, expressBot)
 
 app.listen(4000, () => console.log('server is running'))

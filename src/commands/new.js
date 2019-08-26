@@ -26,7 +26,7 @@ export default async ({ name }) => {
             name: 'Only the basic files'
         }, {
             value: 'complex',
-            name: 'Complete Structure (native NLP, production server, pre-integrated modules, i18n)'
+            name: 'Complete Structure (production server, pre-integrated modules, webviews, i18n)'
         }, {
             value: 'custom',
             name: 'Choose the features yourself'
@@ -40,13 +40,14 @@ export default async ({ name }) => {
             type: 'checkbox',
             name: 'feactures',
             message: 'What do you want to integrate into your project?',
-            choices: [{
-                value: 'nlp',
-                name: 'Natural Language Processing (choice of engine in second step)'
-            }, 
+            choices: [ 
             {
                 value: 'server',
                 name: 'Server for production (not useful if you use NewBot Cloud)'
+            }, 
+            {
+                value: 'webviews',
+                name: 'Webviews directory'
             }, 
             {
                 value: 'i18n',
@@ -60,10 +61,6 @@ export default async ({ name }) => {
                 name: 'nlp',
                 message: 'What is your NLP engine ?',
                 choices: [{
-                    value: 'native_nlp',
-                    name: 'Native (Compatible NewBot Cloud)'
-                }, 
-                {
                     value: 'dialogflow',
                     name: 'DialogFlow'
                 }]
@@ -72,7 +69,7 @@ export default async ({ name }) => {
         }
     }
     else if (mode == 'complex') {
-        feactures = ['native_nlp', 'server', 'i18n']
+        feactures = ['webviews', 'server', 'i18n']
     }
 
     const tasks = new Listr([
@@ -134,6 +131,7 @@ export default async ({ name }) => {
                             if (obj.server) {
                                 mkdir('server')
                                 copy('server/app.js')
+                                copy('server/routes.js')
                                 ctx.packages = ctx.packages.concat(['express', 'newbot-express'])
                             }
                             if (obj.i18n) {
@@ -142,9 +140,9 @@ export default async ({ name }) => {
                                 copy('bot/languages/fr_FR.json')
                                 copy('bot/languages/index.js')
                             }
-                            if (obj.native_nlp) {
-                                ctx.train = true
-                                ctx.packages.push('newbot-nlp')
+                            if (obj.webviews) {
+                                mkdir('webviews')
+                                copy('webviews/test.html')
                             }
                             mkdir('bot/skills/hello')
                             copy('bot/skills/hello/hello.converse')
@@ -163,13 +161,11 @@ export default async ({ name }) => {
         },
         {
             title: 'Create NLP Model',
-            skip(ctx) {
-                if (!ctx.train) {
-                    return 'Native NLP was not selected'
-                }
-            },
             task() {
-                return train(true, pathProject)
+                return train({
+                    onlyTasks: true, 
+                    path: pathProject
+                })
             }
         }
     ])

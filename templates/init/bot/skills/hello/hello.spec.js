@@ -5,7 +5,9 @@ describe('Hello Skill Test', () => {
     let userConverse, converse
 
     beforeEach(() => {
-        converse = new ConverseTesting(helloSkill)
+        converse = new ConverseTesting(helloSkill, {
+            model: __dirname + '/../../model/model.nlp'
+        })
         userConverse = converse.createUser({
             session: {
                 message: {

@@ -6,7 +6,9 @@ describe('Main Skill Test', () => {
 
     beforeEach(() => {
         converse = new ConverseTesting(mainSkill)
-        userConverse = converse.createUser()
+        userConverse = converse.createUser({
+            model: __dirname + '/model/model.nlp'
+        })
     })
 
     it('Start Conversation', () => {
