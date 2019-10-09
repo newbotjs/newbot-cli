@@ -439,7 +439,7 @@ export default async ({
             }
         }
 
-        serverApp(app, socket, files)
+        
         serverLog(app,  {
             Converse,
             path: files
@@ -551,6 +551,8 @@ export default async ({
             },
             output
         }, app, true)
+
+        serverApp(app, socket, files)
 
         const serverRoutes  = `${files}/server/routes.js`
 
