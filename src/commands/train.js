@@ -57,16 +57,29 @@ export default async ({onlyTasks = false, path} = {}) => {
                             let cacheClone = []
                             for (let i = 0 ; i < cache.length ; i++) {
                                 let { params } = cache[i]
-                                cacheClone.push(_.clone(params))
-                                if (params[1][0] != '#') continue
+                                
+                                if (params[1][0] != '#') {
+                                    cacheClone.push(_.clone(params))
+                                    continue
+                                }
+                                const translateAndMemorize = (instanceLang, langId, text) => {
+                                    const translated = instanceLang.translate(text)
+                                    cacheClone.push([langId, translated, cache[i].params[2]])
+                                }
+                                
                                 for (let lang of langFiles) {
                                     let langId = lang.split('_')[0]
-                                    const translated = cache[i].converse.lang.translate(params[1].substr(1), lang)
-                                    if (cache[i].params[0] == langId) {
-                                        cacheClone[i][1] = translated
+                                    const text = params[1].substr(1)
+                                    const instanceLang = cache[i].converse.lang
+                                    instanceLang.set(lang)
+                                    const group = instanceLang.getGroup(text)
+                                    if (group.length > 0) {
+                                        for (let gtext of group) {
+                                            translateAndMemorize(instanceLang, langId, gtext)
+                                        }
                                     }
                                     else {
-                                        cacheClone.push([langId, translated, cache[i].params[2]])
+                                        translateAndMemorize(instanceLang, langId, text)
                                     }
                                 }
                             }
