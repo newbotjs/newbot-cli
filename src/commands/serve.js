@@ -8,7 +8,6 @@ import _ from 'lodash'
 import rp from 'request-promise'
 import chokidar from 'chokidar'
 import decache from 'decache'
-import reload from 'reload'
 import Listr from 'listr'
 import moment from 'moment'
 import Table from 'cli-table'
@@ -62,7 +61,6 @@ export default async ({
         const server = http.Server(app)
         const io = socketIo(server)
 
-        const reloadServer = reload(app)
         const files = process.cwd()
 
         let newbotCloud
@@ -431,7 +429,6 @@ export default async ({
                         }
                     }) 
                 }
-                reloadServer.reload()
                 resolve()
             } catch (err) {
                 console.log(err)
