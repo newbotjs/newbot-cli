@@ -20,7 +20,7 @@ export default async ({onlyTasks = false, path} = {}) => {
     const mainSkill = `${directory}/bot/main.js`
 
     const skill = await runSkill(mainSkill)
-    const languages = skill.default.languages ? skill.default.languages.packages : ['en_EN']
+    let languages = []
 
     const tasks = new Listr([{
             title: 'Extract Intents',
@@ -38,6 +38,7 @@ export default async ({onlyTasks = false, path} = {}) => {
                                     }
                                 }
                                 for (let lang in utterances) {
+                                    if (lang[0] == '_') continue
                                     cacheLang[lang] = true
                                     for (let utterance of utterances[lang]) {
                                         cache.push({
@@ -45,16 +46,18 @@ export default async ({onlyTasks = false, path} = {}) => {
                                             converse: intent._skill
                                         })
                                     }
+                                    languages.push(lang)
                                 }
                             }
-                           
+                            languages = _.uniq(languages)
                         }
                     },
                     {
                         title: 'Translate',
                         task() {
-                            const langFiles = Object.keys(languages)
+                            const langFiles = languages
                             let cacheClone = []
+
                             for (let i = 0 ; i < cache.length ; i++) {
                                 let { params } = cache[i]
                                 
@@ -68,10 +71,11 @@ export default async ({onlyTasks = false, path} = {}) => {
                                 }
                                 
                                 for (let lang of langFiles) {
-                                    let langId = lang.split('_')[0]
+                                    let langId = lang
                                     const text = params[1].substr(1)
                                     const instanceLang = cache[i].converse.lang
-                                    instanceLang.set(lang)
+                                    const fullLang = langId + '_' + langId.toUpperCase()
+                                    instanceLang.set(fullLang)
                                     const group = instanceLang.getGroup(text)
                                     if (group.length > 0) {
                                         for (let gtext of group) {
@@ -84,7 +88,7 @@ export default async ({onlyTasks = false, path} = {}) => {
                                 }
                             }
                             for (let lang of langFiles) {
-                                cacheLang[lang.split('_')[0]] = true
+                                cacheLang[lang] = true
                             }
                             cache = cacheClone
                         }
