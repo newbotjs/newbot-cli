@@ -1,0 +1,6 @@
+@Intent('hello', [
+    '#hello'
+])
+hello() {
+    > hello_answer
+}

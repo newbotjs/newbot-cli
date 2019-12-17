@@ -8,7 +8,7 @@ var ifDoesntMatch = (pattern) => (input) => !pattern.test(input);
 
 const resolvePath = p => path.resolve(__dirname, `../../node_modules/babel-${p}`)
 
-require("babel-register")({
+require("@babel/register")({
     presets: [
         [resolvePath('preset-env'), {
             "targets": {

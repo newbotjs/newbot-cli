@@ -31,6 +31,14 @@ export default async ({onlyTasks = false, path} = {}) => {
                             await converse.loadOptions(skill.default)
                             const intents = await converse.getAllIntents()
                             for (let intent of intents) {
+                                const langs = _.get(intent, '_skill.lang._list')
+                                if (languages) {
+                                    languages = [
+                                        ...languages,
+                                        ...langs.map(lang => lang.split('_')[0])
+                                    ]
+                                    languages = _.uniq(languages)
+                                }
                                 let [intentName, utterances] = intent.params
                                 if (_.isArray(utterances)) {
                                     utterances = {
@@ -46,10 +54,9 @@ export default async ({onlyTasks = false, path} = {}) => {
                                             converse: intent._skill
                                         })
                                     }
-                                    languages.push(lang)
                                 }
                             }
-                            languages = _.uniq(languages)
+                            
                         }
                     },
                     {

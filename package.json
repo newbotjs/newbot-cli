@@ -6,12 +6,18 @@
   "bin": {
     "newbot": "./dist/bin/main.js"
   },
+  "ava": {
+    "require": [
+			"@babel/register"
+		]
+  },
   "scripts": {
     "prepublish": "npm run build",
     "install": "node dist/install/gactions",
     "start": "newbot serve",
     "serve": "babel -w src/ -d dist/",
-    "build": "babel src/ -d dist/"
+    "build": "babel src/ -d dist/",
+    "test": "npx ava tests/*.spec.js"
   },
   "keywords": [
     "newbot",
@@ -26,16 +32,16 @@
     "node": ">=8"
   },
   "dependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/register": "^7.7.4",
     "@types/execa": "^0.9.0",
     "actions-on-google": "^2.4.1",
     "archiver": "^2.1.1",
     "babel-loader": "^7.1.5",
-    "babel-plugin-inline-import": "^3.0.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
     "body-parser": "^1.18.3",
     "botbuilder": "^3.15.0",
     "bottender": "^0.15.7",
@@ -59,7 +65,6 @@
     "lodash": "^4.17.11",
     "messaging-api-telegram": "^0.7.8",
     "messaging-api-viber": "^0.7.8",
-    "mocha": "^5.2.0",
     "moment": "^2.22.2",
     "ncp": "^2.0.0",
     "newbot": "*",
@@ -91,8 +96,10 @@
     "yargs": "^12.0.2"
   },
   "devDependencies": {
+    "ava": "^2.4.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
-    "babel-plugin-transform-runtime": "^6.23.0"
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "mocha": "^5.2.0"
   }
 }

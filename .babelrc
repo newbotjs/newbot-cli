@@ -1,4 +1,15 @@
 {
-    "presets": ["env"],
-    "plugins": ["transform-runtime", "babel-plugin-transform-object-rest-spread"]
+    "presets": 
+    [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "browsers": ["last 2 versions"]
+                },
+                "debug": false
+            }
+        ]
+    ],
+    "plugins": ["@babel/transform-runtime"]
 }

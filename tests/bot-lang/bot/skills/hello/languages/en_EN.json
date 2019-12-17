@@ -1,0 +1,23 @@
+[
+    {
+        "$hello": [
+            "Hi",
+            "Hey",
+            "Hello",
+            "Good morning",
+            "Good afternoon",
+            "Good evening",
+            "What's up?",
+            "How are you?",
+            "How are you doing?"
+        ],
+        "$hello_answer": [
+            "Hi!",
+            "Hello!",
+            "Hello there!",
+            "Hey you!",
+            "Hey! I hope you're doing well!",
+            "Hi! What's up?!"
+        ]
+    }
+]

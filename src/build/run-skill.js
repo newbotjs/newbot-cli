@@ -11,21 +11,20 @@ var ifDoesntMatch = function ifDoesntMatch(test) {
     };
 };
 
-const resolvePath = p => require.resolve(`babel-${p}`)
+const resolvePath = p => require.resolve(p)
 
 export default async (skill) => {
-    require("babel-register")({
+    require("@babel/register")({
         presets: [
-            [resolvePath('preset-env'), {
+            [resolvePath('@babel/preset-env'), {
                 "targets": {
                     "node": "current"
                 }
             }]
         ],
-        ignore: ifDoesntMatch(),
+        ignore: [ifDoesntMatch()],
         plugins: [
-            resolvePath('plugin-transform-object-rest-spread'),
-            [resolvePath("plugin-inline-import"), {
+            [resolvePath("babel-plugin-inline-import"), {
                 "extensions": [
                     ".converse"
                 ]
