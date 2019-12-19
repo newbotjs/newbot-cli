@@ -56,6 +56,14 @@ program
         alias: 'config',
         describe: 'name of config file (newbot.config.js by default)'
     })
+    .option('pa', {
+        alias: 'path',
+        describe: 'path of directory'
+    })
+    .option('ts', {
+        alias: 'typescript',
+        describe: 'read ts file'
+    })
     .help("?")
     .alias("?", "help")
     .example("$0 serve -p 5000", "Change port to 5000")

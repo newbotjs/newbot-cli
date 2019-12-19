@@ -44,7 +44,8 @@ export default async ({
     ngrok = true,
     cloud = false,
     entry = 'main.js',
-    config: configFile
+    config: configFile,
+    path = process.cwd()
 } = {}) => {
     try {
 
@@ -61,7 +62,7 @@ export default async ({
         const server = http.Server(app)
         const io = socketIo(server)
 
-        const files = process.cwd()
+        const files = path
 
         let newbotCloud
 
@@ -85,7 +86,9 @@ export default async ({
                 title: 'Train Bot',
                 task() {
                     return trainTasks({
-                        onlyTasks: true
+                        onlyTasks: true,
+                        path,
+                        entry
                     })
                 }
             },

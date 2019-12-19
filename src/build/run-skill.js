@@ -20,7 +20,8 @@ export default async (skill) => {
                 "targets": {
                     "node": "current"
                 }
-            }]
+            }],
+            [resolvePath('@babel/preset-typescript')]
         ],
         ignore: [ifDoesntMatch()],
         plugins: [
@@ -30,6 +31,7 @@ export default async (skill) => {
                 ]
             }]
         ],
+        extensions: ['.js', '.ts'],
         cache: false
     })
     if (skill) {

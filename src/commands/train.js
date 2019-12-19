@@ -9,7 +9,7 @@ import {
 } from 'node-nlp'
 import runSkill from '../build/run-skill'
 
-export default async ({onlyTasks = false, path} = {}) => {
+export default async ({onlyTasks = false, path, entry = 'main.js'} = {}) => {
 
     let manager
     let cache = []
@@ -17,7 +17,7 @@ export default async ({onlyTasks = false, path} = {}) => {
     const converse = new Converse()
 
     const directory = path || process.cwd()
-    const mainSkill = `${directory}/bot/main.js`
+    const mainSkill = `${directory}/bot/${entry}`
 
     const skill = await runSkill(mainSkill)
     let languages = []
