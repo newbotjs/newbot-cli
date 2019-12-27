@@ -28,7 +28,8 @@ function asset(options = {}) {
             for (let pkg in map) {
                 let platform = map[pkg]
                 if (!_.isString(platform)) {
-                    platform = platform[options.type]
+                    const type = options.type == 'cjs' ? 'browser' : options.type
+                    platform = platform[type]
                 }
                 alias[pkg] = platform
             }
@@ -67,6 +68,13 @@ function asset(options = {}) {
 
         entry.push(root ? `${path}/${_root}` : `${path}/bot/${options.entry}`)
 
+        let libraryTarget
+        switch (options.type) {
+            case 'node': libraryTarget = 'umd'; break
+            case 'cjs': libraryTarget = 'commonjs'; break
+            default: libraryTarget = 'var'
+        }
+
         const webpackOptions = {
             mode: 'production',
             target: 'node',
@@ -74,7 +82,7 @@ function asset(options = {}) {
             output: {
                 path: `${path}/${options.dir}`,
                 filename: options.file,
-                libraryTarget: options.type == 'node' ? 'umd' : 'var',
+                libraryTarget,
                 libraryExport: 'default'
             },
             module: {
@@ -85,7 +93,7 @@ function asset(options = {}) {
             }
         }
 
-        if (options.type == 'node') {
+        if (options.type == 'node' || options.type == 'cjs') {
             webpackOptions.externals = [
                 (context, request, callback) => {
                     if (path == context || request.startsWith('.') || request.startsWith('newbot-')) {

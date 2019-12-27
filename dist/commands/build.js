@@ -59,14 +59,30 @@ var _callee = function _callee(_ref) {
               return new _listr.default([{
                 title: 'Build source',
                 task: function task() {
-                  return (0, _webpack.default)({
-                    type: 'browser',
-                    dir: 'dist/browser',
-                    file: 'skill.js',
-                    var: 'MainSkill',
-                    entry: entry,
-                    path: path
-                  });
+                  return new _listr.default([{
+                    title: 'Gloval var',
+                    task: function task() {
+                      return (0, _webpack.default)({
+                        type: 'browser',
+                        dir: 'dist/browser',
+                        file: 'skill.js',
+                        var: 'MainSkill',
+                        entry: entry,
+                        path: path
+                      });
+                    }
+                  }, {
+                    title: 'CommonJS',
+                    task: function task() {
+                      return (0, _webpack.default)({
+                        type: 'cjs',
+                        dir: 'dist/browser',
+                        file: 'skill.cjs.js',
+                        entry: entry,
+                        path: path
+                      });
+                    }
+                  }]);
                 }
               }, {
                 title: 'Copy model directory',

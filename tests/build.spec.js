@@ -12,7 +12,8 @@ test('Test Build file', async t => {
     const array = [
         'node/bot.js',
         'browser/index.html',
-        'browser/skill.js'
+        'browser/skill.js',
+        'browser/skill.cjs.js'
     ]
 
     t.plan(array.length)

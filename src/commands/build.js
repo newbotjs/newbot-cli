@@ -46,14 +46,30 @@ export default async ({
                 return new Listr([{
                         title: 'Build source',
                         task() {
-                            return build({
-                                type: 'browser',
-                                dir: 'dist/browser',
-                                file: 'skill.js',
-                                var: 'MainSkill',
-                                entry,
-                                path
-                            })
+                            return new Listr([{
+                                title: 'Gloval var',
+                                task() {
+                                    return build({
+                                        type: 'browser',
+                                        dir: 'dist/browser',
+                                        file: 'skill.js',
+                                        var: 'MainSkill',
+                                        entry,
+                                        path
+                                    })
+                                }
+                            }, {
+                                title: 'CommonJS',
+                                task() {
+                                    return build({
+                                        type: 'cjs',
+                                        dir: 'dist/browser',
+                                        file: 'skill.cjs.js',
+                                        entry,
+                                        path
+                                    })
+                                }
+                            }])
                         }
                     },
 

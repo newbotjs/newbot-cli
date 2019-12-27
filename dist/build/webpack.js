@@ -43,7 +43,8 @@ function asset() {
         var platform = map[pkg];
 
         if (!_lodash.default.isString(platform)) {
-          platform = platform[options.type];
+          var type = options.type == 'cjs' ? 'browser' : options.type;
+          platform = platform[type];
         }
 
         alias[pkg] = platform;
@@ -84,6 +85,21 @@ function asset() {
     }
 
     entry.push(root ? "".concat(path, "/").concat(_root) : "".concat(path, "/bot/").concat(options.entry));
+    var libraryTarget;
+
+    switch (options.type) {
+      case 'node':
+        libraryTarget = 'umd';
+        break;
+
+      case 'cjs':
+        libraryTarget = 'commonjs';
+        break;
+
+      default:
+        libraryTarget = 'var';
+    }
+
     var webpackOptions = {
       mode: 'production',
       target: 'node',
@@ -91,7 +107,7 @@ function asset() {
       output: {
         path: "".concat(path, "/").concat(options.dir),
         filename: options.file,
-        libraryTarget: options.type == 'node' ? 'umd' : 'var',
+        libraryTarget: libraryTarget,
         libraryExport: 'default'
       },
       module: {
@@ -102,7 +118,7 @@ function asset() {
       }
     };
 
-    if (options.type == 'node') {
+    if (options.type == 'node' || options.type == 'cjs') {
       webpackOptions.externals = [function (context, request, callback) {
         if (path == context || request.startsWith('.') || request.startsWith('newbot-')) {
           return callback();
