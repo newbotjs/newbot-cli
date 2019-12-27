@@ -7,20 +7,20 @@ import {
     ncp
 } from 'ncp'
 
-const rollup = require('rollup')
-
 export default async ({
     entry = 'main.js',
-    node = false
+    node = false,
+    path
 }) => {
-    const path = process.cwd()
+    path = path ||  process.cwd()
     const dist = `${path}/dist`
 
     const tasks = new Listr([{
             title: 'Train Bot',
             task() {
                 return trainTasks({
-                    onlyTasks: true
+                    onlyTasks: true,
+                    path
                 })
             }
         },
@@ -32,7 +32,8 @@ export default async ({
                     type: 'node',
                     dir: 'dist/node',
                     file: 'bot.js',
-                    entry
+                    entry,
+                    path
                 })
             }
         },
@@ -50,7 +51,8 @@ export default async ({
                                 dir: 'dist/browser',
                                 file: 'skill.js',
                                 var: 'MainSkill',
-                                entry
+                                entry,
+                                path
                             })
                         }
                     },
@@ -97,10 +99,6 @@ export default async ({
         }
     ])
 
-    try {
-        await tasks.run()
-    } catch (err) {
-        console.log(err[0])
-    }
+    await tasks.run()
 
 }

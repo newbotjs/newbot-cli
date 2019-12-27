@@ -2,11 +2,10 @@ import _ from 'lodash'
 import fs from 'fs'
 import webpack from "webpack";
 import Path from 'path'
-import nodeExternals from 'webpack-node-externals'
 
 function asset(options = {}) {
     return new Promise((resolve, reject) => {
-        const path = process.cwd()
+        const path = options.path || process.cwd()
 
         let config = {}
         try {
@@ -46,7 +45,7 @@ function asset(options = {}) {
         ]
 
         if (options.type == 'browser') {
-            entry.push(Path.resolve(__dirname, '../../node_modules/babel-polyfill'))
+            entry.push(Path.resolve(__dirname, '../../node_modules/@babel/polyfill'))
             entry.push(Path.resolve(__dirname, 'bundles/init-browser'))
             rules.push({
                 test: /\.js$/,
@@ -54,8 +53,8 @@ function asset(options = {}) {
                 use: {
                     loader: Path.resolve(__dirname, '../../node_modules/babel-loader'),
                     options: {
-                        presets: require('babel-preset-env'),
-                        plugins: require('babel-plugin-transform-object-rest-spread')
+                        presets: [require('@babel/preset-env')],
+                        plugins: [require('@babel/plugin-transform-runtime')]
                     }
                 }
             })

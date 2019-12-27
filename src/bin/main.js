@@ -79,6 +79,10 @@ program
         alias: 'node',
         describe: 'Build NodeJS only'
     })
+    .option('pa', {
+        alias: 'path',
+        describe: 'path of directory'
+    })
     .argv
 
 program

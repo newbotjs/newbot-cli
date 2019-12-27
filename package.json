@@ -43,7 +43,7 @@
     "@types/execa": "^0.9.0",
     "actions-on-google": "^2.4.1",
     "archiver": "^2.1.1",
-    "babel-loader": "^7.1.5",
+    "babel-loader": "^8.0.6",
     "body-parser": "^1.18.3",
     "botbuilder": "^3.15.0",
     "bottender": "^0.15.7",
