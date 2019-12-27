@@ -15,8 +15,8 @@
     "prepublish": "npm run build",
     "install": "node dist/install/gactions",
     "start": "newbot serve",
-    "serve": "babel -w src/ -d dist/",
-    "build": "babel src/ -d dist/",
+    "serve": "npx babel -w src/ -d dist/",
+    "build": "npx babel src/ -d dist/",
     "test": "npx ava tests/*.spec.js"
   },
   "keywords": [
