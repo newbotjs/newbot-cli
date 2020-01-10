@@ -21,8 +21,8 @@ export default async ({ entry = 'main.js' }) => {
         } = await cloud()
 
         const mainSkill = `${directory}/bot/main.js`
-
-        const zipFile = __dirname + '/../../tmp/bot.zip'
+        const tmpPath =  __dirname + '/../../tmp'
+        const zipFile = tmpPath + '/bot.zip'
 
         const tasks = new Listr([
              {
@@ -40,6 +40,11 @@ export default async ({ entry = 'main.js' }) => {
                 title: 'Packaging',
                 task() {
                     return new Promise((resolve, reject) => {
+
+                        if (!fs.existsSync(tmpPath)){
+                            fs.mkdirSync(tmpPath)
+                        }
+
                         const output = fs.createWriteStream(zipFile)
                         const archive = archiver('zip', {
                             zlib: {
