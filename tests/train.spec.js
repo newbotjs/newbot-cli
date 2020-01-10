@@ -12,3 +12,13 @@ test('Test Train Steps', async t => {
 	const json = JSON.parse(content)
 	t.deepEqual(_.get(json, 'settings.languages'), ['en', 'fr'])
 })
+
+test('Test Train Steps, but no languages', async t => {
+	const dir = __dirname + '/bot-intent'
+	await train({
+		path: dir
+	})
+	const content = fs.readFileSync(dir + '/bot/model/model.nlp', 'utf-8')
+	const json = JSON.parse(content)
+	t.deepEqual(_.get(json, 'settings.languages'), ['en'])
+})

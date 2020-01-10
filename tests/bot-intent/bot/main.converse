@@ -1,0 +1,6 @@
+@Intent('greeting', [
+    'hello world'
+])
+hello() {
+    > Hello !
+}

@@ -32,7 +32,7 @@ export default async ({onlyTasks = false, path, entry = 'main.js'} = {}) => {
                             const intents = await converse.getAllIntents()
                             for (let intent of intents) {
                                 const langs = _.get(intent, '_skill.lang._list')
-                                if (languages) {
+                                if (langs) {
                                     languages = [
                                         ...languages,
                                         ...langs.map(lang => lang.split('_')[0])
