@@ -11,6 +11,8 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _requestPromise = _interopRequireDefault(require("request-promise"));
 
 var _fs = _interopRequireDefault(require("fs"));
@@ -23,10 +25,14 @@ var _config = _interopRequireDefault(require("../config"));
 
 var rollup = require('rollup');
 
-var _callee = function _callee() {
-  var env, directory, _ref, userToken, cloudFile, configCloud, bots, botId, choice, _ref2, botName, newBot;
+var _default =
+/*#__PURE__*/
+(0, _asyncToGenerator2.default)(
+/*#__PURE__*/
+_regenerator.default.mark(function _callee() {
+  var env, directory, _ref2, userToken, cloudFile, configCloud, bots, botId, choice, _ref3, botName, newBot;
 
-  return _regenerator.default.async(function _callee$(_context) {
+  return _regenerator.default.wrap(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -34,11 +40,11 @@ var _callee = function _callee() {
           directory = process.cwd();
           _context.prev = 2;
           _context.next = 5;
-          return _regenerator.default.awrap((0, _login.default)());
+          return (0, _login.default)();
 
         case 5:
-          _ref = _context.sent;
-          userToken = _ref.userToken;
+          _ref2 = _context.sent;
+          userToken = _ref2.userToken;
           cloudFile = directory + '/.newbot-cloud' + (env ? '-' + env : '');
           _context.prev = 8;
           configCloud = _fs.default.readFileSync(cloudFile, 'utf-8');
@@ -56,13 +62,13 @@ var _callee = function _callee() {
           }
 
           _context.next = 18;
-          return _regenerator.default.awrap((0, _requestPromise.default)({
+          return (0, _requestPromise.default)({
             url: "".concat(_config.default.urlCloud, "/api/bots"),
             json: true,
             headers: {
               'x-access-token': userToken
             }
-          }));
+          });
 
         case 18:
           bots = _context.sent;
@@ -73,7 +79,7 @@ var _callee = function _callee() {
           }
 
           _context.next = 22;
-          return _regenerator.default.awrap(_inquirer.default.prompt([{
+          return _inquirer.default.prompt([{
             type: 'list',
             name: 'botId',
             message: 'What is the bot?',
@@ -86,7 +92,7 @@ var _callee = function _callee() {
                 value: bot._id
               };
             })))
-          }]));
+          }]);
 
         case 22:
           choice = _context.sent;
@@ -104,17 +110,17 @@ var _callee = function _callee() {
           }
 
           _context.next = 30;
-          return _regenerator.default.awrap(_inquirer.default.prompt([{
+          return _inquirer.default.prompt([{
             type: 'input',
             name: 'botName',
             message: 'What is the name for your new chatbot?'
-          }]));
+          }]);
 
         case 30:
-          _ref2 = _context.sent;
-          botName = _ref2.botName;
+          _ref3 = _context.sent;
+          botName = _ref3.botName;
           _context.next = 34;
-          return _regenerator.default.awrap((0, _requestPromise.default)({
+          return (0, _requestPromise.default)({
             url: "".concat(_config.default.urlCloud, "/api/bots"),
             method: 'POST',
             json: true,
@@ -124,7 +130,7 @@ var _callee = function _callee() {
             headers: {
               'x-access-token': userToken
             }
-          }));
+          });
 
         case 34:
           newBot = _context.sent;
@@ -173,7 +179,7 @@ var _callee = function _callee() {
           return _context.stop();
       }
     }
-  }, null, null, [[2, 41], [8, 13]]);
-};
+  }, _callee, null, [[2, 41], [8, 13]]);
+}));
 
-exports.default = _callee;
+exports.default = _default;

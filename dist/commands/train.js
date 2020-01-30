@@ -13,6 +13,8 @@ var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/sli
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _newbot = require("newbot");
 
 var _fs = _interopRequireDefault(require("fs"));
@@ -25,12 +27,16 @@ var _nodeNlp = require("node-nlp");
 
 var _runSkill = _interopRequireDefault(require("../build/run-skill"));
 
-var _callee = function _callee() {
-  var _ref,
-      _ref$onlyTasks,
+var _default =
+/*#__PURE__*/
+(0, _asyncToGenerator2.default)(
+/*#__PURE__*/
+_regenerator.default.mark(function _callee2() {
+  var _ref2,
+      _ref2$onlyTasks,
       onlyTasks,
       path,
-      _ref$entry,
+      _ref2$entry,
       entry,
       manager,
       cache,
@@ -43,18 +49,18 @@ var _callee = function _callee() {
       tasks,
       _args2 = arguments;
 
-  return _regenerator.default.async(function _callee$(_context2) {
+  return _regenerator.default.wrap(function _callee2$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          _ref = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, _ref$onlyTasks = _ref.onlyTasks, onlyTasks = _ref$onlyTasks === void 0 ? false : _ref$onlyTasks, path = _ref.path, _ref$entry = _ref.entry, entry = _ref$entry === void 0 ? 'main.js' : _ref$entry;
+          _ref2 = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, _ref2$onlyTasks = _ref2.onlyTasks, onlyTasks = _ref2$onlyTasks === void 0 ? false : _ref2$onlyTasks, path = _ref2.path, _ref2$entry = _ref2.entry, entry = _ref2$entry === void 0 ? 'main.js' : _ref2$entry;
           cache = [];
           cacheLang = {};
           converse = new _newbot.Converse();
           directory = path || process.cwd();
           mainSkill = "".concat(directory, "/bot/").concat(entry);
           _context2.next = 8;
-          return _regenerator.default.awrap((0, _runSkill.default)(mainSkill));
+          return (0, _runSkill.default)(mainSkill);
 
         case 8:
           skill = _context2.sent;
@@ -64,167 +70,177 @@ var _callee = function _callee() {
             task: function task() {
               return new _listr.default([{
                 title: 'Get Intents',
-                task: function task() {
-                  var intents, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, intent, langs, _intent$params, intentName, utterances, lang, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, utterance;
+                task: function () {
+                  var _task = (0, _asyncToGenerator2.default)(
+                  /*#__PURE__*/
+                  _regenerator.default.mark(function _callee() {
+                    var intents, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, intent, langs, _intent$params, intentName, utterances, lang, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, utterance;
 
-                  return _regenerator.default.async(function task$(_context) {
-                    while (1) {
-                      switch (_context.prev = _context.next) {
-                        case 0:
-                          _context.next = 2;
-                          return _regenerator.default.awrap(converse.loadOptions(skill.default));
+                    return _regenerator.default.wrap(function _callee$(_context) {
+                      while (1) {
+                        switch (_context.prev = _context.next) {
+                          case 0:
+                            _context.next = 2;
+                            return converse.loadOptions(skill.default);
 
-                        case 2:
-                          _context.next = 4;
-                          return _regenerator.default.awrap(converse.getAllIntents());
+                          case 2:
+                            _context.next = 4;
+                            return converse.getAllIntents();
 
-                        case 4:
-                          intents = _context.sent;
-                          _iteratorNormalCompletion = true;
-                          _didIteratorError = false;
-                          _iteratorError = undefined;
-                          _context.prev = 8;
-                          _iterator = intents[Symbol.iterator]();
+                          case 4:
+                            intents = _context.sent;
+                            _iteratorNormalCompletion = true;
+                            _didIteratorError = false;
+                            _iteratorError = undefined;
+                            _context.prev = 8;
+                            _iterator = intents[Symbol.iterator]();
 
-                        case 10:
-                          if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                            _context.next = 46;
+                          case 10:
+                            if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+                              _context.next = 46;
+                              break;
+                            }
+
+                            intent = _step.value;
+                            langs = _lodash.default.get(intent, '_skill.lang._list');
+
+                            if (langs) {
+                              languages = [].concat((0, _toConsumableArray2.default)(languages), (0, _toConsumableArray2.default)(langs.map(function (lang) {
+                                return lang.split('_')[0];
+                              })));
+                              languages = _lodash.default.uniq(languages);
+                            }
+
+                            _intent$params = (0, _slicedToArray2.default)(intent.params, 2), intentName = _intent$params[0], utterances = _intent$params[1];
+
+                            if (_lodash.default.isArray(utterances)) {
+                              utterances = {
+                                en: utterances
+                              };
+                            }
+
+                            _context.t0 = _regenerator.default.keys(utterances);
+
+                          case 17:
+                            if ((_context.t1 = _context.t0()).done) {
+                              _context.next = 43;
+                              break;
+                            }
+
+                            lang = _context.t1.value;
+
+                            if (!(lang[0] == '_')) {
+                              _context.next = 21;
+                              break;
+                            }
+
+                            return _context.abrupt("continue", 17);
+
+                          case 21:
+                            cacheLang[lang] = true;
+                            _iteratorNormalCompletion2 = true;
+                            _didIteratorError2 = false;
+                            _iteratorError2 = undefined;
+                            _context.prev = 25;
+
+                            for (_iterator2 = utterances[lang][Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                              utterance = _step2.value;
+                              cache.push({
+                                params: [lang, utterance, intentName],
+                                converse: intent._skill
+                              });
+                            }
+
+                            _context.next = 33;
                             break;
-                          }
 
-                          intent = _step.value;
-                          langs = _lodash.default.get(intent, '_skill.lang._list');
+                          case 29:
+                            _context.prev = 29;
+                            _context.t2 = _context["catch"](25);
+                            _didIteratorError2 = true;
+                            _iteratorError2 = _context.t2;
 
-                          if (languages) {
-                            languages = [].concat((0, _toConsumableArray2.default)(languages), (0, _toConsumableArray2.default)(langs.map(function (lang) {
-                              return lang.split('_')[0];
-                            })));
-                            languages = _lodash.default.uniq(languages);
-                          }
+                          case 33:
+                            _context.prev = 33;
+                            _context.prev = 34;
 
-                          _intent$params = (0, _slicedToArray2.default)(intent.params, 2), intentName = _intent$params[0], utterances = _intent$params[1];
+                            if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+                              _iterator2.return();
+                            }
 
-                          if (_lodash.default.isArray(utterances)) {
-                            utterances = {
-                              en: utterances
-                            };
-                          }
+                          case 36:
+                            _context.prev = 36;
 
-                          _context.t0 = _regenerator.default.keys(utterances);
+                            if (!_didIteratorError2) {
+                              _context.next = 39;
+                              break;
+                            }
 
-                        case 17:
-                          if ((_context.t1 = _context.t0()).done) {
-                            _context.next = 43;
+                            throw _iteratorError2;
+
+                          case 39:
+                            return _context.finish(36);
+
+                          case 40:
+                            return _context.finish(33);
+
+                          case 41:
+                            _context.next = 17;
                             break;
-                          }
 
-                          lang = _context.t1.value;
-
-                          if (!(lang[0] == '_')) {
-                            _context.next = 21;
+                          case 43:
+                            _iteratorNormalCompletion = true;
+                            _context.next = 10;
                             break;
-                          }
 
-                          return _context.abrupt("continue", 17);
-
-                        case 21:
-                          cacheLang[lang] = true;
-                          _iteratorNormalCompletion2 = true;
-                          _didIteratorError2 = false;
-                          _iteratorError2 = undefined;
-                          _context.prev = 25;
-
-                          for (_iterator2 = utterances[lang][Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                            utterance = _step2.value;
-                            cache.push({
-                              params: [lang, utterance, intentName],
-                              converse: intent._skill
-                            });
-                          }
-
-                          _context.next = 33;
-                          break;
-
-                        case 29:
-                          _context.prev = 29;
-                          _context.t2 = _context["catch"](25);
-                          _didIteratorError2 = true;
-                          _iteratorError2 = _context.t2;
-
-                        case 33:
-                          _context.prev = 33;
-                          _context.prev = 34;
-
-                          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                            _iterator2.return();
-                          }
-
-                        case 36:
-                          _context.prev = 36;
-
-                          if (!_didIteratorError2) {
-                            _context.next = 39;
+                          case 46:
+                            _context.next = 52;
                             break;
-                          }
 
-                          throw _iteratorError2;
+                          case 48:
+                            _context.prev = 48;
+                            _context.t3 = _context["catch"](8);
+                            _didIteratorError = true;
+                            _iteratorError = _context.t3;
 
-                        case 39:
-                          return _context.finish(36);
+                          case 52:
+                            _context.prev = 52;
+                            _context.prev = 53;
 
-                        case 40:
-                          return _context.finish(33);
+                            if (!_iteratorNormalCompletion && _iterator.return != null) {
+                              _iterator.return();
+                            }
 
-                        case 41:
-                          _context.next = 17;
-                          break;
+                          case 55:
+                            _context.prev = 55;
 
-                        case 43:
-                          _iteratorNormalCompletion = true;
-                          _context.next = 10;
-                          break;
+                            if (!_didIteratorError) {
+                              _context.next = 58;
+                              break;
+                            }
 
-                        case 46:
-                          _context.next = 52;
-                          break;
+                            throw _iteratorError;
 
-                        case 48:
-                          _context.prev = 48;
-                          _context.t3 = _context["catch"](8);
-                          _didIteratorError = true;
-                          _iteratorError = _context.t3;
+                          case 58:
+                            return _context.finish(55);
 
-                        case 52:
-                          _context.prev = 52;
-                          _context.prev = 53;
+                          case 59:
+                            return _context.finish(52);
 
-                          if (!_iteratorNormalCompletion && _iterator.return != null) {
-                            _iterator.return();
-                          }
-
-                        case 55:
-                          _context.prev = 55;
-
-                          if (!_didIteratorError) {
-                            _context.next = 58;
-                            break;
-                          }
-
-                          throw _iteratorError;
-
-                        case 58:
-                          return _context.finish(55);
-
-                        case 59:
-                          return _context.finish(52);
-
-                        case 60:
-                        case "end":
-                          return _context.stop();
+                          case 60:
+                          case "end":
+                            return _context.stop();
+                        }
                       }
-                    }
-                  }, null, null, [[8, 48, 52, 60], [25, 29, 33, 41], [34,, 36, 40], [53,, 55, 59]]);
-                }
+                    }, _callee, null, [[8, 48, 52, 60], [25, 29, 33, 41], [34,, 36, 40], [53,, 55, 59]]);
+                  }));
+
+                  function task() {
+                    return _task.apply(this, arguments);
+                  }
+
+                  return task;
+                }()
               }, {
                 title: 'Translate',
                 task: function task() {
@@ -396,14 +412,14 @@ var _callee = function _callee() {
 
         case 15:
           _context2.next = 17;
-          return _regenerator.default.awrap(tasks.run());
+          return tasks.run();
 
         case 17:
         case "end":
           return _context2.stop();
       }
     }
-  });
-};
+  }, _callee2);
+}));
 
-exports.default = _callee;
+exports.default = _default;

@@ -40,6 +40,7 @@
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-typescript": "^7.7.4",
     "@babel/register": "^7.7.4",
+    "@nlpjs/basic": "^4.0.2",
     "@types/execa": "^0.9.0",
     "actions-on-google": "^2.4.1",
     "archiver": "^2.1.1",

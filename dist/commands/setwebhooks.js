@@ -9,6 +9,8 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _listr = _interopRequireDefault(require("listr"));
 
 var _getConfigFile = _interopRequireDefault(require("../core/get-config-file"));
@@ -17,9 +19,13 @@ var _viber = _interopRequireDefault(require("../webhooks/viber"));
 
 var _telegram = _interopRequireDefault(require("../webhooks/telegram"));
 
-var _callee = function _callee() {
+var _default =
+/*#__PURE__*/
+(0, _asyncToGenerator2.default)(
+/*#__PURE__*/
+_regenerator.default.mark(function _callee() {
   var config, tasks;
-  return _regenerator.default.async(function _callee$(_context) {
+  return _regenerator.default.wrap(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -43,14 +49,14 @@ var _callee = function _callee() {
             prod: true
           })]);
           _context.next = 4;
-          return _regenerator.default.awrap(tasks.run());
+          return tasks.run();
 
         case 4:
         case "end":
           return _context.stop();
       }
     }
-  });
-};
+  }, _callee);
+}));
 
-exports.default = _callee;
+exports.default = _default;

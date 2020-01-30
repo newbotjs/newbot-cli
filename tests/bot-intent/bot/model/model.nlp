@@ -1,184 +1,38 @@
 {
   "settings": {
-    "languages": [
-      "en"
-    ]
+    "tag": "nlp",
+    "threshold": 0.5,
+    "autoLoad": true,
+    "autoSave": true,
+    "modelFileName": "model.nlp"
   },
   "nluManager": {
-    "settings": {},
-    "languages": [
-      "en"
-    ],
-    "intentDomains": {},
-    "domainManagers": {
-      "en": {
-        "settings": {
-          "language": "en",
-          "useNoneFeature": true,
-          "config": {
-            "activation": "leaky-relu",
-            "hiddenLayers": [],
-            "iterations": 20000,
-            "learningRate": 0.8,
-            "errorThresh": 0.00005,
-            "momentum": 0.5,
-            "deltaErrorThresh": 0.000001,
-            "maxDecimals": 9,
-            "leakyReluAlpha": 0.06,
-            "timeout": 120000
-          }
-        },
-        "language": "en",
-        "nluClassName": "BrainNLU",
-        "useMasterDomain": true,
-        "trainByDomain": false,
-        "keepStopwords": true,
-        "stemDict": {
-          "hello,world": {
-            "domain": "default",
-            "intent": "greeting"
-          }
-        },
-        "intentDict": {
-          "greeting": "default"
-        },
-        "useStemDict": true,
-        "domains": {
-          "master_domain": {
-            "settings": {
-              "language": "en",
-              "useNoneFeature": true,
-              "config": {
-                "activation": "leaky-relu",
-                "hiddenLayers": [],
-                "iterations": 20000,
-                "learningRate": 0.8,
-                "errorThresh": 0.00005,
-                "momentum": 0.5,
-                "deltaErrorThresh": 0.000001,
-                "maxDecimals": 9,
-                "leakyReluAlpha": 0.06,
-                "timeout": 120000
-              }
-            },
-            "language": "en",
-            "keepStopwords": true,
-            "docs": [
-              {
-                "intent": "greeting",
-                "utterance": [
-                  "hello",
-                  "world"
-                ],
-                "tokens": [
-                  "hello",
-                  "world"
-                ]
-              }
-            ],
-            "features": {
-              "hello": 1,
-              "world": 1
-            },
-            "isEditing": false,
-            "className": "BrainNLU",
-            "classifier": {
-              "className": "BrainClassifier",
-              "settings": {
-                "language": "en",
-                "useNoneFeature": true,
-                "config": {
-                  "activation": "leaky-relu",
-                  "hiddenLayers": [],
-                  "iterations": 20000,
-                  "learningRate": 0.8,
-                  "errorThresh": 0.00005,
-                  "momentum": 0.5,
-                  "deltaErrorThresh": 0.000001,
-                  "maxDecimals": 9,
-                  "leakyReluAlpha": 0.06,
-                  "timeout": 120000
-                }
-              },
-              "labels": [],
-              "network": {
-                "sizes": [
-                  3,
-                  2
-                ],
-                "layers": [
-                  {
-                    "hello": {},
-                    "world": {},
-                    "nonefeature": {}
-                  },
-                  {
-                    "greeting": {
-                      "bias": 1.31194169,
-                      "weights": {
-                        "hello": 7.670667171,
-                        "world": 7.670667171,
-                        "nonefeature": -1.260979414
-                      }
-                    },
-                    "None": {
-                      "bias": 10.134818113,
-                      "weights": {
-                        "hello": -5.0401721,
-                        "world": -5.0401721,
-                        "nonefeature": 6.324533463
-                      }
-                    }
-                  }
-                ],
-                "trainOpts": {
-                  "iterations": 20000,
-                  "errorThresh": 0.00005,
-                  "deltaErrorThresh": 0.000001,
-                  "learningRate": 0.8,
-                  "momentum": 0.5,
-                  "leakyReluAlpha": 0.06,
-                  "maxDecimals": 9,
-                  "log": false
-                }
-              }
-            }
-          }
-        }
-      }
+    "settings": {
+      "tag": "nlu-manager"
     },
-    "extraSentences": [
-      [
-        "en",
-        "hello world"
-      ]
-    ]
+    "locales": [],
+    "languageNames": {},
+    "domainManagers": {},
+    "intentDomains": {},
+    "extraSentences": []
   },
-  "nerManager": {
-    "settings": {},
-    "threshold": 0.8,
-    "builtins": [
-      "Number",
-      "Ordinal",
-      "Percentage",
-      "Age",
-      "Currency",
-      "Dimension",
-      "Temperature",
-      "DateTime",
-      "PhoneNumber",
-      "IpAddress",
-      "Boolean",
-      "Email",
-      "Hashtag",
-      "URL"
-    ],
-    "namedEntities": {}
+  "ner": {
+    "settings": {
+      "tag": "ner"
+    },
+    "rules": {}
   },
-  "slotManager": {},
-  "responses": {},
-  "actions": {},
-  "utteranceDict": {
-    "?": "help"
-  }
+  "nlgManager": {
+    "settings": {
+      "tag": "nlg-manager"
+    },
+    "responses": {}
+  },
+  "actionManager": {
+    "settings": {
+      "tag": "action-manager"
+    },
+    "actions": {}
+  },
+  "slotManager": {}
 }

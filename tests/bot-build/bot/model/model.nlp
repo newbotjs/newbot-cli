@@ -1,39 +1,38 @@
 {
   "settings": {
-    "languages": []
+    "tag": "nlp",
+    "threshold": 0.5,
+    "autoLoad": true,
+    "autoSave": true,
+    "modelFileName": "model.nlp"
   },
   "nluManager": {
-    "settings": {},
-    "languages": [],
-    "intentDomains": {},
+    "settings": {
+      "tag": "nlu-manager"
+    },
+    "locales": [],
+    "languageNames": {},
     "domainManagers": {},
+    "intentDomains": {},
     "extraSentences": []
   },
-  "nerManager": {
-    "settings": {},
-    "threshold": 0.8,
-    "builtins": [
-      "Number",
-      "Ordinal",
-      "Percentage",
-      "Age",
-      "Currency",
-      "Dimension",
-      "Temperature",
-      "DateTime",
-      "PhoneNumber",
-      "IpAddress",
-      "Boolean",
-      "Email",
-      "Hashtag",
-      "URL"
-    ],
-    "namedEntities": {}
+  "ner": {
+    "settings": {
+      "tag": "ner"
+    },
+    "rules": {}
   },
-  "slotManager": {},
-  "responses": {},
-  "actions": {},
-  "utteranceDict": {
-    "?": "help"
-  }
+  "nlgManager": {
+    "settings": {
+      "tag": "nlg-manager"
+    },
+    "responses": {}
+  },
+  "actionManager": {
+    "settings": {
+      "tag": "action-manager"
+    },
+    "actions": {}
+  },
+  "slotManager": {}
 }

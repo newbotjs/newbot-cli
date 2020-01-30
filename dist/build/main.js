@@ -9,6 +9,8 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
 var _rollupPluginNodeResolve = _interopRequireDefault(require("rollup-plugin-node-resolve"));
@@ -74,57 +76,67 @@ function asset() {
     },
     plugins: [(0, _rollupPluginCommonjs.default)(), (0, _rollupPluginNodeResolve.default)(resolveOptions), (0, _rollupPluginJson.default)(), {
       name: 'converse',
-      transform: function transform(code, id) {
-        var transpiler, obj, compiled, baseUrl, converseUrlRegex, relativePathRegex, pathToApp, pkg, platform, regexp, match, name, _module, file, _pkg;
+      transform: function () {
+        var _transform = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee(code, id) {
+          var transpiler, obj, compiled, baseUrl, converseUrlRegex, relativePathRegex, pathToApp, pkg, platform, regexp, match, name, _module, file, _pkg;
 
-        return _regenerator.default.async(function transform$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (!/converse$/.test(id)) {
-                  _context.next = 7;
-                  break;
-                }
-
-                transpiler = new _lexer.default(code, id);
-                obj = transpiler.run();
-                compiled = JSON.stringify(obj);
-                code = code.replace(/`/g, '\\`');
-                code = "\nexport default {\n    code: `".concat(code, "`,\n    compiled: ").concat(compiled, "\n}\n                        ");
-                return _context.abrupt("return", {
-                  code: code
-                });
-
-              case 7:
-                baseUrl = path;
-                converseUrlRegex = /file\s*:\s*(['"`](.*?)['"`])/g;
-                relativePathRegex = /^\.{1,2}\//i;
-                pathToApp = id.replace(baseUrl, "").replace(new RegExp("[^/]+$"), "");
-
-                if (map) {
-                  for (pkg in map) {
-                    platform = map[pkg];
-
-                    if (!_lodash.default.isString(platform)) {
-                      platform = platform[options.type];
-                    }
-
-                    regexp = new RegExp("".concat(pkg, "(['\"])"), 'g');
-                    code = code.replace(regexp, platform + '$1');
+          return _regenerator.default.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  if (!/converse$/.test(id)) {
+                    _context.next = 7;
+                    break;
                   }
-                }
 
-                return _context.abrupt("return", {
-                  code: code
-                });
+                  transpiler = new _lexer.default(code, id);
+                  obj = transpiler.run();
+                  compiled = JSON.stringify(obj);
+                  code = code.replace(/`/g, '\\`');
+                  code = "\nexport default {\n    code: `".concat(code, "`,\n    compiled: ").concat(compiled, "\n}\n                        ");
+                  return _context.abrupt("return", {
+                    code: code
+                  });
 
-              case 16:
-              case "end":
-                return _context.stop();
+                case 7:
+                  baseUrl = path;
+                  converseUrlRegex = /file\s*:\s*(['"`](.*?)['"`])/g;
+                  relativePathRegex = /^\.{1,2}\//i;
+                  pathToApp = id.replace(baseUrl, "").replace(new RegExp("[^/]+$"), "");
+
+                  if (map) {
+                    for (pkg in map) {
+                      platform = map[pkg];
+
+                      if (!_lodash.default.isString(platform)) {
+                        platform = platform[options.type];
+                      }
+
+                      regexp = new RegExp("".concat(pkg, "(['\"])"), 'g');
+                      code = code.replace(regexp, platform + '$1');
+                    }
+                  }
+
+                  return _context.abrupt("return", {
+                    code: code
+                  });
+
+                case 16:
+                case "end":
+                  return _context.stop();
+              }
             }
-          }
-        });
-      }
+          }, _callee);
+        }));
+
+        function transform(_x, _x2) {
+          return _transform.apply(this, arguments);
+        }
+
+        return transform;
+      }()
     }]
   };
   /*if (options.type == 'browser') {
