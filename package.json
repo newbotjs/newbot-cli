@@ -1,6 +1,6 @@
 {
   "name": "newbot-cli",
-  "version": "0.6.3",
+  "version": "3.0.0",
   "description": "CLI for NewBot Framework. Quickly create, generate, emulate and test your chatbot",
   "main": "./dist/bin/main.js",
   "bin": {
