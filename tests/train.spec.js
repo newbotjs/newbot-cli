@@ -10,8 +10,9 @@ test('Test Train Steps', async t => {
 	})
 	const content = fs.readFileSync(dir + '/bot/model/model.nlp', 'utf-8')
 	const json = JSON.parse(content)
-	t.deepEqual(_.get(json, 'settings.languages'), ['en', 'fr'])
+	t.deepEqual(_.get(json, 'nluManager.locales'), ['en', 'fr'])
 })
+
 
 test('Test Train Steps, but no languages', async t => {
 	const dir = __dirname + '/bot-intent'
@@ -20,5 +21,5 @@ test('Test Train Steps, but no languages', async t => {
 	})
 	const content = fs.readFileSync(dir + '/bot/model/model.nlp', 'utf-8')
 	const json = JSON.parse(content)
-	t.deepEqual(_.get(json, 'settings.languages'), ['en'])
+	t.deepEqual(_.get(json, 'nluManager.locales'), ['en'])
 })

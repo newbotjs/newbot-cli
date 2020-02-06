@@ -3,18 +3,120 @@
     "tag": "nlp",
     "threshold": 0.5,
     "autoLoad": true,
-    "autoSave": true,
+    "autoSave": false,
     "modelFileName": "model.nlp"
   },
   "nluManager": {
     "settings": {
       "tag": "nlu-manager"
     },
-    "locales": [],
+    "locales": [
+      "en"
+    ],
     "languageNames": {},
-    "domainManagers": {},
+    "domainManagers": {
+      "en": {
+        "settings": {
+          "locale": "en",
+          "tag": "domain-manager-en",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "trainByDomain": false,
+          "useStemDict": true
+        },
+        "stemDict": {
+          "hello,world": {
+            "intent": "greeting",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "greeting": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "hello world",
+            "intent": "greeting"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "en",
+              "tag": "nlu-en",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "hello": 1,
+              "world": 1
+            },
+            "intents": {
+              "greeting": 1
+            },
+            "intentFeatures": {
+              "greeting": [
+                "hello",
+                "world"
+              ]
+            },
+            "neuralNetwork": {
+              "features": [
+                "hello",
+                "world",
+                "nonefeature"
+              ],
+              "intents": [
+                "greeting",
+                "None"
+              ],
+              "perceptrons": [
+                [
+                  5.3432536125183105,
+                  5.3432536125183105,
+                  -1.749626636505127,
+                  1.7952043519958323
+                ],
+                [
+                  -1.7453827857971191,
+                  -1.7453827857971191,
+                  8.8228759765625,
+                  3.5434944895315614
+                ]
+              ],
+              "perceptronSettings": {
+                "locale": "en",
+                "tag": "nlu-en",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true,
+                "log": true
+              }
+            }
+          }
+        }
+      }
+    },
     "intentDomains": {},
-    "extraSentences": []
+    "extraSentences": [
+      [
+        "en",
+        "hello world"
+      ]
+    ]
   },
   "ner": {
     "settings": {

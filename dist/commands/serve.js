@@ -45,6 +45,8 @@ var _newbotExpress = _interopRequireDefault(require("newbot-express"));
 
 var _output = _interopRequireDefault(require("newbot-express/output"));
 
+var _langAll = _interopRequireDefault(require("@nlpjs/lang-all"));
+
 var _config = _interopRequireDefault(require("../config"));
 
 var _app = _interopRequireDefault(require("../server/app"));
@@ -664,7 +666,8 @@ _regenerator.default.mark(function _callee6() {
 
                     case 7:
                       global.converse = new Converse(skill.default, {
-                        model: files + '/bot/model/model.nlp'
+                        model: files + '/bot/model/model.nlp',
+                        modelLangs: [_langAll.default]
                       });
                       global.converse.debug = true;
 

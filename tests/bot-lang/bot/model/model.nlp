@@ -1,0 +1,488 @@
+{
+  "settings": {
+    "tag": "nlp",
+    "threshold": 0.5,
+    "autoLoad": true,
+    "autoSave": false,
+    "modelFileName": "model.nlp"
+  },
+  "nluManager": {
+    "settings": {
+      "tag": "nlu-manager"
+    },
+    "locales": [
+      "en",
+      "fr"
+    ],
+    "languageNames": {},
+    "domainManagers": {
+      "en": {
+        "settings": {
+          "locale": "en",
+          "tag": "domain-manager-en",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "trainByDomain": false,
+          "useStemDict": true
+        },
+        "stemDict": {
+          "hi": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "hey": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "hello": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "good,morning": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "afternoon,good": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "evening,good": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "s,up,what": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "are,how,you": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "are,doing,how,you": {
+            "intent": "hello",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "hello": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "Hi",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Hey",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Hello",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Good morning",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Good afternoon",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Good evening",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "What's up?",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "How are you?",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "How are you doing?",
+            "intent": "hello"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "en",
+              "tag": "nlu-en",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "hi": 1,
+              "hey": 1,
+              "hello": 1,
+              "good": 1,
+              "morning": 1,
+              "afternoon": 1,
+              "evening": 1,
+              "what": 1,
+              "s": 1,
+              "up": 1,
+              "how": 1,
+              "are": 1,
+              "you": 1,
+              "doing": 1
+            },
+            "intents": {
+              "hello": 1
+            },
+            "intentFeatures": {
+              "hello": [
+                "hi",
+                "hey",
+                "hello",
+                "good",
+                "morning",
+                "afternoon",
+                "evening",
+                "what",
+                "s",
+                "up",
+                "how",
+                "are",
+                "you",
+                "doing"
+              ]
+            },
+            "neuralNetwork": {
+              "features": [
+                "hi",
+                "hey",
+                "hello",
+                "good",
+                "morning",
+                "afternoon",
+                "evening",
+                "what",
+                "s",
+                "up",
+                "how",
+                "are",
+                "you",
+                "doing",
+                "nonefeature"
+              ],
+              "intents": [
+                "hello",
+                "None"
+              ],
+              "perceptrons": [
+                [
+                  4.999755859375,
+                  5.010143280029297,
+                  4.99332332611084,
+                  3.789860486984253,
+                  1.2657004594802856,
+                  1.2637786865234375,
+                  1.2603800296783447,
+                  1.684145450592041,
+                  1.684145450592041,
+                  1.684145450592041,
+                  1.664788842201233,
+                  1.664788842201233,
+                  1.664788842201233,
+                  0.0986580103635788,
+                  -7.257737159729004,
+                  7.436465108597713
+                ],
+                [
+                  -1.6323102712631226,
+                  -1.6207895278930664,
+                  -1.6087849140167236,
+                  -1.2575902938842773,
+                  -0.42216864228248596,
+                  -0.4195573925971985,
+                  -0.4158644378185272,
+                  -0.5581988096237183,
+                  -0.5581988096237183,
+                  -0.5581988096237183,
+                  -0.5579989552497864,
+                  -0.5579989552497864,
+                  -0.5579989552497864,
+                  -0.14088957011699677,
+                  10.603544235229492,
+                  1.6900007122578558
+                ]
+              ],
+              "perceptronSettings": {
+                "locale": "en",
+                "tag": "nlu-en",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true,
+                "log": true
+              }
+            }
+          }
+        }
+      },
+      "fr": {
+        "settings": {
+          "locale": "fr",
+          "tag": "domain-manager-fr",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "trainByDomain": false,
+          "useStemDict": true
+        },
+        "stemDict": {
+          "salut": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "bonjour": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "bonsoir": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "salutations": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "hello": {
+            "intent": "hello",
+            "domain": "default"
+          },
+          "coucou": {
+            "intent": "hello",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "hello": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "Salut",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Bonjour",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Bonsoir",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Salutations",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Hello",
+            "intent": "hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "Coucou",
+            "intent": "hello"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "fr",
+              "tag": "nlu-fr",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "salut": 1,
+              "bonjour": 1,
+              "bonsoir": 1,
+              "salutations": 1,
+              "hello": 1,
+              "coucou": 1
+            },
+            "intents": {
+              "hello": 1
+            },
+            "intentFeatures": {
+              "hello": [
+                "salut",
+                "bonjour",
+                "bonsoir",
+                "salutations",
+                "hello",
+                "coucou"
+              ]
+            },
+            "neuralNetwork": {
+              "features": [
+                "salut",
+                "bonjour",
+                "bonsoir",
+                "salutations",
+                "hello",
+                "coucou",
+                "nonefeature"
+              ],
+              "intents": [
+                "hello",
+                "None"
+              ],
+              "perceptrons": [
+                [
+                  4.144095420837402,
+                  4.15720796585083,
+                  4.14911413192749,
+                  4.140012741088867,
+                  4.129779815673828,
+                  4.1181440353393555,
+                  -8.172127723693848,
+                  8.329413494949227
+                ],
+                [
+                  -1.374977469444275,
+                  -1.3685953617095947,
+                  -1.3617802858352661,
+                  -1.3544930219650269,
+                  -1.3466356992721558,
+                  -1.3379802703857422,
+                  10.922661781311035,
+                  1.393496884315798
+                ]
+              ],
+              "perceptronSettings": {
+                "locale": "fr",
+                "tag": "nlu-fr",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true,
+                "log": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "intentDomains": {},
+    "extraSentences": [
+      [
+        "en",
+        "Hi"
+      ],
+      [
+        "en",
+        "Hey"
+      ],
+      [
+        "en",
+        "Hello"
+      ],
+      [
+        "en",
+        "Good morning"
+      ],
+      [
+        "en",
+        "Good afternoon"
+      ],
+      [
+        "en",
+        "Good evening"
+      ],
+      [
+        "en",
+        "What's up?"
+      ],
+      [
+        "en",
+        "How are you?"
+      ],
+      [
+        "en",
+        "How are you doing?"
+      ],
+      [
+        "fr",
+        "Salut"
+      ],
+      [
+        "fr",
+        "Bonjour"
+      ],
+      [
+        "fr",
+        "Bonsoir"
+      ],
+      [
+        "fr",
+        "Salutations"
+      ],
+      [
+        "fr",
+        "Hello"
+      ],
+      [
+        "fr",
+        "Coucou"
+      ]
+    ]
+  },
+  "ner": {
+    "settings": {
+      "tag": "ner"
+    },
+    "rules": {}
+  },
+  "nlgManager": {
+    "settings": {
+      "tag": "nlg-manager"
+    },
+    "responses": {}
+  },
+  "actionManager": {
+    "settings": {
+      "tag": "action-manager"
+    },
+    "actions": {}
+  },
+  "slotManager": {}
+}
