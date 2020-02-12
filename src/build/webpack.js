@@ -55,7 +55,12 @@ function asset(options = {}) {
                     loader: Path.resolve(__dirname, '../../node_modules/babel-loader'),
                     options: {
                         presets: [require('@babel/preset-env')],
-                        plugins: [require('@babel/plugin-transform-runtime')]
+                        plugins: [[
+                            require('@babel/plugin-transform-runtime'),
+                            {
+                                absoluteRuntime: Path.resolve(__dirname, '../../node_modules')
+                            }
+                        ]]
                     }
                 }
             })

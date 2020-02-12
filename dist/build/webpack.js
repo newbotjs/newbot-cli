@@ -69,7 +69,9 @@ function asset() {
           loader: _path.default.resolve(__dirname, '../../node_modules/babel-loader'),
           options: {
             presets: [require('@babel/preset-env')],
-            plugins: [require('@babel/plugin-transform-runtime')]
+            plugins: [[require('@babel/plugin-transform-runtime'), {
+              absoluteRuntime: _path.default.resolve(__dirname, '../../node_modules')
+            }]]
           }
         }
       });
