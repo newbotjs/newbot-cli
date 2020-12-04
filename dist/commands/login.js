@@ -25,12 +25,8 @@ var _isEmail = _interopRequireDefault(require("validator/lib/isEmail"));
 
 var _default = function _default() {
   var env = process.env.NODE_ENV;
-  return new Promise(
-  /*#__PURE__*/
-  function () {
-    var _ref = (0, _asyncToGenerator2.default)(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee(resolve, reject) {
+  return new Promise( /*#__PURE__*/function () {
+    var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(resolve, reject) {
       var cloudFile, configCloud, retCloud, _ref2, mode, body, _body, _configCloud;
 
       return _regenerator.default.wrap(function _callee$(_context) {

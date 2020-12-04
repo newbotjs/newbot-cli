@@ -23,9 +23,7 @@ var files = {
     'x64': rootFiles + '/linux/amd64/gactions/gactions'
   }
 };
-(0, _asyncToGenerator2.default)(
-/*#__PURE__*/
-_regenerator.default.mark(function _callee() {
+(0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
   var platform, arch, res, buffer, filename;
   return _regenerator.default.wrap(function _callee$(_context) {
     while (1) {

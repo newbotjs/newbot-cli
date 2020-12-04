@@ -19,11 +19,7 @@ var _viber = _interopRequireDefault(require("../webhooks/viber"));
 
 var _telegram = _interopRequireDefault(require("../webhooks/telegram"));
 
-var _default =
-/*#__PURE__*/
-(0, _asyncToGenerator2.default)(
-/*#__PURE__*/
-_regenerator.default.mark(function _callee() {
+var _default = /*#__PURE__*/(0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
   var config, tasks;
   return _regenerator.default.wrap(function _callee$(_context) {
     while (1) {

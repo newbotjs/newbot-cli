@@ -77,11 +77,7 @@ var _telegram = _interopRequireDefault(require("../webhooks/telegram"));
 
 var rollup = require('rollup');
 
-var _default =
-/*#__PURE__*/
-(0, _asyncToGenerator2.default)(
-/*#__PURE__*/
-_regenerator.default.mark(function _callee6() {
+var _default = /*#__PURE__*/(0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6() {
   var _ref2,
       _ref2$port,
       port,
@@ -173,10 +169,8 @@ _regenerator.default.mark(function _callee6() {
                 return 'ngrok is disabled';
               }
             },
-            task: function () {
-              var _task = (0, _asyncToGenerator2.default)(
-              /*#__PURE__*/
-              _regenerator.default.mark(function _callee(ctx) {
+            task: function task(ctx) {
+              return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
                 return _regenerator.default.wrap(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
@@ -208,14 +202,8 @@ _regenerator.default.mark(function _callee6() {
                     }
                   }
                 }, _callee);
-              }));
-
-              function task(_x) {
-                return _task.apply(this, arguments);
-              }
-
-              return task;
-            }()
+              }))();
+            }
           }, {
             title: "Listen your bot in port ".concat(port).green,
             task: function task() {
@@ -306,10 +294,8 @@ _regenerator.default.mark(function _callee6() {
                 return 'Add "platforms.twitter.accessToken" property in "newbot.config.js" file with authentification token';
               }
             },
-            task: function () {
-              var _task2 = (0, _asyncToGenerator2.default)(
-              /*#__PURE__*/
-              _regenerator.default.mark(function _callee2(ctx) {
+            task: function task(ctx) {
+              return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
                 var _config$platforms$twi, consumerKey, consumerSecret, accessToken, accessTokenSecret, apiTwitter, url, oauth, res, webHook;
 
                 return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -375,14 +361,8 @@ _regenerator.default.mark(function _callee6() {
                     }
                   }
                 }, _callee2);
-              }));
-
-              function task(_x2) {
-                return _task2.apply(this, arguments);
-              }
-
-              return task;
-            }()
+              }))();
+            }
           }, (0, _viber.default)(config, {
             ngrok: ngrok
           }), (0, _telegram.default)(config, {
@@ -488,10 +468,8 @@ _regenerator.default.mark(function _callee6() {
                 }
               }, {
                 title: 'Update Google Actions',
-                task: function () {
-                  var _task3 = (0, _asyncToGenerator2.default)(
-                  /*#__PURE__*/
-                  _regenerator.default.mark(function _callee3() {
+                task: function task() {
+                  return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
                     var gactions, actionPackages, binPath, shell;
                     return _regenerator.default.wrap(function _callee3$(_context3) {
                       while (1) {
@@ -542,35 +520,25 @@ _regenerator.default.mark(function _callee6() {
                         }
                       }
                     }, _callee3, null, [[5, 11]]);
-                  }));
-
-                  function task() {
-                    return _task3.apply(this, arguments);
-                  }
-
-                  return task;
-                }()
+                  }))();
+                }
               }]);
             }
           }]);
           tasksChange = new _listr.default([{
             title: '',
-            task: function task(_ref3, _task4) {
+            task: function task(_ref3, _task) {
               var ev = _ref3.ev,
                   path = _ref3.path;
-              _task4.title = "".concat((0, _moment.default)().format(), " Reload your chatbot");
+              _task.title = "".concat((0, _moment.default)().format(), " Reload your chatbot");
               return new Promise(function (resolve, reject) {
                 loadApp(resolve, reject);
               });
             }
           }]);
 
-          buildRemoteSkill =
-          /*#__PURE__*/
-          function () {
-            var _ref4 = (0, _asyncToGenerator2.default)(
-            /*#__PURE__*/
-            _regenerator.default.mark(function _callee4() {
+          buildRemoteSkill = /*#__PURE__*/function () {
+            var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4() {
               var optionsRollup, bundle, _ref5, code, map, optionsRollupApi, bundleApi, _ref6, codeApi;
 
               return _regenerator.default.wrap(function _callee4$(_context4) {
@@ -635,12 +603,8 @@ _regenerator.default.mark(function _callee6() {
             };
           }();
 
-          loadApp =
-          /*#__PURE__*/
-          function () {
-            var _ref7 = (0, _asyncToGenerator2.default)(
-            /*#__PURE__*/
-            _regenerator.default.mark(function _callee5(resolve, reject) {
+          loadApp = /*#__PURE__*/function () {
+            var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(resolve, reject) {
               var skill, p, _newbotCloud, configCloud, userToken;
 
               return _regenerator.default.wrap(function _callee5$(_context5) {
@@ -709,7 +673,7 @@ _regenerator.default.mark(function _callee6() {
               }, _callee5, null, [[0, 18]]);
             }));
 
-            return function loadApp(_x3, _x4) {
+            return function loadApp(_x, _x2) {
               return _ref7.apply(this, arguments);
             };
           }();

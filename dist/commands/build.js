@@ -23,12 +23,8 @@ var _train = _interopRequireDefault(require("./train"));
 
 var _ncp = require("ncp");
 
-var _default =
-/*#__PURE__*/
-function () {
-  var _ref2 = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee(_ref) {
+var _default = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_ref) {
     var _ref$entry, entry, _ref$node, node, path, dist, tasks;
 
     return _regenerator.default.wrap(function _callee$(_context) {

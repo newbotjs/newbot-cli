@@ -31,11 +31,7 @@ var _nlp = require("@nlpjs/nlp");
 
 var _langAll = _interopRequireDefault(require("@nlpjs/lang-all"));
 
-var _default =
-/*#__PURE__*/
-(0, _asyncToGenerator2.default)(
-/*#__PURE__*/
-_regenerator.default.mark(function _callee() {
+var _default = /*#__PURE__*/(0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
   var _ref2,
       _ref2$onlyTasks,
       onlyTasks,

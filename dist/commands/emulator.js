@@ -25,12 +25,8 @@ var _bottender2 = _interopRequireDefault(require("newbot-formats/session/bottend
 
 var _runSkill = _interopRequireDefault(require("../build/run-skill"));
 
-var _default =
-/*#__PURE__*/
-function () {
-  var _ref2 = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee3(_ref) {
+var _default = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(_ref) {
     var source, lang, skill, Converse, files, skillBundle, converse, bot, pe;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
@@ -49,12 +45,8 @@ function () {
               fallbackMethods: true
             });
             pe = new _prettyError.default();
-            bot.onEvent(
-            /*#__PURE__*/
-            function () {
-              var _ref3 = (0, _asyncToGenerator2.default)(
-              /*#__PURE__*/
-              _regenerator.default.mark(function _callee2(context) {
+            bot.onEvent( /*#__PURE__*/function () {
+              var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(context) {
                 var text, platform, session;
                 return _regenerator.default.wrap(function _callee2$(_context2) {
                   while (1) {
@@ -75,10 +67,8 @@ function () {
                             var currentLang = user.getLang();
                             if (lang && !currentLang) user.setLang(lang);
                           },
-                          output: function () {
-                            var _output = (0, _asyncToGenerator2.default)(
-                            /*#__PURE__*/
-                            _regenerator.default.mark(function _callee(str) {
+                          output: function output(str) {
+                            return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
                               return _regenerator.default.wrap(function _callee$(_context) {
                                 while (1) {
                                   switch (_context.prev = _context.next) {
@@ -108,14 +98,8 @@ function () {
                                   }
                                 }
                               }, _callee);
-                            }));
-
-                            function output(_x3) {
-                              return _output.apply(this, arguments);
-                            }
-
-                            return output;
-                          }(),
+                            }))();
+                          },
                           data: {
                             session: session
                           }

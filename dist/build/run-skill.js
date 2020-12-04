@@ -30,12 +30,8 @@ var resolvePath = function resolvePath(p) {
   return require.resolve(p);
 };
 
-var _default =
-/*#__PURE__*/
-function () {
-  var _ref = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee(skill) {
+var _default = /*#__PURE__*/function () {
+  var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(skill) {
     var ret, retFunc;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {

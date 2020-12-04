@@ -31,12 +31,8 @@ var _jsBeautify = _interopRequireDefault(require("js-beautify"));
 
 var beautify = _jsBeautify.default.js;
 
-var _default =
-/*#__PURE__*/
-function () {
-  var _ref2 = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee(_ref) {
+var _default = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_ref) {
     var name, directory, pathProject, _ref3, mode, feactures, ret, _ref4, nlp, tasks;
 
     return _regenerator.default.wrap(function _callee$(_context) {

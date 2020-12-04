@@ -21,12 +21,8 @@ var _listr = _interopRequireDefault(require("listr"));
 
 var _handlebars = _interopRequireDefault(require("handlebars"));
 
-var _default =
-/*#__PURE__*/
-function () {
-  var _ref2 = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee3(_ref) {
+var _default = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(_ref) {
     var name, type, directory, pathSkills, tasks;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
@@ -40,10 +36,8 @@ function () {
               task: function task() {
                 return new _listr.default([{
                   title: 'Create Folder in ~/bot/skills/',
-                  task: function () {
-                    var _task = (0, _asyncToGenerator2.default)(
-                    /*#__PURE__*/
-                    _regenerator.default.mark(function _callee() {
+                  task: function task() {
+                    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
                       return _regenerator.default.wrap(function _callee$(_context) {
                         while (1) {
                           switch (_context.prev = _context.next) {
@@ -60,20 +54,12 @@ function () {
                           }
                         }
                       }, _callee);
-                    }));
-
-                    function task() {
-                      return _task.apply(this, arguments);
-                    }
-
-                    return task;
-                  }()
+                    }))();
+                  }
                 }, {
                   title: 'Copy and paste templates',
-                  task: function () {
-                    var _task2 = (0, _asyncToGenerator2.default)(
-                    /*#__PURE__*/
-                    _regenerator.default.mark(function _callee2() {
+                  task: function task() {
+                    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
                       var pathTpl, copy;
                       return _regenerator.default.wrap(function _callee2$(_context2) {
                         while (1) {
@@ -108,14 +94,8 @@ function () {
                           }
                         }
                       }, _callee2);
-                    }));
-
-                    function task() {
-                      return _task2.apply(this, arguments);
-                    }
-
-                    return task;
-                  }()
+                    }))();
+                  }
                 }]);
               }
             }]);

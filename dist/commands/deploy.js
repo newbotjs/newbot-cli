@@ -33,12 +33,8 @@ var _log = _interopRequireDefault(require("../core/log"));
 
 var _webpack = _interopRequireDefault(require("../build/webpack"));
 
-var _default =
-/*#__PURE__*/
-function () {
-  var _ref2 = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee4(_ref) {
+var _default = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(_ref) {
     var _ref$entry, entry, directory, _ref3, userToken, configCloud, mainSkill, tmpPath, zipFile, tasks;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
@@ -60,10 +56,8 @@ function () {
             zipFile = tmpPath + '/bot.zip';
             tasks = new _listr.default([{
               title: 'Build',
-              task: function () {
-                var _task = (0, _asyncToGenerator2.default)(
-                /*#__PURE__*/
-                _regenerator.default.mark(function _callee() {
+              task: function task() {
+                return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
                   return _regenerator.default.wrap(function _callee$(_context) {
                     while (1) {
                       switch (_context.prev = _context.next) {
@@ -81,14 +75,8 @@ function () {
                       }
                     }
                   }, _callee);
-                }));
-
-                function task() {
-                  return _task.apply(this, arguments);
-                }
-
-                return task;
-              }()
+                }))();
+              }
             }, {
               title: 'Packaging',
               task: function task() {
@@ -120,10 +108,8 @@ function () {
               }
             }, {
               title: 'Sync intents',
-              skip: function () {
-                var _skip = (0, _asyncToGenerator2.default)(
-                /*#__PURE__*/
-                _regenerator.default.mark(function _callee2(ctx) {
+              skip: function skip(ctx) {
+                return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
                   var skill, converse;
                   return _regenerator.default.wrap(function _callee2$(_context2) {
                     while (1) {
@@ -158,18 +144,10 @@ function () {
                       }
                     }
                   }, _callee2);
-                }));
-
-                function skip(_x2) {
-                  return _skip.apply(this, arguments);
-                }
-
-                return skip;
-              }(),
-              task: function () {
-                var _task2 = (0, _asyncToGenerator2.default)(
-                /*#__PURE__*/
-                _regenerator.default.mark(function _callee3(ctx) {
+                }))();
+              },
+              task: function task(ctx) {
+                return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
                   var intents, intentsObj, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, intent, _intent$params, intentName, utterances;
 
                   return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -263,14 +241,8 @@ function () {
                       }
                     }
                   }, _callee3, null, [[5, 19, 23, 31], [24,, 26, 30]]);
-                }));
-
-                function task(_x3) {
-                  return _task2.apply(this, arguments);
-                }
-
-                return task;
-              }()
+                }))();
+              }
             }, {
               title: 'Deploy on NewBot Cloud',
               task: function task() {

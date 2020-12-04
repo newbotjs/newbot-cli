@@ -25,11 +25,7 @@ var _config = _interopRequireDefault(require("../config"));
 
 var rollup = require('rollup');
 
-var _default =
-/*#__PURE__*/
-(0, _asyncToGenerator2.default)(
-/*#__PURE__*/
-_regenerator.default.mark(function _callee() {
+var _default = /*#__PURE__*/(0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
   var env, directory, _ref2, userToken, cloudFile, configCloud, bots, botId, choice, _ref3, botName, newBot;
 
   return _regenerator.default.wrap(function _callee$(_context) {

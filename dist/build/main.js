@@ -76,10 +76,8 @@ function asset() {
     },
     plugins: [(0, _rollupPluginCommonjs.default)(), (0, _rollupPluginNodeResolve.default)(resolveOptions), (0, _rollupPluginJson.default)(), {
       name: 'converse',
-      transform: function () {
-        var _transform = (0, _asyncToGenerator2.default)(
-        /*#__PURE__*/
-        _regenerator.default.mark(function _callee(code, id) {
+      transform: function transform(code, id) {
+        return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
           var transpiler, obj, compiled, baseUrl, converseUrlRegex, relativePathRegex, pathToApp, pkg, platform, regexp, match, name, _module, file, _pkg;
 
           return _regenerator.default.wrap(function _callee$(_context) {
@@ -129,14 +127,8 @@ function asset() {
               }
             }
           }, _callee);
-        }));
-
-        function transform(_x, _x2) {
-          return _transform.apply(this, arguments);
-        }
-
-        return transform;
-      }()
+        }))();
+      }
     }]
   };
   /*if (options.type == 'browser') {

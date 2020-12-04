@@ -17,12 +17,8 @@ var _colors = _interopRequireDefault(require("colors"));
 
 var _default = function _default() {
   var env = process.env.NODE_ENV;
-  return new Promise(
-  /*#__PURE__*/
-  function () {
-    var _ref = (0, _asyncToGenerator2.default)(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee(resolve, reject) {
+  return new Promise( /*#__PURE__*/function () {
+    var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(resolve, reject) {
       var cloudFile;
       return _regenerator.default.wrap(function _callee$(_context) {
         while (1) {
