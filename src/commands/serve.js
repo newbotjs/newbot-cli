@@ -16,6 +16,7 @@ import execa from 'execa'
 import stringify from 'json-stringify-safe';
 import expressNewBot from 'newbot-express'
 import converseOutput from 'newbot-express/output'
+import langAll from '@nlpjs/lang-all'
 
 import mainConfig from '../config'
 import serverApp from '../server/app';
@@ -415,7 +416,8 @@ export default async ({
                     skill = await runSkill(p)
                 } while (!skill.default)
                 global.converse = new Converse(skill.default, {
-                    model: files + '/bot/model/model.nlp'
+                    model: files + '/bot/model/model.nlp',
+                    modelLangs: [langAll]
                 })
                 global.converse.debug = true
                 if (disposeCode) {

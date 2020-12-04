@@ -4,6 +4,8 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var os = require('os');
 
 var path = require('path');
@@ -21,10 +23,11 @@ var files = {
     'x64': rootFiles + '/linux/amd64/gactions/gactions'
   }
 };
-
-(function _callee() {
+(0, _asyncToGenerator2.default)(
+/*#__PURE__*/
+_regenerator.default.mark(function _callee() {
   var platform, arch, res, buffer, filename;
-  return _regenerator.default.async(function _callee$(_context) {
+  return _regenerator.default.wrap(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -42,10 +45,10 @@ var files = {
 
         case 6:
           _context.next = 8;
-          return _regenerator.default.awrap(rp.get({
+          return rp.get({
             url: files[platform][arch],
             encoding: null
-          }));
+          });
 
         case 8:
           res = _context.sent;
@@ -59,5 +62,5 @@ var files = {
           return _context.stop();
       }
     }
-  });
-})();
+  }, _callee);
+}))();

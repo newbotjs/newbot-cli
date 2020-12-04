@@ -1,3 +1,4 @@
+
 # NewBot CLI
 
 ## Create new project
@@ -47,3 +48,9 @@ Options :
 
 `newbot logout`
 
+## ChangeLog
+
+## 2020-02-06
+### Changed
+- The train part is moved in the newbot module. So version 3.0.0 is only compatible with NewBot Framework version > 0.6
+- The training now uses version 4 of the NLPJS module. The generated model is therefore different

@@ -11,6 +11,8 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _express = _interopRequireDefault(require("express"));
 
 var _http = _interopRequireDefault(require("http"));
@@ -43,6 +45,8 @@ var _newbotExpress = _interopRequireDefault(require("newbot-express"));
 
 var _output = _interopRequireDefault(require("newbot-express/output"));
 
+var _langAll = _interopRequireDefault(require("@nlpjs/lang-all"));
+
 var _config = _interopRequireDefault(require("../config"));
 
 var _app = _interopRequireDefault(require("../server/app"));
@@ -73,18 +77,22 @@ var _telegram = _interopRequireDefault(require("../webhooks/telegram"));
 
 var rollup = require('rollup');
 
-var _callee = function _callee() {
-  var _ref,
-      _ref$port,
+var _default =
+/*#__PURE__*/
+(0, _asyncToGenerator2.default)(
+/*#__PURE__*/
+_regenerator.default.mark(function _callee6() {
+  var _ref2,
+      _ref2$port,
       port,
-      _ref$ngrok,
+      _ref2$ngrok,
       ngrok,
-      _ref$cloud,
+      _ref2$cloud,
       cloud,
-      _ref$entry,
+      _ref2$entry,
       entry,
       configFile,
-      _ref$path,
+      _ref2$path,
       path,
       _expressNewBot,
       Converse,
@@ -109,11 +117,11 @@ var _callee = function _callee() {
       routesModule,
       _args6 = arguments;
 
-  return _regenerator.default.async(function _callee$(_context6) {
+  return _regenerator.default.wrap(function _callee6$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
-          _ref = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : {}, _ref$port = _ref.port, port = _ref$port === void 0 ? 3000 : _ref$port, _ref$ngrok = _ref.ngrok, ngrok = _ref$ngrok === void 0 ? true : _ref$ngrok, _ref$cloud = _ref.cloud, cloud = _ref$cloud === void 0 ? false : _ref$cloud, _ref$entry = _ref.entry, entry = _ref$entry === void 0 ? 'main.js' : _ref$entry, configFile = _ref.config, _ref$path = _ref.path, path = _ref$path === void 0 ? process.cwd() : _ref$path;
+          _ref2 = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : {}, _ref2$port = _ref2.port, port = _ref2$port === void 0 ? 3000 : _ref2$port, _ref2$ngrok = _ref2.ngrok, ngrok = _ref2$ngrok === void 0 ? true : _ref2$ngrok, _ref2$cloud = _ref2.cloud, cloud = _ref2$cloud === void 0 ? false : _ref2$cloud, _ref2$entry = _ref2.entry, entry = _ref2$entry === void 0 ? 'main.js' : _ref2$entry, configFile = _ref2.config, _ref2$path = _ref2.path, path = _ref2$path === void 0 ? process.cwd() : _ref2$path;
           _context6.prev = 1;
           Converse = (0, _getNewbot.default)();
           global.logs = [];
@@ -131,7 +139,7 @@ var _callee = function _callee() {
           }
 
           _context6.next = 14;
-          return _regenerator.default.awrap((0, _cloud.default)());
+          return (0, _cloud.default)();
 
         case 14:
           newbotCloud = _context6.sent;
@@ -165,39 +173,49 @@ var _callee = function _callee() {
                 return 'ngrok is disabled';
               }
             },
-            task: function task(ctx) {
-              return _regenerator.default.async(function task$(_context) {
-                while (1) {
-                  switch (_context.prev = _context.next) {
-                    case 0:
-                      if (!(config.ngrok && config.ngrok.url)) {
-                        _context.next = 4;
+            task: function () {
+              var _task = (0, _asyncToGenerator2.default)(
+              /*#__PURE__*/
+              _regenerator.default.mark(function _callee(ctx) {
+                return _regenerator.default.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        if (!(config.ngrok && config.ngrok.url)) {
+                          _context.next = 4;
+                          break;
+                        }
+
+                        ctx.url = config.ngrok.url;
+                        _context.next = 7;
                         break;
-                      }
 
-                      ctx.url = config.ngrok.url;
-                      _context.next = 7;
-                      break;
+                      case 4:
+                        _context.next = 6;
+                        return _ngrok.default.connect(_lodash.default.merge({
+                          addr: port
+                        }, config.ngrok));
 
-                    case 4:
-                      _context.next = 6;
-                      return _regenerator.default.awrap(_ngrok.default.connect(_lodash.default.merge({
-                        addr: port
-                      }, config.ngrok)));
+                      case 6:
+                        ctx.url = _context.sent;
 
-                    case 6:
-                      ctx.url = _context.sent;
+                      case 7:
+                        process.env.SERVER_URL = ctx.url;
 
-                    case 7:
-                      process.env.SERVER_URL = ctx.url;
-
-                    case 8:
-                    case "end":
-                      return _context.stop();
+                      case 8:
+                      case "end":
+                        return _context.stop();
+                    }
                   }
-                }
-              });
-            }
+                }, _callee);
+              }));
+
+              function task(_x) {
+                return _task.apply(this, arguments);
+              }
+
+              return task;
+            }()
           }, {
             title: "Listen your bot in port ".concat(port).green,
             task: function task() {
@@ -288,73 +306,83 @@ var _callee = function _callee() {
                 return 'Add "platforms.twitter.accessToken" property in "newbot.config.js" file with authentification token';
               }
             },
-            task: function task(ctx) {
-              var _config$platforms$twi, consumerKey, consumerSecret, accessToken, accessTokenSecret, apiTwitter, url, oauth, res, webHook;
+            task: function () {
+              var _task2 = (0, _asyncToGenerator2.default)(
+              /*#__PURE__*/
+              _regenerator.default.mark(function _callee2(ctx) {
+                var _config$platforms$twi, consumerKey, consumerSecret, accessToken, accessTokenSecret, apiTwitter, url, oauth, res, webHook;
 
-              return _regenerator.default.async(function task$(_context2) {
-                while (1) {
-                  switch (_context2.prev = _context2.next) {
-                    case 0:
-                      _config$platforms$twi = config.platforms.twitter, consumerKey = _config$platforms$twi.consumerKey, consumerSecret = _config$platforms$twi.consumerSecret, accessToken = _config$platforms$twi.accessToken, accessTokenSecret = _config$platforms$twi.accessTokenSecret;
-                      apiTwitter = 'https://api.twitter.com/1.1/account_activity/all/dev';
-                      url = "".concat(apiTwitter, "/webhooks.json");
-                      oauth = {
-                        consumer_key: consumerKey,
-                        consumer_secret: consumerSecret,
-                        token: accessToken,
-                        token_secret: accessTokenSecret
-                      };
-                      _context2.next = 6;
-                      return _regenerator.default.awrap(_requestPromise.default.get({
-                        url: url,
-                        oauth: oauth,
-                        json: true
-                      }));
+                return _regenerator.default.wrap(function _callee2$(_context2) {
+                  while (1) {
+                    switch (_context2.prev = _context2.next) {
+                      case 0:
+                        _config$platforms$twi = config.platforms.twitter, consumerKey = _config$platforms$twi.consumerKey, consumerSecret = _config$platforms$twi.consumerSecret, accessToken = _config$platforms$twi.accessToken, accessTokenSecret = _config$platforms$twi.accessTokenSecret;
+                        apiTwitter = 'https://api.twitter.com/1.1/account_activity/all/dev';
+                        url = "".concat(apiTwitter, "/webhooks.json");
+                        oauth = {
+                          consumer_key: consumerKey,
+                          consumer_secret: consumerSecret,
+                          token: accessToken,
+                          token_secret: accessTokenSecret
+                        };
+                        _context2.next = 6;
+                        return _requestPromise.default.get({
+                          url: url,
+                          oauth: oauth,
+                          json: true
+                        });
 
-                    case 6:
-                      res = _context2.sent;
-                      webHook = res.find(function (el) {
-                        return /emulator/.test(el.url);
-                      });
+                      case 6:
+                        res = _context2.sent;
+                        webHook = res.find(function (el) {
+                          return /emulator/.test(el.url);
+                        });
 
-                      if (!webHook) {
-                        _context2.next = 11;
-                        break;
-                      }
-
-                      _context2.next = 11;
-                      return _regenerator.default.awrap(_requestPromise.default.delete({
-                        url: "".concat(apiTwitter, "/webhooks/").concat(webHook.id, ".json"),
-                        oauth: oauth
-                      }));
-
-                    case 11:
-                      _context2.next = 13;
-                      return _regenerator.default.awrap(_requestPromise.default.post({
-                        url: url,
-                        headers: {
-                          'Content-type': 'application/x-www-form-urlencoded'
-                        },
-                        oauth: oauth,
-                        form: {
-                          url: ctx.url + '/emulator/twitter'
+                        if (!webHook) {
+                          _context2.next = 11;
+                          break;
                         }
-                      }));
 
-                    case 13:
-                      _context2.next = 15;
-                      return _regenerator.default.awrap(_requestPromise.default.post({
-                        url: "".concat(apiTwitter, "/subscriptions.json"),
-                        oauth: oauth
-                      }));
+                        _context2.next = 11;
+                        return _requestPromise.default.delete({
+                          url: "".concat(apiTwitter, "/webhooks/").concat(webHook.id, ".json"),
+                          oauth: oauth
+                        });
 
-                    case 15:
-                    case "end":
-                      return _context2.stop();
+                      case 11:
+                        _context2.next = 13;
+                        return _requestPromise.default.post({
+                          url: url,
+                          headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                          },
+                          oauth: oauth,
+                          form: {
+                            url: ctx.url + '/emulator/twitter'
+                          }
+                        });
+
+                      case 13:
+                        _context2.next = 15;
+                        return _requestPromise.default.post({
+                          url: "".concat(apiTwitter, "/subscriptions.json"),
+                          oauth: oauth
+                        });
+
+                      case 15:
+                      case "end":
+                        return _context2.stop();
+                    }
                   }
-                }
-              });
-            }
+                }, _callee2);
+              }));
+
+              function task(_x2) {
+                return _task2.apply(this, arguments);
+              }
+
+              return task;
+            }()
           }, (0, _viber.default)(config, {
             ngrok: ngrok
           }), (0, _telegram.default)(config, {
@@ -460,200 +488,231 @@ var _callee = function _callee() {
                 }
               }, {
                 title: 'Update Google Actions',
-                task: function task() {
-                  var gactions, actionPackages, binPath, shell;
-                  return _regenerator.default.async(function task$(_context3) {
-                    while (1) {
-                      switch (_context3.prev = _context3.next) {
-                        case 0:
-                          gactions = config.platforms.gactions;
-                          actionPackages = '';
-                          actionFiles().forEach(function (filename) {
-                            var file = "".concat(gactionsDir, "/").concat(filename);
+                task: function () {
+                  var _task3 = (0, _asyncToGenerator2.default)(
+                  /*#__PURE__*/
+                  _regenerator.default.mark(function _callee3() {
+                    var gactions, actionPackages, binPath, shell;
+                    return _regenerator.default.wrap(function _callee3$(_context3) {
+                      while (1) {
+                        switch (_context3.prev = _context3.next) {
+                          case 0:
+                            gactions = config.platforms.gactions;
+                            actionPackages = '';
+                            actionFiles().forEach(function (filename) {
+                              var file = "".concat(gactionsDir, "/").concat(filename);
 
-                            var json = _fs.default.readFileSync(file, 'utf-8');
+                              var json = _fs.default.readFileSync(file, 'utf-8');
 
-                            json = JSON.parse(json);
-                            json.conversations.newbot.url = ctx.url + '/emulator/gactions';
+                              json = JSON.parse(json);
+                              json.conversations.newbot.url = ctx.url + '/emulator/gactions';
 
-                            _fs.default.writeFileSync(file, JSON.stringify(json, null, 2), 'utf-8');
+                              _fs.default.writeFileSync(file, JSON.stringify(json, null, 2), 'utf-8');
 
-                            actionPackages += ' --action_package ' + (0, _linkCli.default)(file);
-                            12;
-                          });
-                          binPath = (0, _linkCli.default)(gactions.binPath || _path.default.resolve(__dirname, '../bin/gactions'));
-                          shell = "".concat(binPath, " update ").concat(actionPackages, " --project ").concat(gactions.projectId);
-                          _context3.prev = 5;
+                              actionPackages += ' --action_package ' + (0, _linkCli.default)(file);
+                              12;
+                            });
+                            binPath = (0, _linkCli.default)(gactions.binPath || _path.default.resolve(__dirname, '../bin/gactions'));
+                            shell = "".concat(binPath, " update ").concat(actionPackages, " --project ").concat(gactions.projectId);
+                            _context3.prev = 5;
 
-                          _fs.default.accessSync("".concat(files, "/creds.data"), _fs.default.constants.R_OK | _fs.default.constants.W_OK);
+                            _fs.default.accessSync("".concat(files, "/creds.data"), _fs.default.constants.R_OK | _fs.default.constants.W_OK);
 
-                          _context3.next = 9;
-                          return _regenerator.default.awrap(_execa.default.shell(shell));
+                            _context3.next = 9;
+                            return _execa.default.shell(shell);
 
-                        case 9:
-                          _context3.next = 14;
-                          break;
+                          case 9:
+                            _context3.next = 14;
+                            break;
 
-                        case 11:
-                          _context3.prev = 11;
-                          _context3.t0 = _context3["catch"](5);
-                          setTimeout(function (_) {
-                            /* execa.shell(shell, {
-                                 input: process.stdin
-                             }).stdout.pipe(process.stdout)*/
-                            console.log(_context3.t0);
-                            console.log('Shell Command: ', shell);
-                          }, 2000);
+                          case 11:
+                            _context3.prev = 11;
+                            _context3.t0 = _context3["catch"](5);
+                            setTimeout(function (_) {
+                              /* execa.shell(shell, {
+                                   input: process.stdin
+                               }).stdout.pipe(process.stdout)*/
+                              console.log(_context3.t0);
+                              console.log('Shell Command: ', shell);
+                            }, 2000);
 
-                        case 14:
-                        case "end":
-                          return _context3.stop();
+                          case 14:
+                          case "end":
+                            return _context3.stop();
+                        }
                       }
-                    }
-                  }, null, null, [[5, 11]]);
-                }
+                    }, _callee3, null, [[5, 11]]);
+                  }));
+
+                  function task() {
+                    return _task3.apply(this, arguments);
+                  }
+
+                  return task;
+                }()
               }]);
             }
           }]);
           tasksChange = new _listr.default([{
             title: '',
-            task: function task(_ref2, _task) {
-              var ev = _ref2.ev,
-                  path = _ref2.path;
-              _task.title = "".concat((0, _moment.default)().format(), " Reload your chatbot");
+            task: function task(_ref3, _task4) {
+              var ev = _ref3.ev,
+                  path = _ref3.path;
+              _task4.title = "".concat((0, _moment.default)().format(), " Reload your chatbot");
               return new Promise(function (resolve, reject) {
                 loadApp(resolve, reject);
               });
             }
           }]);
 
-          buildRemoteSkill = function buildRemoteSkill() {
-            var optionsRollup, bundle, _ref3, code, map, optionsRollupApi, bundleApi, _ref4, codeApi;
+          buildRemoteSkill =
+          /*#__PURE__*/
+          function () {
+            var _ref4 = (0, _asyncToGenerator2.default)(
+            /*#__PURE__*/
+            _regenerator.default.mark(function _callee4() {
+              var optionsRollup, bundle, _ref5, code, map, optionsRollupApi, bundleApi, _ref6, codeApi;
 
-            return _regenerator.default.async(function buildRemoteSkill$(_context4) {
-              while (1) {
-                switch (_context4.prev = _context4.next) {
-                  case 0:
-                    optionsRollup = (0, _main.default)({
-                      type: 'node'
-                    });
-                    _context4.next = 3;
-                    return _regenerator.default.awrap(rollup.rollup(optionsRollup));
+              return _regenerator.default.wrap(function _callee4$(_context4) {
+                while (1) {
+                  switch (_context4.prev = _context4.next) {
+                    case 0:
+                      optionsRollup = (0, _main.default)({
+                        type: 'node'
+                      });
+                      _context4.next = 3;
+                      return rollup.rollup(optionsRollup);
 
-                  case 3:
-                    bundle = _context4.sent;
-                    _context4.next = 6;
-                    return _regenerator.default.awrap(bundle.generate({
-                      format: 'cjs',
-                      strict: false
-                    }));
+                    case 3:
+                      bundle = _context4.sent;
+                      _context4.next = 6;
+                      return bundle.generate({
+                        format: 'cjs',
+                        strict: false
+                      });
 
-                  case 6:
-                    _ref3 = _context4.sent;
-                    code = _ref3.code;
-                    map = _ref3.map;
-                    global.code = code;
+                    case 6:
+                      _ref5 = _context4.sent;
+                      code = _ref5.code;
+                      map = _ref5.map;
+                      global.code = code;
 
-                    if (!apiFile) {
-                      _context4.next = 20;
-                      break;
-                    }
-
-                    optionsRollupApi = (0, _main.default)({
-                      type: 'node',
-                      root: 'api.js'
-                    });
-                    _context4.next = 14;
-                    return _regenerator.default.awrap(rollup.rollup(optionsRollupApi));
-
-                  case 14:
-                    bundleApi = _context4.sent;
-                    _context4.next = 17;
-                    return _regenerator.default.awrap(bundleApi.generate({
-                      format: 'cjs',
-                      strict: false
-                    }));
-
-                  case 17:
-                    _ref4 = _context4.sent;
-                    codeApi = _ref4.code;
-                    global.codeApi = codeApi;
-
-                  case 20:
-                  case "end":
-                    return _context4.stop();
-                }
-              }
-            });
-          };
-
-          loadApp = function loadApp(resolve, reject) {
-            var skill, p, _newbotCloud, configCloud, userToken;
-
-            return _regenerator.default.async(function loadApp$(_context5) {
-              while (1) {
-                switch (_context5.prev = _context5.next) {
-                  case 0:
-                    _context5.prev = 0;
-
-                  case 1:
-                    p = "".concat(files, "/bot/").concat(entry);
-                    (0, _decache.default)(p);
-                    _context5.next = 5;
-                    return _regenerator.default.awrap((0, _runSkill.default)(p));
-
-                  case 5:
-                    skill = _context5.sent;
-
-                  case 6:
-                    if (!skill.default) {
-                      _context5.next = 1;
-                      break;
-                    }
-
-                  case 7:
-                    global.converse = new Converse(skill.default, {
-                      model: files + '/bot/model/model.nlp'
-                    });
-                    global.converse.debug = true;
-
-                    if (!disposeCode) {
-                      _context5.next = 15;
-                      break;
-                    }
-
-                    _context5.next = 12;
-                    return _regenerator.default.awrap(buildRemoteSkill());
-
-                  case 12:
-                    _newbotCloud = newbotCloud, configCloud = _newbotCloud.configCloud, userToken = _newbotCloud.userToken;
-                    _context5.next = 15;
-                    return _regenerator.default.awrap((0, _requestPromise.default)({
-                      url: "".concat(_config.default.urlCloud, "/api/bots/").concat(configCloud.botId, "/dev/reload"),
-                      method: 'POST',
-                      headers: {
-                        'x-access-token': userToken
+                      if (!apiFile) {
+                        _context4.next = 20;
+                        break;
                       }
-                    }));
 
-                  case 15:
-                    resolve();
-                    _context5.next = 22;
-                    break;
+                      optionsRollupApi = (0, _main.default)({
+                        type: 'node',
+                        root: 'api.js'
+                      });
+                      _context4.next = 14;
+                      return rollup.rollup(optionsRollupApi);
 
-                  case 18:
-                    _context5.prev = 18;
-                    _context5.t0 = _context5["catch"](0);
-                    console.log(_context5.t0);
-                    reject(_context5.t0);
+                    case 14:
+                      bundleApi = _context4.sent;
+                      _context4.next = 17;
+                      return bundleApi.generate({
+                        format: 'cjs',
+                        strict: false
+                      });
 
-                  case 22:
-                  case "end":
-                    return _context5.stop();
+                    case 17:
+                      _ref6 = _context4.sent;
+                      codeApi = _ref6.code;
+                      global.codeApi = codeApi;
+
+                    case 20:
+                    case "end":
+                      return _context4.stop();
+                  }
                 }
-              }
-            }, null, null, [[0, 18]]);
-          };
+              }, _callee4);
+            }));
+
+            return function buildRemoteSkill() {
+              return _ref4.apply(this, arguments);
+            };
+          }();
+
+          loadApp =
+          /*#__PURE__*/
+          function () {
+            var _ref7 = (0, _asyncToGenerator2.default)(
+            /*#__PURE__*/
+            _regenerator.default.mark(function _callee5(resolve, reject) {
+              var skill, p, _newbotCloud, configCloud, userToken;
+
+              return _regenerator.default.wrap(function _callee5$(_context5) {
+                while (1) {
+                  switch (_context5.prev = _context5.next) {
+                    case 0:
+                      _context5.prev = 0;
+
+                    case 1:
+                      p = "".concat(files, "/bot/").concat(entry);
+                      (0, _decache.default)(p);
+                      _context5.next = 5;
+                      return (0, _runSkill.default)(p);
+
+                    case 5:
+                      skill = _context5.sent;
+
+                    case 6:
+                      if (!skill.default) {
+                        _context5.next = 1;
+                        break;
+                      }
+
+                    case 7:
+                      global.converse = new Converse(skill.default, {
+                        model: files + '/bot/model/model.nlp',
+                        modelLangs: [_langAll.default]
+                      });
+                      global.converse.debug = true;
+
+                      if (!disposeCode) {
+                        _context5.next = 15;
+                        break;
+                      }
+
+                      _context5.next = 12;
+                      return buildRemoteSkill();
+
+                    case 12:
+                      _newbotCloud = newbotCloud, configCloud = _newbotCloud.configCloud, userToken = _newbotCloud.userToken;
+                      _context5.next = 15;
+                      return (0, _requestPromise.default)({
+                        url: "".concat(_config.default.urlCloud, "/api/bots/").concat(configCloud.botId, "/dev/reload"),
+                        method: 'POST',
+                        headers: {
+                          'x-access-token': userToken
+                        }
+                      });
+
+                    case 15:
+                      resolve();
+                      _context5.next = 22;
+                      break;
+
+                    case 18:
+                      _context5.prev = 18;
+                      _context5.t0 = _context5["catch"](0);
+                      console.log(_context5.t0);
+                      reject(_context5.t0);
+
+                    case 22:
+                    case "end":
+                      return _context5.stop();
+                  }
+                }
+              }, _callee5, null, [[0, 18]]);
+            }));
+
+            return function loadApp(_x3, _x4) {
+              return _ref7.apply(this, arguments);
+            };
+          }();
 
           (0, _log.default)(app, {
             Converse: Converse,
@@ -823,7 +882,7 @@ var _callee = function _callee() {
           return _context6.stop();
       }
     }
-  }, null, null, [[1, 30]]);
-};
+  }, _callee6, null, [[1, 30]]);
+}));
 
-exports.default = _callee;
+exports.default = _default;

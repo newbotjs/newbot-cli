@@ -2,3 +2,10 @@
 start() {
     > Hello
 }
+
+@Intent('hey', [
+    'hello world'
+])
+hello() {
+    > Hey
+}
