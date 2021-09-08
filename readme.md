@@ -1,6 +1,8 @@
 
 # NewBot CLI
 
+**This repository is depreciated. To install a newbot project, go to the repository https://github.com/newbotjs/newbot-framework**
+
 ## Create new project
 
 `newbot new <folder name>`
